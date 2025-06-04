@@ -14,6 +14,7 @@ import { getFirestore, collection, query, where, getDocs, deleteDoc, doc } from 
 import { app } from '../../utileria/firebase'
 
 const db = getFirestore(app)
+
 // Placeholder local avatar (segunda imagen)
 const placeholderAvatar = require('../../assets/avatar_placeholder.png')
 
@@ -27,14 +28,17 @@ export default function MultiListScreen({ navigation, route }) {
       setLoading(true)
       try {
         let q
+        console.log('Tipo recibido:', type)
         switch (type) {
           case 1:
             // Doctores -> rol === 2
-            q = query(collection(db, 'usuarios'), where('rol', '==', 2))
-            break
-          // case 2: // pacientes
-          // case 3: // especialidades
-          // case 4: // servicios
+            q = query(collection(db, 'usuarios'), where('rol', '==', 'Doctor'))
+          break
+          case 2:
+            // Paciente -> rol === 3
+            q = query(collection(db, 'usuarios'), where('rol', '==', 'Paciente'))
+          break
+
           default:
             setItems([])
             setLoading(false)
@@ -79,12 +83,39 @@ export default function MultiListScreen({ navigation, route }) {
     )
   }
 
+const renderPaciente = ({ item }) => {
+  const fullName = `${item.nombres} ${item.apellidoP}`
+  return (
+    <View style={styles.card}>
+      <Image
+        source={item.fotoURL ? { uri: item.fotoURL } : placeholderAvatar}
+        style={styles.avatar}
+      />
+      <View style={styles.info}>
+        <Text style={styles.name}>{fullName}</Text>
+        <TouchableOpacity>
+          <Text style={styles.link}>Ver detalles</Text>
+        </TouchableOpacity>
+      </View>
+      <TouchableOpacity
+        style={styles.deleteBtn}
+        onPress={() => handleDelete(item.id)}
+      >
+        <Text style={styles.deleteText}>Eliminar</Text>
+      </TouchableOpacity>
+    </View>
+  )
+}
+
   const renderDoctor = ({ item }) => {
     const prefix = item.sexo === 'F' ? 'Dra.' : 'Dr.'
     const fullName = `${prefix} ${item.nombres} ${item.apellidoP}`
     return (
       <View style={styles.card}>
-        <Image source={placeholderAvatar} style={styles.avatar} />
+        <Image
+          source={item.fotoURL ? { uri: item.fotoURL } : placeholderAvatar}
+          style={styles.avatar}
+        />
         <View style={styles.info}>
           <Text style={styles.name}>{fullName}</Text>
           <TouchableOpacity>
@@ -116,7 +147,7 @@ export default function MultiListScreen({ navigation, route }) {
         <FlatList
           data={items}
           keyExtractor={item => item.id}
-          renderItem={type === 1 ? renderDoctor : null}
+          renderItem={type === 1 ? renderDoctor : type === 2 ? renderPaciente : null}
           contentContainerStyle={{ paddingBottom: 40 }}
         />
       )}

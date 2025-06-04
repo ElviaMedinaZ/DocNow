@@ -10,14 +10,18 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import PantallaAdminPrincipal from './componentes/Admin/PantallaAdminPrincipal';
 import PantallaAdminRegistro from './componentes/Admin/PantallaAdminRegistro';
 import PantallaMultiLista from './componentes/Admin/PantallaMultiLista';
+import PantallaReportes from './componentes/Admin/PantallaReportes';
+import PantallaRespaldos from './componentes/Admin/PantallaRespaldos';
 
 //Doctor
-
+import PantallaHomeDoctor from './componentes/Doctores/PantallaHomeDoctor';
+import PantallaNotaConsulta from './componentes/Doctores/PantallaNotaConsulta';
 import PantallaRegistroDoctor from './componentes/Doctores/PantallaRegistroDoctores';
 
 //usuarios
+import PantallaPerfilUsiario from './componentes/Usuario/PantallaPerfilUsuario';
 import PantallaInicioSesion from './componentes/PantallaInicioSesion';
-import PantallaPrincipal from './componentes/PantallaPrincipal';
+import PantallaHomeUsuario from './componentes/Usuario/PantallaHomeUsuario'
 import PantallaRegistro from './componentes/PantallaRegistro';
 import PantallaOlvideContrasena from './componentes/PantallaOlvideContrasena';
 import PantallaVerificarCodigo from './componentes/PantallaVerificarCodigo';
@@ -37,7 +41,7 @@ export default function App() {
         />
 
         <Stack.Screen 
-          name='Multilist'
+          name='MultiList'
           component={PantallaMultiLista}
           options={{headerShown: false}}
         />
@@ -58,9 +62,32 @@ export default function App() {
         />
 
         
+        <Stack.Screen 
+          name='MenuRespaldos'
+          component={PantallaRespaldos}
+          options={{headerShown: false}}
+        />
 
+        
+        <Stack.Screen 
+          name='MenuReportes'
+          component={PantallaReportes}
+          options={{headerShown: false}}
+        />
 
         {/*Doctor*/}
+
+        <Stack.Screen
+          name="pantallaHomeDoctor"
+          component={PantallaHomeDoctor}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="NotaConsulta"
+          component={PantallaNotaConsulta}
+          options={{ headerShown: false }}
+        />
 
         <Stack.Screen
           name='RegistroDoctor'
@@ -72,10 +99,17 @@ export default function App() {
 
         {/*Usuario*/}
         <Stack.Screen
-          name="MenuPrincipal"
-          component={PantallaPrincipal}
-          options={{ title: 'Menú Principal' }}
+          name="MenuPaciente"
+          component={PantallaHomeUsuario}
+          options={{headerShown: false}}
         />
+
+        <Stack.Screen 
+          name='PantallaPerfilUsuario'
+          component={PantallaPerfilUsiario}
+          options={{headerShown: false}}
+        />
+
         <Stack.Screen
           name="Registro"
           component={PantallaRegistro}

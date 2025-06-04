@@ -42,21 +42,7 @@ export default function HomeScreem ({ navigation, route }) {
       key: 'respaldo',
       label: 'Respaldo',
       image: require('../../assets/Iconos_Admin/respaldo.png'),
-      screen: 'MenuRespaldo'
-    },
-    {
-      key: 'servicios',
-      label: 'Servicios',
-      image: require('../../assets/Iconos_Admin/servicio.png'),
-      screen: 'MultiList',   // apuntas a MultiListScreen
-      type: 4
-    },
-    {
-      key: 'especialidades',
-      label: 'Especialidades',
-      image: require('../../assets/Iconos_Admin/especialidades.png'),
-      sscreen: 'MultiList',  
-      type: 3
+      screen: 'MenuRespaldos'
     }
   ]
 
@@ -74,8 +60,6 @@ export default function HomeScreem ({ navigation, route }) {
               if (b.type) {
                 navigation.navigate(b.screen, {
                   type: b.type,
-                  userId,
-                  nombreUsuario
                 })
               } else {
                 // rutas individuales

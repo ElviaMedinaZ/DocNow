@@ -45,13 +45,12 @@ const manejarInicioSesion = async () => {
     const nombreUsuario = userData.nombres;
     // Puede venir como string, lo convertimos a número:
     let rol = userData.rol;
-    if (typeof rol === 'string') rol = parseInt(rol, 10);
 
     console.log(`Inicio de sesión: ${nombreUsuario} (ID: ${userId}), rol=${rol}`);
 
     // 4) Redirigir según rol
     switch (rol) {
-      case 1: // Admin
+      case 'Admin': // Admin
         navigation.replace('MenuAdmin', {
           userId,
           nombreUsuario,
@@ -59,16 +58,16 @@ const manejarInicioSesion = async () => {
         });
         break;
 
-      case 2: // Doctor
-        navigation.replace('MenuPrincipal', {
+      case 'Doctor': // Doctor
+        navigation.replace('pantallaHomeDoctor', {
           userId,
           nombreUsuario,
           emailUsuario: correo.trim()
         });
         break;
 
-      case 3: // Principal
-        navigation.replace('MenuPrincipal', {
+      case 'Paciente': // Principal
+        navigation.replace('MenuPaciente', {
           userId,
           nombreUsuario,
           emailUsuario: correo.trim()

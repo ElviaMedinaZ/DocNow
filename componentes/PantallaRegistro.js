@@ -1,5 +1,5 @@
 // componentes/PantallaRegistro.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ScrollView,
   View,
@@ -15,7 +15,8 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { collection, query, where, getDocs, doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../utileria/firebase";
-import { Ionicons } from '@expo/vector-icons';  
+import { Ionicons } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
 
 export default function PantallaRegistro({ navigation }) {
   const [nombres, setNombres] = useState("");
@@ -30,40 +31,84 @@ export default function PantallaRegistro({ navigation }) {
   const [telefono, setTelefono] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
+  const [imagenUri, setImagenUri] = useState(null);
 
-  const abrirDatePicker = () => setShowDate(true);
+  useEffect(() => {
+    (async () => {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permiso requerido', 'Necesitas permitir acceso a la galería.');
+      }
+    })();
+  }, []);
+
+  const seleccionarImagen = async () => {
+    const resultado = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.5,
+      base64: true
+    });
+
+    if (!resultado.canceled) {
+      setImagenUri(resultado.assets[0].uri);
+    }
+  };
+
+  const subirAImgbb = async (base64) => {
+    const apiKey = '6bf581fff38d47c8c68359dc9945a4a9';
+    const body = new FormData();
+    body.append('key', apiKey);
+    body.append('image', base64);
+
+    try {
+      const res = await fetch('https://api.imgbb.com/1/upload', {
+        method: 'POST',
+        body
+      });
+      const data = await res.json();
+      if (data.success) return data.data.url;
+      return null;
+    } catch (e) {
+      console.error('Error subiendo imagen:', e);
+      return null;
+    }
+  };
+
+    const abrirDatePicker = () => setShowDate(true);
+
   const onChangeFecha = (e, selected) => {
     setShowDate(false);
     if (selected) setFecha(selected);
   };
 
+
   const manejarRegistro = async () => {
     const emailLimpio = email.trim();
     const reEmail = /^\S+@\S+\.\S+$/;
-    if (!reEmail.test(emailLimpio)) {
-      console.error("Error: Ingresa un correo electrónico válido");
-      return;
-    }
-    if (password !== confirm) {
-      console.error("Error: Las contraseñas no coinciden");
-      return;
-    }
+    if (!reEmail.test(emailLimpio)) return console.error("Correo inválido");
+    if (password !== confirm) return console.error("Contraseñas no coinciden");
 
     try {
-      // Verificar si el usuario ya existe
-      const usuariosRef   = collection(db, 'usuarios');
-      const q             = query(usuariosRef, where('email', '==', emailLimpio));
+      const usuariosRef = collection(db, 'usuarios');
+      const q = query(usuariosRef, where('email', '==', emailLimpio));
       const querySnapshot = await getDocs(q);
-      if (!querySnapshot.empty) {
-        console.error("Error: Este correo ya está registrado en Firestore");
-        return;
+      if (!querySnapshot.empty) return console.error("Correo ya registrado");
+
+      const cred = await createUserWithEmailAndPassword(auth, emailLimpio, password);
+      const uid = cred.user.uid;
+
+      let fotoURL = null;
+      if (imagenUri) {
+        const blob = await (await fetch(imagenUri)).blob();
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        await new Promise((resolve) => (reader.onloadend = resolve));
+        const base64Data = reader.result.split(',')[1];
+        fotoURL = await subirAImgbb(base64Data);
       }
 
-      // Crear usuario en Auth
-      const cred = await createUserWithEmailAndPassword(auth, emailLimpio, password);
-      const uid  = cred.user.uid;
-
-      // Guardar datos en Firestore, ahora con rol = 3
       await setDoc(doc(db, "usuarios", uid), {
         nombres,
         apellidoP,
@@ -76,82 +121,44 @@ export default function PantallaRegistro({ navigation }) {
         email: emailLimpio,
         telefono,
         creado: new Date().toISOString(),
-        rol: '3'    // <-- se añade el rol por defecto
+        rol: 'Paciente',
+        fotoURL: fotoURL || null
       });
 
-      console.log("¡Registro completo! Bienvenido/a " + nombres);
+      console.log("¡Registro completo!");
       navigation.replace("MenuPrincipal", { emailUsuario: emailLimpio });
     } catch (err) {
       console.error("REGISTRO ERROR →", err.code, err.message);
-      switch (err.code) {
-        case "auth/email-already-in-use":
-          console.error("Error: Este correo ya está registrado en Auth");
-          break;
-        case "auth/weak-password":
-          console.error("Error: La contraseña debe tener al menos 6 caracteres");
-          break;
-        case "auth/invalid-email":
-          console.error("Error: El formato del correo es inválido");
-          break;
-        case "auth/network-request-failed":
-          console.error("Error: Verifica tu conexión a internet");
-          break;
-        default:
-          console.error("Error desconocido al registrar:", err.message);
-      }
     }
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <TouchableOpacity
-        style={styles.botonVolver}
-        onPress={() => navigation.goBack()}
-      >
+      <TouchableOpacity style={styles.botonVolver} onPress={() => navigation.goBack()}>
         <Ionicons name="arrow-back" size={24} color="#0A3B74" />
       </TouchableOpacity>
 
-      <Image
-        source={require('../assets/logo.png')}
-        style={styles.logo}
-        resizeMode="contain"
-      />
+      <TouchableOpacity onPress={seleccionarImagen} style={{ alignSelf: 'center', marginBottom: 20 }}>
+        <Image
+          source={imagenUri ? { uri: imagenUri } : require('../assets/avatar_placeholder.png')}
+          style={{ width: 100, height: 100, borderRadius: 50 }}
+        />
+        <Text style={{ textAlign: 'center', marginTop: 8, color: '#0A3B74' }}>
+          {imagenUri ? 'Cambiar foto' : 'Agregar foto'}
+        </Text>
+      </TouchableOpacity>
 
+      <Image source={require('../assets/logo.png')} style={styles.logo} resizeMode="contain" />
       <Text style={styles.titulo}>Registro</Text>
 
-      {/* campos de formulario */}
-      <TextInput
-        style={styles.input}
-        placeholder="Nombre(s)"
-        value={nombres}
-        onChangeText={setNombres}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Apellido paterno"
-        value={apellidoP}
-        onChangeText={setApellidoP}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Apellido materno"
-        value={apellidoM}
-        onChangeText={setApellidoM}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="CURP"
-        value={curp}
-        onChangeText={setCurp}
-      />
+      <TextInput style={styles.input} placeholder="Nombre(s)" value={nombres} onChangeText={setNombres} />
+      <TextInput style={styles.input} placeholder="Apellido paterno" value={apellidoP} onChangeText={setApellidoP} />
+      <TextInput style={styles.input} placeholder="Apellido materno" value={apellidoM} onChangeText={setApellidoM} />
+      <TextInput style={styles.input} placeholder="CURP" value={curp} onChangeText={setCurp} />
 
       <View style={styles.pickerRow}>
         <Text style={styles.label}>Sexo:</Text>
-        <Picker
-          selectedValue={sexo}
-          onValueChange={setSexo}
-          style={styles.picker}
-        >
+        <Picker selectedValue={sexo} onValueChange={setSexo} style={styles.picker}>
           <Picker.Item label="Masculino" value="M" />
           <Picker.Item label="Femenino" value="F" />
         </Picker>
@@ -159,30 +166,16 @@ export default function PantallaRegistro({ navigation }) {
 
       <TouchableOpacity onPress={abrirDatePicker} style={styles.input}>
         <Text>
-          Fecha de nacimiento:{" "}
-          {fecha.toLocaleDateString("es-MX", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-          })}
+          Fecha de nacimiento: {fecha.toLocaleDateString("es-MX", { day: "2-digit", month: "2-digit", year: "numeric" })}
         </Text>
       </TouchableOpacity>
       {showDate && (
-        <DateTimePicker
-          value={fecha}
-          mode="date"
-          display="spinner"
-          onChange={onChangeFecha}
-        />
+        <DateTimePicker value={fecha} mode="date" display="spinner" onChange={onChangeFecha} />
       )}
 
       <View style={styles.pickerRow}>
         <Text style={styles.label}>Estado Civil:</Text>
-        <Picker
-          selectedValue={estadoCivil}
-          onValueChange={setEstadoCivil}
-          style={styles.picker}
-        >
+        <Picker selectedValue={estadoCivil} onValueChange={setEstadoCivil} style={styles.picker}>
           <Picker.Item label="Soltero/a" value="Soltero" />
           <Picker.Item label="Casado/a" value="Casado" />
           <Picker.Item label="Divorciado/a" value="Divorciado" />
@@ -190,36 +183,10 @@ export default function PantallaRegistro({ navigation }) {
         </Picker>
       </View>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Correo electrónico"
-        keyboardType="email-address"
-        autoCapitalize="none"
-        value={email}
-        onChangeText={setEmail}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Número telefónico"
-        keyboardType="phone-pad"
-        value={telefono}
-        onChangeText={setTelefono}
-      />
-
-      <TextInput
-        style={styles.input}
-        placeholder="Contraseña"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Confirmar contraseña"
-        secureTextEntry
-        value={confirm}
-        onChangeText={setConfirm}
-      />
+      <TextInput style={styles.input} placeholder="Correo electrónico" keyboardType="email-address" autoCapitalize="none" value={email} onChangeText={setEmail} />
+      <TextInput style={styles.input} placeholder="Número telefónico" keyboardType="phone-pad" value={telefono} onChangeText={setTelefono} />
+      <TextInput style={styles.input} placeholder="Contraseña" secureTextEntry value={password} onChangeText={setPassword} />
+      <TextInput style={styles.input} placeholder="Confirmar contraseña" secureTextEntry value={confirm} onChangeText={setConfirm} />
 
       <TouchableOpacity style={styles.boton} onPress={manejarRegistro}>
         <Text style={styles.textoBoton}>Siguiente</Text>
