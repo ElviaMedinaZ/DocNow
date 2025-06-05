@@ -23,7 +23,7 @@ export default function PantallaRegistro({ navigation }) {
   const [apellidoP, setApellidoP] = useState("");
   const [apellidoM, setApellidoM] = useState("");
   const [curp, setCurp] = useState("");
-  const [sexo, setSexo] = useState("M");
+  const [sexo, setSexo] = useState("");
   const [fecha, setFecha] = useState(new Date(2000, 0, 1));
   const [showDate, setShowDate] = useState(false);
   const [estadoCivil, setEstadoCivil] = useState("Soltero");
@@ -32,6 +32,8 @@ export default function PantallaRegistro({ navigation }) {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [imagenUri, setImagenUri] = useState(null);
+  const [errores, setErrores] = useState({});
+
 
   useEffect(() => {
     (async () => {
@@ -76,7 +78,7 @@ export default function PantallaRegistro({ navigation }) {
     }
   };
 
-    const abrirDatePicker = () => setShowDate(true);
+  const abrirDatePicker = () => setShowDate(true);
 
   const onChangeFecha = (e, selected) => {
     setShowDate(false);
@@ -87,8 +89,65 @@ export default function PantallaRegistro({ navigation }) {
   const manejarRegistro = async () => {
     const emailLimpio = email.trim();
     const reEmail = /^\S+@\S+\.\S+$/;
-    if (!reEmail.test(emailLimpio)) return console.error("Correo inválido");
-    if (password !== confirm) return console.error("Contraseñas no coinciden");
+    const curpRegex = /^[A-Z][AEIOUX][A-Z]{2}\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[HM](AS|BC|BS|CC|CL|CM|CS|CH|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]\d$/;
+
+
+    const nuevosErrores = {};
+    if (!nombres.trim()) nuevosErrores.nombres = true;
+    if (!apellidoP.trim()) nuevosErrores.apellidoP = true;
+    if (!curp.trim()) nuevosErrores.curp = true;
+    if (!email.trim()) nuevosErrores.email = true;
+    if (!sexo) nuevosErrores.sexo = true;
+    if (!telefono.trim()) nuevosErrores.telefono = true;
+    if (!password.trim()) nuevosErrores.password = true;
+    if (!confirm.trim()) nuevosErrores.confirm = true;
+
+    if (Object.keys(nuevosErrores).length > 0) {
+      
+      if (Object.keys(nuevosErrores).length > 8){
+        setErrores(nuevosErrores);
+        return Alert.alert('Campos incompletos', 'Por favor llena todos los campos obligatorios.');
+      }
+      if (!apellidoP.trim()){
+        nuevosErrores.apellidoP = true;
+        setErrores(nuevosErrores);
+        return Alert.alert('El campo apellido no puede quedar vacio.');
+      }
+      if (!nombres.trim()){
+        nuevosErrores.nombres = true;
+        setErrores(nuevosErrores);
+        return Alert.alert('El campo nombre no puede quedar vacio.');
+      }
+      if (!curpRegex.test(curp.trim().toUpperCase())) {
+        nuevosErrores.curp = true;
+        Alert.alert("CURP inválido", "El CURP ingresado no tiene un formato válido.");
+        setErrores(nuevosErrores);
+        return;
+      }
+      if (!/^\d{10}$/.test(telefono.trim())) {
+        nuevosErrores.telefono = true;
+        Alert.alert("Teléfono inválido", "El número debe tener exactamente 10 dígitos.");
+        setErrores(nuevosErrores);
+        return;
+      }
+      if (!reEmail.test(emailLimpio)) {  
+        nuevosErrores.email = true;
+        setErrores(nuevosErrores);
+        return Alert.alert("Correo inválido");
+      };
+      if (password.trim().length < 6) {
+        nuevosErrores.password = true;
+        Alert.alert("Contraseña débil", "La contraseña debe tener al menos 6 caracteres.");
+        setErrores(nuevosErrores);
+        return;
+      }
+      if (password !== confirm) return Alert.alert("Contraseñas no coinciden");
+
+    
+    }
+    setErrores({});
+
+    
 
     try {
       const usuariosRef = collection(db, 'usuarios');
@@ -126,7 +185,7 @@ export default function PantallaRegistro({ navigation }) {
       });
 
       console.log("¡Registro completo!");
-      navigation.replace("MenuPrincipal", { emailUsuario: emailLimpio });
+      navigation.navigate("PantallaExitoso", { emailUsuario: emailLimpio });
     } catch (err) {
       console.error("REGISTRO ERROR →", err.code, err.message);
     }
@@ -134,10 +193,19 @@ export default function PantallaRegistro({ navigation }) {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <TouchableOpacity style={styles.botonVolver} onPress={() => navigation.goBack()}>
-        <Ionicons name="arrow-back" size={24} color="#0A3B74" />
-      </TouchableOpacity>
+      <View style={styles.encabezado}>
+        <TouchableOpacity style={styles.botonVolver} onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={28} color="#0A3B74" />
+        </TouchableOpacity>
 
+        <Image source={require('../assets/logo.png')} style={styles.logoEncabezado} resizeMode="contain" />
+      </View>
+
+      <Text style={styles.titulo}>Registro</Text>
+
+      <Text style={styles.subtitulo}>Llena los siguientes campos tal y como aparece en tus documentos oficiales.</Text>
+
+      
       <TouchableOpacity onPress={seleccionarImagen} style={{ alignSelf: 'center', marginBottom: 20 }}>
         <Image
           source={imagenUri ? { uri: imagenUri } : require('../assets/avatar_placeholder.png')}
@@ -147,61 +215,102 @@ export default function PantallaRegistro({ navigation }) {
           {imagenUri ? 'Cambiar foto' : 'Agregar foto'}
         </Text>
       </TouchableOpacity>
+      
+      <Text style={styles.label}>Nombre(s)</Text>
 
-      <Image source={require('../assets/logo.png')} style={styles.logo} resizeMode="contain" />
-      <Text style={styles.titulo}>Registro</Text>
+      
+      <TextInput   style={[styles.input, errores.nombres && styles.inputError]}  value={nombres} onChangeText={setNombres} />
 
-      <TextInput style={styles.input} placeholder="Nombre(s)" value={nombres} onChangeText={setNombres} />
-      <TextInput style={styles.input} placeholder="Apellido paterno" value={apellidoP} onChangeText={setApellidoP} />
-      <TextInput style={styles.input} placeholder="Apellido materno" value={apellidoM} onChangeText={setApellidoM} />
-      <TextInput style={styles.input} placeholder="CURP" value={curp} onChangeText={setCurp} />
+      <Text style={styles.label}>Apellido paterno</Text>
+      <TextInput   style={[styles.input, errores.apellidoP && styles.inputError]}  value={apellidoP} onChangeText={setApellidoP} />
+
+      <Text style={styles.label}>Apellido materno</Text>
+      <TextInput   style={[styles.input, errores.apellidoM && styles.inputError]} value={apellidoM} onChangeText={setApellidoM} />
+
+      <Text style={styles.label}>CURP</Text>
+      <TextInput   style={[styles.input, errores.curp && styles.inputError]} value={curp} onChangeText={setCurp} />
+
+
 
       {/* Botones de sexo masculino y femenino
       Programadora: Irais Reyes
       Fecha: 03 de junio del 2025 */}
       <Text style={styles.label}>Sexo:</Text>
       <View style={styles.pickerRow}>
-        <TouchableOpacity
-          style={[styles.botonSexo, sexo === "M" && styles.botonSexoSeleccionado]}
+      <TouchableOpacity
+          style={[
+            styles.botonSexo,
+            sexo === "M" && styles.botonSexoSeleccionado,
+            errores.sexo && !sexo && styles.botonSexoError
+          ]}
           onPress={() => setSexo("M")}
         >
-          <Image source={require('../assets/Iconos_Registro/iconoMasculino.png')} style={styles.iconoSexo} value='M' />
+          <Image source={require('../assets/Iconos_Registro/iconoMasculino.png')} style={styles.iconoSexo} />
           <Text style={styles.textoSexo}>Masculino</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.botonSexo, sexo === "F" && styles.botonSexoSeleccionado]}
+          style={[
+            styles.botonSexo,
+            sexo === "F" && styles.botonSexoSeleccionado,
+            errores.sexo && !sexo && styles.botonSexoError
+          ]}
           onPress={() => setSexo("F")}
         >
-          <Image source={require('../assets/Iconos_Registro/iconoFemenino.png')} style={styles.iconoSexo} value='F' />
+          <Image source={require('../assets/Iconos_Registro/iconoFemenino.png')} style={styles.iconoSexo} />
           <Text style={styles.textoSexo}>Femenino</Text>
         </TouchableOpacity>
-      </View>
 
-      <TouchableOpacity onPress={abrirDatePicker} style={styles.input}>
-        <Text>
-          Fecha de nacimiento: {fecha.toLocaleDateString("es-MX", { day: "2-digit", month: "2-digit", year: "numeric" })}
-        </Text>
+    </View>
+
+    <Text style={styles.label}>Fecha de nacimiento</Text>
+      <TouchableOpacity onPress={abrirDatePicker}  style={[styles.input, errores.nombres && styles.inputError]}>
+        <Text>{fecha.toLocaleDateString("es-MX", { day: "2-digit", month: "2-digit", year: "numeric" })}</Text>
       </TouchableOpacity>
-      {showDate && (
-        <DateTimePicker value={fecha} mode="date" display="spinner" onChange={onChangeFecha} />
-      )}
+        {showDate && (<DateTimePicker value={fecha} mode="date" display="spinner" onChange={onChangeFecha} />)}
 
-      <View style={styles.pickerRow}>
-        <Text style={styles.label}>Estado Civil:</Text>
-        <Picker selectedValue={estadoCivil} onValueChange={setEstadoCivil} style={styles.picker}>
-          <Picker.Item label="Soltero/a" value="Soltero" />
-          <Picker.Item label="Casado/a" value="Casado" />
-          <Picker.Item label="Divorciado/a" value="Divorciado" />
-          <Picker.Item label="Viudo/a" value="Viudo" />
-        </Picker>
-      </View>
+        <Text style={styles.label}>Estado Civil</Text>
+        <View style={styles.pickerRow}>
+            <Picker selectedValue={estadoCivil} onValueChange={setEstadoCivil} style={styles.picker}>
+              <Picker.Item label="Soltero/a" value="Soltero" />
+              <Picker.Item label="Casado/a" value="Casado" />
+              <Picker.Item label="Divorciado/a" value="Divorciado" />
+              <Picker.Item label="Viudo/a" value="Viudo" />
+            </Picker>
+        </View>
 
-      <TextInput style={styles.input} placeholder="Correo electrónico" keyboardType="email-address" autoCapitalize="none" value={email} onChangeText={setEmail} />
-      <TextInput style={styles.input} placeholder="Número telefónico" keyboardType="phone-pad" value={telefono} onChangeText={setTelefono} />
-      <TextInput style={styles.input} placeholder="Contraseña" secureTextEntry value={password} onChangeText={setPassword} />
-      <TextInput style={styles.input} placeholder="Confirmar contraseña" secureTextEntry value={confirm} onChangeText={setConfirm} />
+        <Text style={styles.label}>Correo electrónico</Text>
+        <TextInput
+          style={[styles.input, errores.email && styles.inputError]}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          value={email}
+          onChangeText={setEmail}
+        />
 
+        <Text style={styles.label}>Número telefónico</Text>
+        <TextInput
+          style={[styles.input, errores.telefono && styles.inputError]}
+          keyboardType="phone-pad"
+          value={telefono}
+          onChangeText={setTelefono}
+        />
+
+        <Text style={styles.label}>Contraseña</Text>
+        <TextInput
+          style={[styles.input, errores.password && styles.inputError]}
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
+
+        <Text style={styles.label}>Confirmar contraseña</Text>
+        <TextInput
+          style={[styles.input, errores.confirm && styles.inputError]}
+          secureTextEntry
+          value={confirm}
+          onChangeText={setConfirm}
+        />
       <TouchableOpacity style={styles.boton} onPress={manejarRegistro}>
         <Text style={styles.textoBoton}>Siguiente</Text>
       </TouchableOpacity>
@@ -214,16 +323,52 @@ const styles = StyleSheet.create({
     padding: 24,
     backgroundColor: "#fff",
   },
+ encabezado: {
+  position: 'relative',
+  alignItems: 'center',
+  justifyContent: 'center',
+  height: 60,
+  marginBottom: 16,
+  
+  },
+  botonSexoSeleccionado: {
+    borderWidth: 2,
+    borderColor: '#0A3B74',
+    backgroundColor: '#E0ECF8',
+  },
+  botonVolver: {
+    position: 'absolute',
+    left: 0,
+    top: '50%',
+    transform: [{ translateY: -14 }], // centra verticalmente el ícono (28px de alto)
+    padding: 10,
+  },
+  botonSexoError: {
+    borderWidth: 2,
+    borderColor: 'red',
+  },
+
+  logoEncabezado: {
+    width: 70,
+    height: 30,
+  },
   logo: {
-    width: 100,
-    height: 60,
+    width: 70,
+    height: 30,
     alignSelf: 'center',
     marginTop: 32,
     marginBottom: 32
   },
   botonVolver: {
+    top: '70%',
     marginBottom: 16,
     alignSelf: 'flex-start'
+  },
+  subtitulo: {
+  fontSize: 14,
+  color: "#666",
+  textAlign: "center",
+  marginBottom: 20,
   },
   titulo: {
     fontSize: 24,
@@ -239,6 +384,11 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     marginBottom: 12,
   },
+  inputError: {
+    borderColor: 'red',
+    borderWidth: 1.5,
+  },
+
   pickerRow: {
     flexDirection: "row",
     alignItems: "center",
@@ -246,7 +396,7 @@ const styles = StyleSheet.create({
     gap: 15,
   },
   label: {
-    width: 120,
+    width: 200,
     fontSize: 16,
     color: "#333",
   },

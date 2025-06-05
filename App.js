@@ -6,7 +6,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // Importación de Componentes
 
 //Admin
-
 import PantallaAdminPrincipal from './componentes/Admin/PantallaAdminPrincipal';
 import PantallaAdminRegistro from './componentes/Admin/PantallaAdminRegistro';
 import PantallaMultiLista from './componentes/Admin/PantallaMultiLista';
@@ -28,12 +27,15 @@ import PantallaVerificarCodigo from './componentes/PantallaVerificarCodigo';
 import VerificacionCompletada from './componentes/VerificacionCompletada';
 import PantallaRestablecerContrasena from './componentes/PantallaRestablecerContrasena';
 
+//Multi
+import PantallaRegistroExitoso from './componentes/PantallaRegistroExistoso';
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="InicioSesion">
+      <Stack.Navigator initialRouteName="PantallaExitoso">
         <Stack.Screen
           name="InicioSesion"
           component={PantallaInicioSesion}
@@ -45,7 +47,12 @@ export default function App() {
           component={PantallaMultiLista}
           options={{headerShown: false}}
         />
-
+        
+        <Stack.Screen
+          name='PantallaExitoso'
+          component={PantallaRegistroExitoso}
+          options={{headerShown: false}}
+        />
 
         {/*Admin*/}
 
