@@ -21,7 +21,6 @@ export default function PantallaRegistroDoctor({ navigation }) {
   const [nombres, setNombres] = useState("");
   const [apellidoP, setApellidoP] = useState("");
   const [apellidoM, setApellidoM] = useState("");
-  const [curp, setCurp] = useState("");
   const [cedula, setCedula] = useState("");
   const [sexo, setSexo] = useState("");
   const [fecha, setFecha] = useState(new Date(1980, 0, 1));
@@ -92,7 +91,6 @@ export default function PantallaRegistroDoctor({ navigation }) {
     const nuevosErrores = {};
     if (!nombres.trim()) nuevosErrores.nombres = true;
     if (!apellidoP.trim()) nuevosErrores.apellidoP = true;
-    if (!curp.trim()) nuevosErrores.curp = true;
     if (!email.trim()) nuevosErrores.email = true;
     if (!sexo) nuevosErrores.sexo = true;
     if (!telefono.trim()) nuevosErrores.telefono = true;
@@ -105,10 +103,7 @@ export default function PantallaRegistroDoctor({ navigation }) {
       return Alert.alert('Campos incompletos', 'Por favor llena todos los campos obligatorios.');
     }
 
-    if (!curpRegex.test(curp.trim().toUpperCase())) {
-      Alert.alert("CURP inválido", "El CURP ingresado no tiene un formato válido.");
-      return;
-    }
+
 
     if (!/^\d{10}$/.test(telefono.trim())) {
       Alert.alert("Teléfono inválido", "El número debe tener exactamente 10 dígitos.");
@@ -162,6 +157,7 @@ export default function PantallaRegistroDoctor({ navigation }) {
         telefono,
         creado: new Date().toISOString(),
         rol: 'Doctor',
+        turno: 'Matutino',
         fotoURL: fotoURL || null
       });
 
@@ -252,7 +248,7 @@ export default function PantallaRegistroDoctor({ navigation }) {
       <Text style={styles.label}>Confirmar contraseña</Text>
       <TextInput style={[styles.input, errores.confirm && styles.inputError]} secureTextEntry value={confirm} onChangeText={setConfirm} />
 
-      <TouchableOpacity style={styles.boton}>
+      <TouchableOpacity style={styles.boton} onPress={manejarRegistro}>
         <Text style={styles.textoBoton}>Siguiente</Text>
       </TouchableOpacity>
     </ScrollView>

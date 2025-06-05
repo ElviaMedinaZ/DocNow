@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   View,
   Text,
@@ -10,6 +11,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 
 export default function PantallaCitasHome({ navigation }) {
+  const insets = useSafeAreaInsets(); // ← obtiene espacios seguros
   const [vistaActiva, setVistaActiva] = useState('citas'); // 'citas' o 'historial'
 
   const citas = [
@@ -54,9 +56,24 @@ export default function PantallaCitasHome({ navigation }) {
     <View style={styles.container}>
       {/* ENCABEZADO */}
       <View style={styles.encabezado}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="black" />
-        </TouchableOpacity>
+        <TouchableOpacity
+            onPress={() =>
+              Alert.alert(
+                'Cerrar sesión',
+                '¿Deseas cerrar sesión y salir?',
+                [
+                  { text: 'Cancelar', style: 'cancel' },
+                  {
+                    text: 'Cerrar sesión',
+                    style: 'destructive',
+                    onPress: () => navigation.navigate('PantallaInicio'), // Cambia si tu pantalla de login es diferente
+                  },
+                ]
+              )
+            }
+          >
+            <Ionicons name="arrow-back" size={24} color="black" />
+          </TouchableOpacity>
         <View style={styles.tabs}>
           <TouchableOpacity onPress={() => setVistaActiva('citas')}>
             <Text
@@ -96,11 +113,14 @@ export default function PantallaCitasHome({ navigation }) {
       )}
 
       {/* BARRA INFERIOR */}
-      <View style={styles.barraInferior}>
+      <View style={[styles.barraInferior,{ paddingBottom: insets.bottom || 10 }]}>
         <Ionicons name="people" size={24} color="gray" />
         <Ionicons name="calendar" size={24} color="#007AFF" />
         <Ionicons name="notifications" size={24} color="gray" />
-        <Ionicons name="person" size={24} color="gray" />
+        <TouchableOpacity onPress={() => navigation.navigate('PerfilDoctor')}>
+          <Ionicons name="person" size={24} color="gray" />
+        </TouchableOpacity>
+
       </View>
     </View>
   );

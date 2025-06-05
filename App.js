@@ -17,6 +17,7 @@ import PantallaHomeDoctor from './componentes/Doctores/PantallaHomeDoctor';
 import PantallaEditarDoctor from './componentes/Doctores/PantallaEditarDoctor';
 import PantallaNotaConsulta from './componentes/Doctores/PantallaNotaConsulta';
 import PantallaRegistroDoctor from './componentes/Doctores/PantallaRegistroDoctores';
+import PantallaPerfilDoctor from './componentes/Doctores/PantallaPerfilDoctor';
 
 //usuarios
 import PantallaPerfilUsiario from './componentes/Usuario/PantallaPerfilUsuario';
@@ -31,6 +32,7 @@ import PantallaEditarRegistro from './componentes/Usuario/PantallaEditarRegistro
 
 //Multi
 import PantallaRegistroExitoso from './componentes/PantallaRegistroExistoso';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -103,6 +105,13 @@ export default function App() {
           component={PantallaNotaConsulta}
           options={{ headerShown: false }}
         />
+
+        <Stack.Screen
+          name="PerfilDoctor"
+          component={PantallaPerfilDoctor}
+          options={{ headerShown: false }}
+        />
+
 
         <Stack.Screen
           name='RegistroDoctor'
