@@ -1,3 +1,7 @@
+{/* Creacion de la pantalla registro exitoso del usuario
+  Programador: Kristofer Hernandez
+  Fecha: 03 de junio del 2025 */}
+
 // componentes/PantallaRegistroExitoso.js
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';

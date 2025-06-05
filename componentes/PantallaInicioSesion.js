@@ -1,3 +1,7 @@
+{/* Pantalla para iniciar sesión
+  Programador: Kristofer Hernandez
+  Fecha: 03 de junio del 2025 */}
+
 import React, { useState } from 'react';
 import {
   SafeAreaView,

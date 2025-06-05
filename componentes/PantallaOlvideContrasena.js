@@ -1,3 +1,7 @@
+{/* Creacion de la pantalla olvidar contrasena
+  Programador: Kristofer Hernandez
+  Fecha: 03 de junio del 2025 */}
+
 import React, { useState } from 'react';
 import {
   SafeAreaView,

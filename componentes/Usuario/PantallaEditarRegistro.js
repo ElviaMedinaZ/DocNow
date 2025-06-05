@@ -1,3 +1,7 @@
+{/* Pantalla para editar el perfil de usuario
+  Programador: Kristofer Hernandez
+  Fecha: 03 de junio del 2025 */}
+
 // Pantalla para editar el perfil de usuario obteniendo datos de Firestore
 import React, { useState, useEffect } from "react";
 import {

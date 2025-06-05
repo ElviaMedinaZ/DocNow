@@ -1,3 +1,7 @@
+{/* Creacion de la pantalla registro del usuario
+  Programador: Kristofer Hernandez
+  Fecha: 03 de junio del 2025 */}
+
 // componentes/PantallaRegistro.js
 import React, { useState, useEffect } from "react";
 import {

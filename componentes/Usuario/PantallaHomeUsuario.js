@@ -1,3 +1,7 @@
+{/* Creacion de la pantalla Home del usuario
+  Programador: Kristofer Hernandez
+  Fecha: 03 de junio del 2025 */}
+
 import React, { useEffect, useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
@@ -135,6 +139,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 25,
+    marginTop: 35,
   },
   logo: {
     width: 40,

@@ -1,3 +1,7 @@
+{/* Creacion de la pantalla notificaciones
+  Programador: Kristofer Hernandez
+  Fecha: 05 de junio del 2025 */}
+
 // Pantalla para editar el perfil de usuario obteniendo datos de Firestore
 import React, { useState, useEffect } from "react";
 import {

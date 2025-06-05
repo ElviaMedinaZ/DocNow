@@ -1,3 +1,7 @@
+{/* Creacion de la pantalla Perfil del usuario
+  Programador: Kristofer Hernandez
+  Fecha: 03 de junio del 2025 */}
+
 import React, { useEffect, useState } from 'react';
 import {
   View,
@@ -78,13 +82,14 @@ export default function PantallaPerfil({ navigation }) {
         <Text style={styles.nombre}>{usuario.nombre}</Text>
 
 
-
+        <Text style={styles.label}>Correo electrónico</Text>
         <TextInput
             style={styles.input}
             value={usuario.email}
             editable={false}
         />
 
+        <Text style={styles.label}>Contraseña</Text>
         <TextInput
             style={styles.input}
             value="************"
@@ -92,6 +97,7 @@ export default function PantallaPerfil({ navigation }) {
             editable={false}
         />
 
+        <Text style={styles.label}>Número telefónico</Text>
         <TextInput
             style={styles.input}
             value={usuario.telefono}
@@ -106,10 +112,10 @@ export default function PantallaPerfil({ navigation }) {
             <TouchableOpacity onPress={() => navigation.navigate('MenuPaciente', {
                 nombreUsuario: usuario.nombre,
                 userId: auth.currentUser.uid,})} >
-                <Ionicons name="home" size={24} color="gray" />
+                <Ionicons name="home" size={24} color="#0A3B74" />
             </TouchableOpacity>
-            <Ionicons name="calendar" size={24} color="gray" />
-            <Ionicons name="heart" size={24} color="gray" />
+            <Ionicons name="calendar" size={24} color="#0A3B74" />
+            <Ionicons name="notifications" size={24} color="#0A3B74" />
             <Ionicons name="person" size={24} color="#007AFF" />
         </View>
     </View>
@@ -123,13 +129,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff',
   },
-    encabezado: {
+  encabezado: {
     width: '100%',           
     paddingHorizontal: 20,   
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 10,
+    marginTop: 35,
   },
     logo: {
     width: 40,
@@ -146,24 +153,36 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 20,
+    color: '#0A3B74'
+  },
+  label: {
+    width: 200,
+    fontSize: 16,
+    color: "#333",
+    marginRight:110,
+    padding: 5,
   },
   input: {
     width: '90%',
     backgroundColor: '#f2f2f2',
     padding: 12,
     borderRadius: 8,
-    marginBottom: 15,
+    marginBottom: 20,
   },
   botonCerrar: {
-    backgroundColor: '#007AFF',
-    paddingVertical: 12,
-    paddingHorizontal: 40,
-    borderRadius: 8,
-    marginTop: 20,
+    backgroundColor: '#0A3B74',
+    paddingVertical: 15,
+    paddingHorizontal: 18,
+    borderRadius: 18,
+    marginTop: 120,
+    width: 300,
+    height: 68,
   },
   textoBoton: {
     color: '#fff',
+    fontSize: 28,
     fontWeight: 'bold',
+    alignSelf: 'center',
   },
   barraInferior: {
     flexDirection: 'row',
@@ -172,5 +191,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 20,
     width: '100%',
+    marginBottom: 35,
   },
 });
