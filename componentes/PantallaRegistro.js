@@ -156,12 +156,26 @@ export default function PantallaRegistro({ navigation }) {
       <TextInput style={styles.input} placeholder="Apellido materno" value={apellidoM} onChangeText={setApellidoM} />
       <TextInput style={styles.input} placeholder="CURP" value={curp} onChangeText={setCurp} />
 
+      {/* Botones de sexo masculino y femenino
+      Programadora: Irais Reyes
+      Fecha: 03 de junio del 2025 */}
+      <Text style={styles.label}>Sexo:</Text>
       <View style={styles.pickerRow}>
-        <Text style={styles.label}>Sexo:</Text>
-        <Picker selectedValue={sexo} onValueChange={setSexo} style={styles.picker}>
-          <Picker.Item label="Masculino" value="M" />
-          <Picker.Item label="Femenino" value="F" />
-        </Picker>
+        <TouchableOpacity
+          style={[styles.botonSexo, sexo === "M" && styles.botonSexoSeleccionado]}
+          onPress={() => setSexo("M")}
+        >
+          <Image source={require('../assets/Iconos_Registro/iconoMasculino.png')} style={styles.iconoSexo} value='M' />
+          <Text style={styles.textoSexo}>Masculino</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.botonSexo, sexo === "F" && styles.botonSexoSeleccionado]}
+          onPress={() => setSexo("F")}
+        >
+          <Image source={require('../assets/Iconos_Registro/iconoFemenino.png')} style={styles.iconoSexo} value='F' />
+          <Text style={styles.textoSexo}>Femenino</Text>
+        </TouchableOpacity>
       </View>
 
       <TouchableOpacity onPress={abrirDatePicker} style={styles.input}>
@@ -229,6 +243,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 12,
+    gap: 15,
   },
   label: {
     width: 120,
@@ -252,5 +267,26 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontWeight: "600",
+  },
+  botonSexo:{
+    backgroundColor: "#F1F1F1",
+    paddingVertical: 15,
+    paddingHorizontal: 16,
+    borderRadius: 18,
+    marginHorizontal: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  textoSexo: {
+    color: "#0A3B74",
+    fontSize: 16,
+    fontWeight: "800",
+    paddingHorizontal: 5,
+  },
+  iconoSexo: {
+    width: 40,
+    height: 40,
+    marginRight: 6,
+    resizeMode: "contain",
   },
 });
