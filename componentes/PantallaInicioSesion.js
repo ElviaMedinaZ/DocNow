@@ -109,6 +109,7 @@ const manejarInicioSesion = async () => {
       <Image source={require('../assets/logo.png')} style={styles.logo} resizeMode="contain" />
       <Text style={styles.titulo}>Iniciar sesión</Text>
 
+      <Text style={styles.label}>Correo electrónico</Text>
       <TextInput
         style={styles.input}
         placeholder="Correo electrónico"
@@ -119,6 +120,7 @@ const manejarInicioSesion = async () => {
         onChangeText={setCorreo}
       />
 
+      <Text style={styles.label}>Contraseña</Text>
       <View style={styles.inputPasswordContainer}>
         <TextInput
           style={[styles.input, { flex: 1, marginBottom: 0 }]}
@@ -129,7 +131,7 @@ const manejarInicioSesion = async () => {
           onChangeText={setContrasena}
         />
         <TouchableOpacity onPress={() => setMostrarContra(!mostrarContra)} style={styles.iconoOjo}>
-          <Ionicons name={mostrarContra ? 'eye' : 'eye-off'} size={20} color="#646464" />
+          <Ionicons name={mostrarContra ? 'eye' : 'eye-off'} size={20} color="#0A3B74" />
         </TouchableOpacity>
       </View>
 
@@ -158,6 +160,9 @@ const manejarInicioSesion = async () => {
   );
 }
 
+{/* Corregir el diseño del boton y los textos
+  Programadora: Irais Reyes
+  Fecha: 05 de junio del 2025 */}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -182,7 +187,7 @@ const styles = StyleSheet.create({
     marginBottom: 24
   },
   input: {
-    width: '80%',
+    width: '90%',
     alignSelf: 'center',
     backgroundColor: '#F5F5F5',
     borderRadius: 8,
@@ -193,7 +198,7 @@ const styles = StyleSheet.create({
     marginBottom: 16
   },
   inputPasswordContainer: {
-    width: '80%',
+    width: '90%',
     textAlign: 'center',
     flexDirection: 'row',
     alignSelf: 'center',
@@ -204,7 +209,7 @@ const styles = StyleSheet.create({
     top: '50%',
     transform: [{translateY: -10}],
     position: 'absolute',
-    right: 16
+    right: 16,
   },
   linkOlvidaste: {
     alignSelf: 'flex-end',
@@ -216,35 +221,41 @@ const styles = StyleSheet.create({
     fontSize: 14
   },
   boton: {
-    marginTop : 170,
-    backgroundColor: '#0A3B74',
-    borderRadius: 25,
-    marginBottom: 32,
-    paddingTop :20,
-    paddingBottom :20,
-  // centrar + ancho al 80% del contenedor
     textAlign: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
     width: '40%',
-
+    backgroundColor: '#0A3B74',
+    paddingVertical: 15,
+    paddingHorizontal: 18,
+    borderRadius: 18,
+    marginTop: '60%',
+    width: 300,
+    height: 68,
   },
   textoBoton: {
     textAlign: 'center', 
     color: '#fff',
-    fontSize: 16,
+    fontSize: 28,
     fontWeight: '600'
+  },
+  label: {
+    width: '90%',
+    fontSize: 16,
+    color: "#333",
+    padding: 15,
   },
   footer: {
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop:20,
   },
   textoFooter: {
     fontSize: 14,
     color: '#646464'
   },
   linkRegistro: {
-    color: '#488FC0',
+    color: '#0A3B74',
     fontWeight: '600'
   }
 });
