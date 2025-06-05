@@ -1,4 +1,3 @@
-// Pantalla para editar el perfil de usuario obteniendo datos de Firestore
 import React, { useState, useEffect } from "react";
 import {
   ScrollView,
@@ -15,25 +14,25 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import { db } from "../utileria/firebase";
+import { db } from "../../utileria/firebase";
 
-export default function PantallaEditarRegistro({ navigation, route }) {
-  const { uid } = route.params; // UID del usuario a editar
+export default function PantallaEditarDoctor({ navigation, route }) {
+  const { id } = route.params;
   const [nombres, setNombres] = useState("");
   const [apellidoP, setApellidoP] = useState("");
   const [apellidoM, setApellidoM] = useState("");
   const [curp, setCurp] = useState("");
+  const [cedula, setCedula] = useState("");
   const [sexo, setSexo] = useState("");
   const [fecha, setFecha] = useState(new Date());
   const [showDate, setShowDate] = useState(false);
   const [estadoCivil, setEstadoCivil] = useState("Soltero");
   const [telefono, setTelefono] = useState("");
   const [imagenUri, setImagenUri] = useState(null);
-  const [errores, setErrores] = useState({});
 
   useEffect(() => {
     const cargarDatos = async () => {
-      const ref = doc(db, "usuarios", uid);
+      const ref = doc(db, "usuarios", id);
       const snap = await getDoc(ref);
       if (snap.exists()) {
         const data = snap.data();
@@ -41,6 +40,7 @@ export default function PantallaEditarRegistro({ navigation, route }) {
         setApellidoP(data.apellidoP || "");
         setApellidoM(data.apellidoM || "");
         setCurp(data.curp || "");
+        setCedula(data.cedula || "");
         setSexo(data.sexo || "");
         setFecha(data.fechaNacimiento ? new Date(data.fechaNacimiento) : new Date());
         setEstadoCivil(data.estadoCivil || "Soltero");
@@ -73,18 +73,19 @@ export default function PantallaEditarRegistro({ navigation, route }) {
 
   const guardarCambios = async () => {
     try {
-      const ref = doc(db, "usuarios", uid);
+      const ref = doc(db, "usuarios", id);
       await updateDoc(ref, {
         nombres,
         apellidoP,
         apellidoM,
         curp,
+        cedula,
         sexo,
         fechaNacimiento: fecha.toISOString().split("T")[0],
         estadoCivil,
         telefono,
       });
-      Alert.alert("Actualizado", "Tu perfil ha sido actualizado correctamente.");
+      Alert.alert("Actualizado", "Información del doctor actualizada correctamente.");
     } catch (error) {
       console.error("Error al actualizar: ", error);
       Alert.alert("Error", "No se pudo actualizar la información.");
@@ -97,12 +98,12 @@ export default function PantallaEditarRegistro({ navigation, route }) {
         <TouchableOpacity style={styles.botonVolver} onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={28} color="#0A3B74" />
         </TouchableOpacity>
-        <Image source={require('../assets/logo.png')} style={styles.logoEncabezado} resizeMode="contain" />
+        <Image source={require('../../assets/logo.png')} style={styles.logoEncabezado} resizeMode="contain" />
       </View>
 
       <TouchableOpacity onPress={seleccionarImagen} style={{ alignSelf: 'center', marginBottom: 20 }}>
         <Image
-          source={imagenUri ? { uri: imagenUri } : require('../assets/avatar_placeholder.png')}
+          source={imagenUri ? { uri: imagenUri } : require('../../assets/avatar_placeholder.png')}
           style={{ width: 100, height: 100, borderRadius: 50 }}
         />
         <Text style={{ textAlign: 'center', marginTop: 8, color: '#0A3B74' }}>
@@ -119,16 +120,16 @@ export default function PantallaEditarRegistro({ navigation, route }) {
       <Text style={styles.label}>Apellido materno</Text>
       <TextInput style={styles.input} value={apellidoM} onChangeText={setApellidoM} />
 
-      <Text style={styles.label}>CURP</Text>
-      <TextInput style={styles.input} value={curp} onChangeText={setCurp} />
+      <Text style={styles.label}>Cédula Profesional</Text>
+      <TextInput style={styles.input} value={cedula} onChangeText={setCedula} />
 
       <Text style={styles.label}>Sexo</Text>
-      <View style={{ flexDirection: 'row', marginBottom: 12 }}>
+      <View style={styles.pickerRow}>
         <TouchableOpacity
           style={[styles.botonSexo, sexo === "M" && styles.botonSexoSeleccionado]}
           onPress={() => setSexo("M")}
         >
-          <Image source={require('../assets/Iconos_Registro/iconoMasculino.png')} style={styles.iconoSexo} />
+          <Image source={require('../../assets/Iconos_Registro/iconoMasculino.png')} style={styles.iconoSexo} />
           <Text style={styles.textoSexo}>Masculino</Text>
         </TouchableOpacity>
 
@@ -136,7 +137,7 @@ export default function PantallaEditarRegistro({ navigation, route }) {
           style={[styles.botonSexo, sexo === "F" && styles.botonSexoSeleccionado]}
           onPress={() => setSexo("F")}
         >
-          <Image source={require('../assets/Iconos_Registro/iconoFemenino.png')} style={styles.iconoSexo} />
+          <Image source={require('../../assets/Iconos_Registro/iconoFemenino.png')} style={styles.iconoSexo} />
           <Text style={styles.textoSexo}>Femenino</Text>
         </TouchableOpacity>
       </View>
@@ -203,6 +204,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     marginBottom: 4,
+  },
+  pickerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 12,
+    gap: 15,
   },
   botonSexo: {
     backgroundColor: "#F1F1F1",

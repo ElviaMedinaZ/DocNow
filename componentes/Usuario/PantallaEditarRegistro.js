@@ -15,10 +15,10 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import { db } from "../utileria/firebase";
+import { db } from "../../utileria/firebase";
 
 export default function PantallaEditarRegistro({ navigation, route }) {
-  const { uid } = route.params; // UID del usuario a editar
+  const { id: uid } = route.params; // UID del usuario a editar
   const [nombres, setNombres] = useState("");
   const [apellidoP, setApellidoP] = useState("");
   const [apellidoM, setApellidoM] = useState("");
@@ -97,12 +97,12 @@ export default function PantallaEditarRegistro({ navigation, route }) {
         <TouchableOpacity style={styles.botonVolver} onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={28} color="#0A3B74" />
         </TouchableOpacity>
-        <Image source={require('../assets/logo.png')} style={styles.logoEncabezado} resizeMode="contain" />
+        <Image source={require('../../assets/logo.png')} style={styles.logoEncabezado} resizeMode="contain" />
       </View>
 
       <TouchableOpacity onPress={seleccionarImagen} style={{ alignSelf: 'center', marginBottom: 20 }}>
         <Image
-          source={imagenUri ? { uri: imagenUri } : require('../assets/avatar_placeholder.png')}
+          source={imagenUri ? { uri: imagenUri } : require('../../assets/avatar_placeholder.png')}
           style={{ width: 100, height: 100, borderRadius: 50 }}
         />
         <Text style={{ textAlign: 'center', marginTop: 8, color: '#0A3B74' }}>
@@ -128,7 +128,7 @@ export default function PantallaEditarRegistro({ navigation, route }) {
           style={[styles.botonSexo, sexo === "M" && styles.botonSexoSeleccionado]}
           onPress={() => setSexo("M")}
         >
-          <Image source={require('../assets/Iconos_Registro/iconoMasculino.png')} style={styles.iconoSexo} />
+          <Image source={require('../../assets/Iconos_Registro/iconoMasculino.png')} style={styles.iconoSexo} />
           <Text style={styles.textoSexo}>Masculino</Text>
         </TouchableOpacity>
 
@@ -136,7 +136,7 @@ export default function PantallaEditarRegistro({ navigation, route }) {
           style={[styles.botonSexo, sexo === "F" && styles.botonSexoSeleccionado]}
           onPress={() => setSexo("F")}
         >
-          <Image source={require('../assets/Iconos_Registro/iconoFemenino.png')} style={styles.iconoSexo} />
+          <Image source={require('../../assets/Iconos_Registro/iconoFemenino.png')} style={styles.iconoSexo} />
           <Text style={styles.textoSexo}>Femenino</Text>
         </TouchableOpacity>
       </View>
