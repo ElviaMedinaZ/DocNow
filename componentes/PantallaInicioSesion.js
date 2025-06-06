@@ -113,7 +113,7 @@ const manejarInicioSesion = async () => {
       <TextInput
         style={styles.input}
         placeholder="Correo electrónico"
-        placeholderTextColor="#A7A6A5"
+        placeholderTextColor="#7993B1"
         autoCapitalize="none"
         keyboardType="email-address"
         value={correo}
@@ -125,7 +125,7 @@ const manejarInicioSesion = async () => {
         <TextInput
           style={[styles.input, { flex: 1, marginBottom: 0 }]}
           placeholder="Contraseña"
-          placeholderTextColor="#A7A6A5"
+          placeholderTextColor="#7993B1"
           secureTextEntry={!mostrarContra}
           value={contrasena}
           onChangeText={setContrasena}
@@ -230,13 +230,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
     borderRadius: 18,
     marginTop: '60%',
-    width: 300,
+    width: 200,
     height: 68,
   },
   textoBoton: {
     textAlign: 'center', 
     color: '#fff',
-    fontSize: 28,
+    fontSize: 18,
     fontWeight: '600'
   },
   label: {
@@ -256,6 +256,7 @@ const styles = StyleSheet.create({
   },
   linkRegistro: {
     color: '#0A3B74',
-    fontWeight: '600'
+    fontWeight: '600',
+    textDecorationLine: 'underline' ,
   }
 });
