@@ -1,12 +1,24 @@
-import React from 'react'
 import {
-  View,
+  Image,
+  SafeAreaView,
+  StyleSheet,
   Text,
   TouchableOpacity,
-  StyleSheet,
-  SafeAreaView,
-  Image
-} from 'react-native'
+  View
+} from 'react-native';
+
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+const Stack = createNativeStackNavigator();
+
+<Stack.Navigator>
+  <Stack.Screen
+    name="PantallaDetalles"
+    component={PantallaDetalles}
+    options={{ title: 'Detalles' }} // Esto pone el header con flecha atrás automáticamente
+  />
+</Stack.Navigator>
+
 
 export default function HomeScreem ({ navigation, route }) {
   const { userId, nombreUsuario } = route.params
@@ -89,11 +101,12 @@ const styles = StyleSheet.create({
     paddingTop: 20
   },
   titulo: {
-    fontSize: 24,
+    marginTop:70,
+    fontSize: 30,
     fontWeight: 'bold',
-    color: '#0B2E59',
+    color: '#0A3B74',
     alignSelf: 'center',
-    marginBottom: 24
+    marginBottom: 70
   },
   grid: {
     flexDirection: 'row',
@@ -101,18 +114,18 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   boton: {
-    width: '48%',
+    width: '47%',
     aspectRatio: 1,
-    backgroundColor: '#0B2E59',
+    backgroundColor: '#0A3B74',
     borderRadius: 12,
-    marginBottom: 16,
+    marginBottom: 30,
     justifyContent: 'center',
     alignItems: 'center'
   },
   iconoContainer: {
     marginBottom: 8,
-    width: 48,
-    height: 48
+    width: 100,
+    height: 100
   },
   icono: {
     width: '100%',
@@ -121,7 +134,8 @@ const styles = StyleSheet.create({
   },
   label: {
     color: '#fff',
-    fontSize: 14,
-    textAlign: 'center'
+    fontSize: 20,
+    textAlign: 'center',
+    marginBottom: 4
   }
 })
