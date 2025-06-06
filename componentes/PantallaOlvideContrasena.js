@@ -62,17 +62,23 @@ export default function PantallaOlvideContrasena({ navigation }) {
       <TouchableOpacity style={styles.botonVolver} onPress={() => navigation.goBack()}>
         <Ionicons name="chevron-back-outline" size={24} color="#0A3B74" />
       </TouchableOpacity>
+
       <Image source={require('../assets/logo.png')} style={styles.logo} resizeMode="contain" />
+
       <Text style={styles.titulo}>Olvidé mi contraseña</Text>
+
+       <Text style={styles.subtitulo}>Por favor, ingresa  tu correo electrónico para recibir un codigo de verificación.</Text>
+
       <TextInput
         style={styles.input}
         placeholder="Correo electrónico"
-        placeholderTextColor="#A7A6A5"
+        placeholderTextColor="#7993B1"
         keyboardType="email-address"
         autoCapitalize="none"
         value={correo}
         onChangeText={setCorreo}
       />
+
       <TouchableOpacity style={styles.boton} onPress={manejarSiguiente}>
         <Text style={styles.textoBoton}>Siguiente</Text>
       </TouchableOpacity>
@@ -81,11 +87,58 @@ export default function PantallaOlvideContrasena({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex:1, padding:24, backgroundColor:'#fff' },
-  botonVolver: { alignSelf:'flex-start', marginBottom:32 },
-  logo: { width:120, height:60, alignSelf:'center', marginBottom:32 },
-  titulo: { fontSize:24, fontWeight:'600', color:'#0A3B74', textAlign:'center' },
-  input: { backgroundColor:'#F5F5F5', borderRadius:8, padding:12, fontSize:16, marginBottom:32 },
-  boton: { backgroundColor:'#0A3B74', borderRadius:25, paddingVertical:14, alignItems:'center', width:'60%', alignSelf:'center' },
-  textoBoton: { color:'#fff', fontSize:16, fontWeight:'600' }
+  container: { 
+    flex:1, 
+    padding:24, 
+    backgroundColor:'#fff' 
+  },
+  botonVolver: { 
+    alignSelf:'flex-start', 
+    // marginBottom:'15%',
+    paddingBlock: 30,
+  },
+  logo: { 
+    width:120, 
+    height:60, 
+    alignSelf:'center', 
+    marginBottom:32 
+  },
+  titulo: { 
+    fontSize:24, 
+    fontWeight:'600', 
+    color:'#0A3B74', 
+    textAlign:'center' 
+  },
+  subtitulo: {
+    fontSize: 14,
+    color: "#666",
+    marginBottom: 20,
+    paddingBlock: 20
+  },
+  input: { 
+    backgroundColor:'#F5F5F5', 
+    borderRadius:8, 
+    padding:12, 
+    fontSize:16, 
+    marginBottom:32, 
+  },
+  boton: { 
+   textAlign: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    width: '40%',
+    backgroundColor: '#0A3B74',
+    paddingVertical: 15,
+    paddingHorizontal: 18,
+    borderRadius: 18,
+    marginTop: '85%',
+    width: 200,
+    height: 68,
+  },
+  textoBoton: { 
+    textAlign: 'center', 
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '600'
+  }
 });
