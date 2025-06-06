@@ -11,13 +11,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();
 
-<Stack.Navigator>
+{/* <Stack.Navigator>
   <Stack.Screen
     name="PantallaDetalles"
     component={PantallaDetalles}
     options={{ title: 'Detalles' }} // Esto pone el header con flecha atrás automáticamente
   />
-</Stack.Navigator>
+</Stack.Navigator> */}
 
 
 export default function HomeScreem ({ navigation, route }) {

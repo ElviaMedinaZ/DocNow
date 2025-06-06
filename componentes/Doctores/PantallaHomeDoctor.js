@@ -114,11 +114,11 @@ export default function PantallaCitasHome({ navigation }) {
 
       {/* BARRA INFERIOR */}
       <View style={[styles.barraInferior,{ paddingBottom: insets.bottom || 10 }]}>
-        <Ionicons name="people" size={24} color="gray" />
+        <Ionicons name="people" size={24} color="#0A3B74" />
         <Ionicons name="calendar" size={24} color="#007AFF" />
-        <Ionicons name="notifications" size={24} color="gray" />
+        <Ionicons name="notifications" size={24} color="#0A3B74" />
         <TouchableOpacity onPress={() => navigation.navigate('PerfilDoctor')}>
-          <Ionicons name="person" size={24} color="gray" />
+          <Ionicons name="person" size={24} color="#0A3B74" />
         </TouchableOpacity>
 
       </View>
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   },
   tipo: {
     fontSize: 12,
-    color: 'gray',
+    color: '#0A3B74',
   },
   btnFinalizar: {
     backgroundColor: '#007AFF',
@@ -181,7 +181,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   btnNotas: {
-    backgroundColor: '#5C6BC0',
+    backgroundColor: '#7993B1',
+    borderColor: '#0A3B74' ,
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 8,
