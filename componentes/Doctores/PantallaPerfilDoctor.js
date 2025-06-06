@@ -1,3 +1,7 @@
+{/* Creacion de la pantalla del perfil doctor
+  Programador: Kristofer Hernandez
+  Fecha: 05 de junio del 2025 */}
+
 import React, { useEffect, useState } from 'react';
 
 import {
@@ -106,60 +110,89 @@ export default function PantallaPerfilDoctor({ navigation }) {
 
   const todosLosServicios = Object.keys(precios);
 
+  {/* Mejoras de la pantalla del perfil doctor
+    Programadora: Irais Reyes
+    Fecha: 06 de junio del 2025 */}
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="#000" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => Alert.alert('Ajustes')}>
-          <Ionicons name="settings-outline" size={24} color="#000" />
-        </TouchableOpacity>
-      </View>
+      <View style={styles.container}>
+        <ScrollView contentContainerStyle={{ paddingBottom: 80, flexGrow: 1  }}>
+          <View style={styles.imageContainer}>
+            
+            <View style={styles.header}>
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <Ionicons name="arrow-back" size={24} color="#1E1E1E" />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => Alert.alert('Ajustes')}>
+                <Ionicons name="settings-outline" size={24} color="#1E1E1E" />
+              </TouchableOpacity>
+            </View>
 
-      <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
-        <View style={styles.imageContainer}>
-          <Image
-            source={datos.fotoURL ? { uri: datos.fotoURL } : require('../../assets/avatar_placeholder.png')}
-            style={styles.fullImage}
-          />
-          <View style={styles.overlayInfo}>
-            <Text style={styles.name}>Dr. {datos.nombres} {datos.apellidoP}</Text>
-            <Text style={styles.specialty}>Internista</Text>
+            <Image
+              source={datos.fotoURL ? { uri: datos.fotoURL } : require('../../assets/avatar_placeholder.png')}
+              style={styles.fullImage}
+            />
+            <View style={styles.overlayInfo}>
+              <Text style={styles.name}>Dr. {datos.nombres} {datos.apellidoP}</Text>
+              <Text style={styles.specialty}>Internista</Text>
+            </View>
+            <TouchableOpacity style={styles.editIcon} onPress={() => setModoEdicion(true)}>
+              <Ionicons name="create-outline" size={30} color="#000" />
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.editIcon} onPress={() => setModoEdicion(true)}>
-            <Ionicons name="create-outline" size={24} color="#000" />
-          </TouchableOpacity>
-        </View>
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Datos de contacto</Text>
-          <Text style={styles.detail}>📞 {datos.telefono}</Text>
-          <Text style={styles.detail}>📧 {datos.email}</Text>
-          <Text style={styles.detail}>🏠 Consultorio {datos.consultorio}</Text>
+
+          <View style={styles.contactRow}>
+            <Ionicons name="call-sharp" size={24} color="#0A3B74" />
+            <Text style={styles.contactText}>{datos.telefono}</Text>
+          </View>
+
+          <View style={styles.contactRow}>
+            <Ionicons name="mail-outline" size={24} color="#0A3B74" />
+            <Text style={styles.emailText}>{datos.email}</Text>
+          </View>
+
+          <View style={styles.contactRow}>
+            <Ionicons name="medkit-outline" size={24} color="#0A3B74" />
+            <Text style={styles.contactText}>Consultorio {datos.consultorio}</Text>
+          </View>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Servicios ofrecidos <Text style={{ fontWeight: 'normal' }}>(Costo)</Text></Text>
-          {modoEdicion ? (
-            todosLosServicios.map((serv) => (
-              <View key={serv} style={styles.serviceRow}>
-                <Text>{serv}</Text>
-                <Switch
-                  value={servicios[serv] || false}
-                  onValueChange={() => toggleServicio(serv)}
-                />
-                <Text>${precios[serv] || '-'}</Text>
-              </View>
-            ))
-          ) : (
-            Object.keys(servicios).filter(s => servicios[s] && precios[s]).map((s) => (
-              <View key={s} style={styles.serviceRow}>
-                <Text style={styles.bullet}>• {s}</Text>
-                <Text style={styles.price}>${precios[s]}</Text>
-              </View>
-            ))
-          )}
+          <View style={styles.serviciosContainer}>
+            <View style={styles.headerRow}>
+              <Text style={styles.headerText}>Servicios ofertados</Text>
+              <Text style={styles.headerText}>Costo</Text>
+            </View>
+
+            {modoEdicion ? (
+              todosLosServicios.map((serv) => (
+                <View key={serv} style={styles.serviceRow}>
+                  <View style={styles.serviceName}>
+                    <Text style={styles.serviceText}>{serv}</Text>
+                  </View>
+                  <Switch
+                    value={servicios[serv] || false}
+                    onValueChange={() => toggleServicio(serv)}
+                  />
+                  <Text style={styles.price}>
+                    ${precios[serv] || '-'}
+                  </Text>
+                </View>
+              ))
+            ) : (
+              Object.keys(servicios).filter(s => servicios[s] && precios[s]).map((s) => (
+                <View key={s} style={styles.serviceRow}>
+                  <View style={styles.serviceName}>
+                    <Ionicons name="ellipse-sharp" size={10} color="#0A3B74" style={{ marginRight: 8 }} />
+                    <Text style={styles.serviceText}>{s}</Text>
+                  </View>
+                  <Text style={styles.price}>${precios[s]}</Text>
+                </View>
+              ))
+            )}
+          </View>
         </View>
 
         <View style={styles.section}>
@@ -190,9 +223,9 @@ export default function PantallaPerfilDoctor({ navigation }) {
       </ScrollView>
 
       <View style={[styles.barraInferior, { paddingBottom: insets.bottom || 10 }]}>
-        <Ionicons name="people" size={24} color="gray" />
-        <Ionicons name="calendar" size={24} color="gray" />
-        <Ionicons name="notifications" size={24} color="gray" />
+        <Ionicons name="people" size={24} color="#0A3B74" />
+        <Ionicons name="calendar" size={24} color="#0A3B74" />
+        <Ionicons name="notifications" size={24} color="#0A3B74" />
         <Ionicons name="person" size={24} color="#007AFF" />
       </View>
     </View>
@@ -200,27 +233,33 @@ export default function PantallaPerfilDoctor({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
+  container: { 
+    flex: 1, 
+    backgroundColor: '#fff' 
+  },
   header: {
-    paddingTop: 50,
-    paddingHorizontal: 20,
+    position: 'absolute',
+    top: 40,
+    left: 20,
+    right: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    zIndex: 10,
   },
   imageContainer: {
     position: 'relative',
   },
   fullImage: {
     width: '100%',
-    height: 220,
+    height: 300, 
   },
   overlayInfo: {
     position: 'absolute',
-    bottom: -20,
+    bottom: -40,
     alignSelf: 'center',
     backgroundColor: '#0A3B74',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingVertical: 15,
+    paddingHorizontal: 50,
     borderRadius: 12,
     elevation: 5,
     alignItems: 'center',
@@ -233,31 +272,49 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     padding: 8,
     elevation: 5,
+    marginTop: '110%'
   },
   name: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 24,
     fontWeight: 'bold',
   },
   specialty: {
     color: '#fff',
-    fontSize: 12,
+    fontSize: 14,
     marginTop: 2,
   },
   section: {
     paddingHorizontal: 20,
-    marginTop: 25,
+    marginTop: 30,
+    top: 30,
   },
   sectionTitle: {
     fontSize: 16,
     fontWeight: '600',
     color: '#0A3B74',
-    marginBottom: 10,
+    marginBottom: 15,
   },
   detail: {
-    fontSize: 14,
+    fontSize: 18,
     color: '#444',
     marginBottom: 5,
+  },
+  contactRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 5,
+  },
+  contactText: {
+    marginLeft: 10,
+    fontSize: 16,
+    color: '#333',
+  },
+  emailText: {
+    marginLeft: 10,
+    fontSize: 16,
+    color: '#333',
+    textDecorationLine: 'underline' ,
   },
   serviceRow: {
     flexDirection: 'row',
@@ -266,7 +323,7 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   bullet: {
-    fontSize: 14,
+    fontSize: 18,
     color: '#333',
   },
   price: {
@@ -302,5 +359,28 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderTopWidth: 1,
     borderTopColor: '#ccc',
+  },
+  serviciosContainer: {
+    marginTop: 10,
+  },
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingBottom: 6,
+    marginBottom: 6,
+  },
+  headerText: {
+    fontWeight: 'bold',
+    color: '#0A3B74',
+    fontSize: 15,
+  },
+  serviceName: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  serviceText: {
+    fontSize: 15,
+    color: '#000',
   },
 });
