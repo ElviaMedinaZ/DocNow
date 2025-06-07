@@ -369,10 +369,10 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start'
   },
   subtitulo: {
-  fontSize: 14,
-  color: "#666",
-  textAlign: "center",
-  marginBottom: 20,
+    fontSize: 14,
+    color: "#666",
+    textAlign: "center",
+    marginBottom: 20,
   },
   titulo: {
     fontSize: 24,
@@ -410,17 +410,23 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   boton: {
-    backgroundColor: "#0A3B74",
-    paddingVertical: 14,
-    borderRadius: 25,
-    alignItems: "center",
-    marginTop: 24,
-    marginBottom: 40,
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    alignItems: 'center',
+    width: '40%',
+    backgroundColor: '#0A3B74',
+    paddingVertical: 15,
+    borderRadius: 18,
+    width: 200,
+    height: 68,
+    marginBlockEnd: 60
   },
   textoBoton: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
+    textAlign: 'center', 
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '600'
   },
   botonSexo:{
     backgroundColor: "#F1F1F1",
