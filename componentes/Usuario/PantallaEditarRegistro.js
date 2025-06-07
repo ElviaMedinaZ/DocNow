@@ -99,19 +99,23 @@ export default function PantallaEditarRegistro({ navigation, route }) {
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.encabezado}>
         <TouchableOpacity style={styles.botonVolver} onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={28} color="#0A3B74" />
+          <Ionicons name="arrow-back" size={28} color="#00000" />
         </TouchableOpacity>
         <Image source={require('../../assets/logo.png')} style={styles.logoEncabezado} resizeMode="contain" />
       </View>
 
-      <TouchableOpacity onPress={seleccionarImagen} style={{ alignSelf: 'center', marginBottom: 20 }}>
+      {/* Agregamos efecto de filtro en el icono
+      Programadora: Irais Reyes
+      Fecha: 07 de junio del 2025 */}
+      <TouchableOpacity onPress={seleccionarImagen} style={styles.contenedorImagen}>
         <Image
           source={imagenUri ? { uri: imagenUri } : require('../../assets/avatar_placeholder.png')}
-          style={{ width: 100, height: 100, borderRadius: 50 }}
+          style={styles.imagenPerfil}
         />
-        <Text style={{ textAlign: 'center', marginTop: 8, color: '#0A3B74' }}>
-          {imagenUri ? 'Cambiar foto' : 'Agregar foto'}
-        </Text>
+        <View style={styles.overlay}>
+          <Text style={styles.textoOverlay}>Editar</Text>
+          {/* {imagenUri ? 'Cambiar foto' : 'Agregar foto'} */}
+        </View>
       </TouchableOpacity>
 
       <Text style={styles.label}>Nombre(s)</Text>
@@ -167,7 +171,7 @@ export default function PantallaEditarRegistro({ navigation, route }) {
       <TextInput style={styles.input} keyboardType="phone-pad" value={telefono} onChangeText={setTelefono} />
 
       <TouchableOpacity style={styles.boton} onPress={guardarCambios}>
-        <Text style={styles.textoBoton}>Guardar Cambios</Text>
+        <Text style={styles.textoBoton}>Guardar</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -235,16 +239,50 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   boton: {
-    backgroundColor: "#0A3B74",
-    paddingVertical: 14,
-    borderRadius: 25,
-    alignItems: "center",
-    marginTop: 24,
-    marginBottom: 40,
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    width: '40%',
+    backgroundColor: '#0A3B74',
+    paddingVertical: 15,
+    paddingHorizontal: 18,
+    borderRadius: 18,
+    width: 200,
+    height: 68,
+    marginBlockEnd: 60
   },
   textoBoton: {
     color: "#fff",
     fontSize: 16,
     fontWeight: "600",
+    textAlign: 'center',
+  },
+  contenedorImagen: {
+    alignSelf: 'center',
+    width: 100,
+    height: 100,
+    marginBottom: 20,
+    position: 'relative',
+  },
+  imagenPerfil: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+  },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: 100,
+    height: 100,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)', // filtro negro
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  textoOverlay: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 14,
   },
 });
