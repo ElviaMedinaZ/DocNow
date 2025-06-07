@@ -277,6 +277,7 @@ const styles = StyleSheet.create({
   logoEncabezado: {
     width: 70,
     height: 30,
+    marginTop: 32,   
   },
   input: {
     backgroundColor: "#F5F5F5",
@@ -290,10 +291,10 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
   },
   subtitulo: {
-  fontSize: 14,
-  color: "#666",
-  textAlign: "center",
-  marginBottom: 20,
+    fontSize: 14,
+    color: "#666",
+    textAlign: "center",
+    marginBottom: 20,
   },
   titulo: {
     fontSize: 24,
@@ -319,17 +320,23 @@ const styles = StyleSheet.create({
     gap: 15,
   },
   boton: {
-    backgroundColor: "#0A3B74",
-    paddingVertical: 14,
-    borderRadius: 25,
-    alignItems: "center",
-    marginTop: 24,
-    marginBottom: 40,
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    width: '40%',
+    backgroundColor: '#0A3B74',
+    paddingVertical: 15,
+    paddingHorizontal: 18,
+    borderRadius: 18,
+    width: 200,
+    height: 68,
+    marginBlockEnd: 60
   },
   textoBoton: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
+    textAlign: 'center', 
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '600'
   },
   botonSexo: {
     backgroundColor: "#F1F1F1",
