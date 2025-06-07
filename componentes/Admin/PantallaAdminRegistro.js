@@ -1,3 +1,6 @@
+{/* Creacion de la pantalla registrar usuario
+  Programador: Kristofer Hernandez
+  Fecha: 03 de junio del 2025 */}
 import React, { useState } from 'react'
 import {
   SafeAreaView,
@@ -8,6 +11,7 @@ import {
   Dimensions,
   Image
 } from 'react-native'
+import { Ionicons } from '@expo/vector-icons';
 
 const opciones = [
   {
@@ -36,12 +40,17 @@ export default function PantallaAdminRegistro({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.titulo}>Comencemos</Text>
-        <Text style={styles.subtitulo}>
-          Por favor elige una opción para continuar
-        </Text>
+      <View style={styles.rowHeader}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color="black" />
+        </TouchableOpacity>
+        <Image source={require('../../assets/logo.png')} style={styles.logo} resizeMode="contain" />
+        <View style={{ width: 24 }} />
       </View>
+      <Text style={styles.titulo}>Comencemos</Text>
+      <Text style={styles.subtitulo}>
+        Por favor elige una opción para continuar
+      </Text>
 
       <View style={styles.lista}>
         {opciones.map(o => {
@@ -101,6 +110,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20
   },
+    logo: {
+    width: 100,
+    height: 50,
+    alignSelf: 'center',
+    // Si quieres desplazar solo el logo:
+    marginTop: 32,    // antes 16, ahora 32 o más
+    marginBottom: 32,
+    marginLeft: 10
+  },
+rowHeader: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between', // cambia a esto
+  marginBottom: 20,
+  width: '100%',
+  paddingHorizontal: 20
+},
+
   titulo: {
     fontSize: 28,
     fontWeight: '700',
@@ -140,7 +167,7 @@ const styles = StyleSheet.create({
     marginRight: 16
   },
   iconoCajaActivo: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#0A3B74',
     borderWidth: 1,
     borderColor: '#0B2E59'
   },
@@ -166,19 +193,27 @@ const styles = StyleSheet.create({
     color: '#6B6B6B'
   },
   boton: {
-    backgroundColor: '#0B2E59',
-    borderRadius: 8,
-    width: CARD_WIDTH,
-    paddingVertical: 14,
-    marginBottom: 30
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    width: '40%',
+    backgroundColor: '#0A3B74',
+    paddingVertical: 15,
+    paddingHorizontal: 18,
+    borderRadius: 18,
+    marginTop: '20%',
+    width: 200,
+    height: 68,
+    marginBottom: '20%'
   },
   botonDisabled: {
-    backgroundColor: '#A0A0A0'
+    backgroundColor: '#A0A0A0',
+    marginBottom: '20%'
   },
   botonTexto: {
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
-    textAlign: 'center'
+    textAlign: 'center',
   }
 })
