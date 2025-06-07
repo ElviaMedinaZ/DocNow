@@ -1,3 +1,6 @@
+{/* Creacion de la pantalla multilista
+  Programador: Kristofer Hernandez
+  Fecha: 03 de junio del 2025 */}
 import React, { useState, useEffect } from 'react'
 import {
   SafeAreaView,
@@ -13,6 +16,7 @@ import {
 } from 'react-native'
 import { getFirestore, collection, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore'
 import { app } from '../../utileria/firebase'
+import { Ionicons } from '@expo/vector-icons';
 
 const db = getFirestore(app)
 
@@ -101,6 +105,7 @@ export default function MultiListScreen({ navigation, route }) {
  const renderPaciente = ({ item }) => {
   const fullName = `${item.nombres} ${item.apellidoP}`
   return (
+
     <View style={styles.card}>
       <Image
         source={item.fotoURL ? { uri: item.fotoURL } : placeholderAvatar}
@@ -166,25 +171,25 @@ export default function MultiListScreen({ navigation, route }) {
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-        <Text style={styles.backText}>{'<'} Volver</Text>
+        <Ionicons name="arrow-back" size={24} color="black" />
       </TouchableOpacity>
       <Text style={styles.title}>
         {type === 1 ? 'Doctores' : type === 2 ? 'Pacientes' : ''}
       </Text>
 
-      <TextInput
-        style={{
-          marginHorizontal: 20,
-          marginBottom: 10,
-          borderWidth: 1,
-          borderColor: "#ccc",
-          borderRadius: 8,
-          padding: 10
-        }}
-        placeholder="Buscar por nombre..."
-        value={busqueda}
-        onChangeText={filtrarPorNombre}
-      />
+      {/* Rediseño del buscador
+      Programadora: Irais Reyes
+      Fecha: 07 de junio del 2025 */}
+      <View style={styles.contenedorBuscador}>
+        <TextInput
+          style={styles.buscador}
+          placeholder="Buscar"
+          placeholderTextColor="#0A3B74"
+          value={busqueda}
+          onChangeText={filtrarPorNombre}
+        />
+        <Ionicons name="search" size={20} color="#0A3B74" style={styles.iconoBuscar} />
+      </View>
 
       {loading ? (
         <ActivityIndicator size="large" color="#0B2E59" style={{ marginTop: 20 }} />
@@ -201,20 +206,45 @@ export default function MultiListScreen({ navigation, route }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
-  backBtn: { padding: 12 },
+  container: { 
+    flex: 1, 
+    backgroundColor: '#fff' 
+  },
+  backBtn: { 
+    padding: 12, 
+    marginTop: 30
+  },
+  contenedorBuscador: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderColor: '#0A3B74',
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    marginHorizontal: 20,
+    marginBottom: 9,
+  },
+  iconoBuscar: {
+    marginRight: 8,
+  },
+  buscador: {
+    flex: 1,
+    height: 40,
+  },
   actions: {
-  flexDirection: 'column',
-  alignItems: 'flex-end',
-  justifyContent: 'center',
-  gap: 4
-},
-editText: {
-  color: '#fff',
-  fontSize: 14
-},
-
-  backText: { color: '#0B2E59', fontSize: 16 },
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    gap: 4
+  },
+  editText: {
+    color: '#fff',
+    fontSize: 14
+  },
+  backText: { color: '#0B2E59', 
+    fontSize: 16 
+  },
   title: {
     fontSize: 22,
     fontWeight: '600',
@@ -235,24 +265,38 @@ editText: {
     borderRadius: 24,
     backgroundColor: '#DDD'
   },
-  info: { flex: 1, marginLeft: 12 },
-  name: { fontSize: 16, fontWeight: '500', color: '#333' },
-  link: { fontSize: 14, color: '#0B2E59', marginTop: 4 },
-deleteBtn: {
-  backgroundColor: '#E53935',
-  paddingHorizontal: 12,
-  paddingVertical: 6,
-  borderRadius: 6,
-  minWidth: 80,
-  alignItems: 'center',
-},
-  deleteText: { color: '#fff', fontSize: 14 },
+  info: { 
+    flex: 1, 
+    marginLeft: 12 
+  },
+  name: { 
+    fontSize: 16, 
+    fontWeight: '500', 
+    color: '#333' 
+  },
+  link: { 
+    fontSize: 14, 
+    color: '#0B2E59', 
+    marginTop: 4 
+  },
+  deleteBtn: {
+    backgroundColor: '#E53935',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 6,
+    minWidth: 80,
+    alignItems: 'center',
+  },
+  deleteText: { 
+    color: '#fff', 
+    fontSize: 14 
+  },
   editBtn: {
-  backgroundColor: '#1976D2',
-  paddingHorizontal: 12,
-  paddingVertical: 6,
-  borderRadius: 6,
-  minWidth: 80,
-  alignItems: 'center',
-}
+    backgroundColor: '#1976D2',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 6,
+    minWidth: 80,
+    alignItems: 'center',
+  }
 })
