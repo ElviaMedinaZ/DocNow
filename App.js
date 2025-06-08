@@ -23,6 +23,7 @@ import PantallaPacieteDoctores from './componentes/Doctores/PantallaPacienteDoct
 import PantallaNotas from './componentes/Doctores/PantallaNotas';//pantalla para ver notas 
 
 //usuarios
+import PantallaEvaluacion from './componentes/Usuario/PantallaEvaluacion';
 import PantallaPerfilUsiario from './componentes/Usuario/PantallaPerfilUsuario';
 import PantallaInicioSesion from './componentes/PantallaInicioSesion';
 import PantallaHomeUsuario from './componentes/Usuario/PantallaHomeUsuario';
@@ -199,6 +200,11 @@ export default function App() {
           component={PantallaConfirmarCita} 
           options={{ headerShown: false }}
         />
+
+        <Stack.Screen
+         name="PantallaEvaluacion" 
+         component={PantallaEvaluacion} 
+         options={{ headerShown: false }}/>
 
 
         <Stack.Screen

@@ -47,6 +47,27 @@ const getMarkedDates = () => {
 
   return marks;
 };
+
+    const citasHistorial = [
+    {
+        id: '4',
+        nombre: 'Dra. María Gonzalez',
+        tipo: 'Rayos X',
+        foto: require('../../assets/avatar_placeholder.png'),
+    },
+    {
+        id: '5',
+        nombre: 'Dr. Ernesto Guluarte',
+        tipo: 'Consulta',
+        foto: require('../../assets/avatar_placeholder.png'),
+    },
+    {
+        id: '6',
+        nombre: 'Dra. Vanessa Lopez',
+        tipo: 'Consulta',
+        foto: require('../../assets/avatar_placeholder.png'),
+    },
+    ];
  const citas = [
   {
     id: '1',
@@ -95,6 +116,25 @@ const getMarkedDates = () => {
     </View>
   </TouchableOpacity>
 );
+
+    const renderHistorial = ({ item }) => (
+    <View style={styles.cardHistorial}>
+        <Image source={item.foto} style={styles.cardAvatar} />
+
+        <View style={styles.cardInfo}>
+        <Text style={styles.cardNombre}>{item.nombre}</Text>
+        <Text style={styles.cardTipo}>{item.tipo}</Text>
+        </View>
+
+        <TouchableOpacity
+        style={styles.botonEvaluar}
+        onPress={() => navigation.navigate('PantallaEvaluacion', { doctor: item })}
+        >
+        <Text style={styles.textoEvaluar}>Evaluar</Text>
+        </TouchableOpacity>
+    </View>
+    );
+
 
   const manejarCerrarSesion = async () => {
     Alert.alert('Cerrar Sesión', '¿Estás seguro de que deseas cerrar sesión?', [
@@ -167,9 +207,16 @@ const getMarkedDates = () => {
 
         </>
       ) : (
-        <View style={styles.sinContenido}>
-          <Text style={styles.labelInfo}>Sin historial</Text>
-        </View>
+        <FlatList
+            data={citasHistorial}
+            renderItem={renderHistorial}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 20 }}
+            ListEmptyComponent={
+                <Text style={styles.labelInfo}>No hay citas archivadas</Text>
+            }
+            />
+
       )}
 
       {/* BARRA INFERIOR */}
@@ -355,5 +402,30 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#333',
   },
+  cardHistorial: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  backgroundColor: '#fff',
+  padding: 10,
+  borderRadius: 10,
+  marginBottom: 10,
+  shadowColor: '#000',
+  shadowOpacity: 0.05,
+  shadowOffset: { width: 0, height: 2 },
+  elevation: 2,
+},
+botonEvaluar: {
+  borderWidth: 1,
+  borderColor: '#0A3B74',
+  paddingVertical: 6,
+  paddingHorizontal: 12,
+  borderRadius: 8,
+},
+textoEvaluar: {
+  color: '#0A3B74',
+  fontWeight: 'bold',
+  fontSize: 13,
+},
+
 
 });
