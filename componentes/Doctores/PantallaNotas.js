@@ -18,7 +18,7 @@ const notasMock = [
 export default function PantallaNotasPaciente({ navigation }) {
   const renderNota = ({ item }) => (
     <View style={styles.notaItem}>
-      <FontAwesome5 name="file-alt" size={30} color="#0A3B74" style={{ marginRight: 10 }} />
+      <FontAwesome5 name="file-alt" size={50} color="#0A3B74" style={{ marginRight: 10 }} />
       <View style={{ flex: 1 }}>
         <Text style={styles.fecha}>{item.fecha}</Text>
         <Text style={styles.tipo}>{item.tipo}</Text>
@@ -53,7 +53,7 @@ export default function PantallaNotasPaciente({ navigation }) {
       {/* BOTÓN RESPALDAR */}
       <View style={styles.contenedorBtn}>
         <TouchableOpacity style={styles.btnRespaldar}>
-          <Text style={styles.btnTexto}>Respaldar</Text>
+          <Text style={styles.btnTextoRespaldar}>Respaldar</Text>
         </TouchableOpacity>
       </View>
 
@@ -91,11 +91,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     marginBottom: 20,
+    marginTop: 20,
   },
   nombrePaciente: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#0A3B74',
+    marginTop: 20,
   },
   notaItem: {
     flexDirection: 'row',
@@ -116,7 +118,7 @@ const styles = StyleSheet.create({
   },
   btnVer: {
     backgroundColor: '#0A3B74',
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
     paddingVertical: 6,
     borderRadius: 8,
     marginLeft: 10,
@@ -125,15 +127,28 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 12,
   },
+  btnRespaldar: {
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    width: '40%',
+    backgroundColor: '#0A3B74',
+    paddingVertical: 15,
+    paddingHorizontal: 18,
+    borderRadius: 18,
+    marginTop: '10%',
+    width: 200,
+    height: 68,
+  },
+  btnTextoRespaldar: {
+    textAlign: 'center', 
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '600'
+  },
   contenedorBtn: {
     alignItems: 'center',
     marginBottom: 20,
-  },
-  btnRespaldar: {
-    backgroundColor: '#0A3B74',
-    paddingVertical: 12,
-    paddingHorizontal: 40,
-    borderRadius: 10,
   },
   barraInferior: {
     flexDirection: 'row',
@@ -141,5 +156,6 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderTopWidth: 1,
     borderTopColor: '#ccc',
+    marginBottom: 35,
   },
 });

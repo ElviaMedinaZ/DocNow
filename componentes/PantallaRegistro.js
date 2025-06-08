@@ -234,11 +234,6 @@ export default function PantallaRegistro({ navigation }) {
       <Text style={styles.label}>CURP</Text>
       <TextInput   style={[styles.input, errores.curp && styles.inputError]} value={curp} onChangeText={setCurp} />
 
-
-
-      {/* Botones de sexo masculino y femenino
-      Programadora: Irais Reyes
-      Fecha: 03 de junio del 2025 */}
       <Text style={styles.label}>Sexo:</Text>
       <View style={styles.pickerRow}>
       <TouchableOpacity

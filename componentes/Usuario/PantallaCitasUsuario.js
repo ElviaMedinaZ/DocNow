@@ -27,7 +27,7 @@ const getMarkedDates = () => {
 
   citas.forEach((cita) => {
     if (!marks[cita.fecha]) {
-      marks[cita.fecha] = { marked: true, dotColor: '#007AFF' };
+      marks[cita.fecha] = { marked: true, dotColor: '#498FC0' };
     }
   });
 
@@ -171,7 +171,7 @@ const getMarkedDates = () => {
             <Text
               style={[styles.tabText, vistaActiva === 'historial' && styles.tabActivo]}
             >
-              Historial
+              Archivado
             </Text>
           </TouchableOpacity>
         </View>
@@ -251,6 +251,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginBottom: 20,
   },
+  fechaTitulo: {
+    padding: 20,
+  },
   tabs: {
     flexDirection: 'row',
     gap: 30,
@@ -276,6 +279,7 @@ const styles = StyleSheet.create({
   labelInfo: {
     fontSize: 16,
     color: 'gray',
+    
   },
   barraInferior: {
     flexDirection: 'row',
@@ -391,12 +395,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   cardFechaHora: {
-    alignItems: 'flex-end',
+    alignItems: 'center',
   },
   cardFecha: {
     fontWeight: 'bold',
     fontSize: 13,
     color: '#0A3B74',
+    alignItems: 'center',
   },
   cardHora: {
     fontSize: 13,

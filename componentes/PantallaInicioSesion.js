@@ -160,9 +160,6 @@ const manejarInicioSesion = async () => {
   );
 }
 
-{/* Corregir el diseño del boton y los textos
-  Programadora: Irais Reyes
-  Fecha: 05 de junio del 2025 */}
 const styles = StyleSheet.create({
   container: {
     flex: 1,

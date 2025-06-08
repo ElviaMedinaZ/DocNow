@@ -112,7 +112,7 @@ export default function PantallaPerfilDoctor({ navigation }) {
 
   return (
       <View style={styles.container}>
-        <ScrollView contentContainerStyle={{ paddingBottom: 80, flexGrow: 1  }}>
+        <ScrollView contentContainerStyle={{ paddingBottom: 80, flexGrow: 1,  }}>
           <View style={styles.imageContainer}>
             
             <View style={styles.header}>
@@ -214,7 +214,7 @@ export default function PantallaPerfilDoctor({ navigation }) {
 
         {modoEdicion && (
           <TouchableOpacity style={styles.saveBtn} onPress={guardarCambios}>
-            <Text style={styles.saveText}>Guardar cambios</Text>
+            <Text style={styles.saveText}>Guardar</Text>
           </TouchableOpacity>
         )}
       </ScrollView>
@@ -356,14 +356,23 @@ const styles = StyleSheet.create({
   },
   saveBtn: {
     margin: 20,
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    width: '40%',
     backgroundColor: '#0A3B74',
-    padding: 14,
-    borderRadius: 10,
-    alignItems: 'center',
+    paddingVertical: 15,
+    paddingHorizontal: 18,
+    borderRadius: 18,
+    marginTop: '10%',
+    width: 200,
+    height: 68,
   },
   saveText: {
+    textAlign: 'center', 
     color: '#fff',
-    fontWeight: 'bold',
+    fontSize: 18,
+    fontWeight: '600'
   },
   barraInferior: {
     flexDirection: 'row',
