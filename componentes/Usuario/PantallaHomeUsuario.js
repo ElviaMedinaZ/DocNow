@@ -21,6 +21,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 export default function PantallaPrincipal({ route, navigation }) {
   const insets = useSafeAreaInsets(); // ← obtiene espacios seguros
+ 
   const [servicios, setServicios] = useState([]);
 
   useEffect(() => {
@@ -110,8 +111,10 @@ export default function PantallaPrincipal({ route, navigation }) {
         contentContainerStyle={styles.listaMedicos}
       />
 
+      <Text style={styles.seccionTitulo}>Proxima Cita</Text>
       {/* seccion de citas */}
       <View style={styles.contenedorCitas}>
+
         <TouchableOpacity style={styles.citasItem}>
           <Image
             source={require('../../assets/Iconos_Citas/rectangulo.png')}
