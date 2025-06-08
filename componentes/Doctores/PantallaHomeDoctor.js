@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { Alert } from 'react-native'; 
 import { Ionicons } from '@expo/vector-icons';
-
+import { auth, db } from '../../utileria/firebase';
 
 
 export default function PantallaCitasHome({ navigation }) {
@@ -61,8 +61,6 @@ export default function PantallaCitasHome({ navigation }) {
       </View>
     );
 
-
-  
     const manejarCerrarSesion = async () => {
       Alert.alert(
         'Cerrar Sesión',
