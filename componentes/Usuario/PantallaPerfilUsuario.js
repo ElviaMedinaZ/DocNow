@@ -73,12 +73,17 @@ export default function PantallaPerfil({ navigation }) {
             <Ionicons name="arrow-back" size={24} color="black" />
             </TouchableOpacity>
             <Image source={require('../../assets/logo.png')} style={styles.logo} />
-            <TouchableOpacity onPress={("PantallaAjustes")}>
+            <TouchableOpacity onPress={() => navigation.navigate('PantallaAjustes')}>
               <Ionicons name="settings-outline" size={24} color="black" />
             </TouchableOpacity>
+                    
         </View>
 
         <Image source={ usuario.fotoUrl ? { uri: usuario.fotoUrl } :  require('../../assets/avatar_placeholder.png') }style={styles.avatar}/>
+        <Text style={styles.nombre}>
+          {usuario.nombres} {usuario.apellidoP} {usuario.apellidoM}
+        </Text>
+
 
         <Text style={styles.label}>Correo electrónico</Text>
         <TextInput

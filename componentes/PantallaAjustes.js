@@ -35,7 +35,7 @@ export default function SettingsScreen({ navigation }) {
         { text: 'Cancelar', style: 'cancel' },
         { text: 'Cerrar Sesión', onPress: async () => {
             await signOut(auth);
-            navigation.replace('InicioSesion');
+            navigation.navigation('InicioSesion');
           } },
       ]
     );

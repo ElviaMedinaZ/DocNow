@@ -10,80 +10,103 @@ import {
   Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { Calendar } from 'react-native-calendars';
 import { auth } from '../../utileria/firebase';
 import { signOut } from 'firebase/auth';
+import moment from 'moment';
 
 export default function PantallaCitasHome({ navigation }) {
   const insets = useSafeAreaInsets();
   const [vistaActiva, setVistaActiva] = useState('citas');
-
-  const citas = [
-    {
-      id: '1',
-      nombre: 'Dr. Juan Hernández',
-      tipo: 'Rayos X',
-      foto: require('../../assets/avatar_placeholder.png'),
-      fecha: '13 Sept. 2022',
-      hora: '10:00 AM',
-    },
-    {
-      id: '2',
-      nombre: 'Dra. María Gonzalez',
-      tipo: 'Consulta',
-      foto: require('../../assets/avatar_placeholder.png'),
-      fecha: '20 Sept. 2022',
-      hora: '01:00 PM',
-    },
-    {
-      id: '3',
-      nombre: 'Dr. Ernesto Guluarte',
-      tipo: 'Consulta',
-      foto: require('../../assets/avatar_placeholder.png'),
-      fecha: '10 Oct. 2022',
-      hora: '10:00 AM',
-    },
-  ];
-
-  const renderCita = ({ item }) => (
-    <View style={styles.contenedorCitas}>
-      <TouchableOpacity style={styles.citasItem}>
-        <Image
-          source={require('../../assets/Iconos_Citas/rectangulo.png')}
-          style={styles.imagenRectangulo}
-        />
-        <Image source={item.foto} style={styles.avatar} />
-        <View style={{ flex: 1, marginLeft: 10 }}>
-          <Text style={styles.labelCitas}>{item.nombre}</Text>
-          <Text style={styles.tipo}>{item.tipo}</Text>
-        </View>
-        <Image
-          source={require('../../assets/Iconos_Citas/linea.png')}
-          style={styles.imagenLinea}
-        />
-        <View style={styles.contenedorFechas}>
-          <Ionicons name="calendar" size={20} color="#0A3B74" style={styles.icono} />
-          <Text style={styles.labelFecha}>{item.fecha}</Text>
-          <Text style={styles.labelHora}>{item.hora}</Text>
-        </View>
-      </TouchableOpacity>
-    </View>
+  const [fechaSeleccionada, setFechaSeleccionada] = useState(
+    moment().format('YYYY-MM-DD')
   );
 
+const getMarkedDates = () => {
+  const marks = {};
+
+  citas.forEach((cita) => {
+    if (!marks[cita.fecha]) {
+      marks[cita.fecha] = { marked: true, dotColor: '#007AFF' };
+    }
+  });
+
+  // Si el día seleccionado también tiene punto, combinamos ambas propiedades
+  if (marks[fechaSeleccionada]) {
+    marks[fechaSeleccionada] = {
+      ...marks[fechaSeleccionada],
+      selected: true,
+      selectedColor: '#007AFF',
+    };
+  } else {
+    marks[fechaSeleccionada] = {
+      selected: true,
+      selectedColor: '#007AFF',
+    };
+  }
+
+  return marks;
+};
+ const citas = [
+  {
+    id: '1',
+    nombre: 'Dr. Juan Hernández',
+    tipo: 'Rayos X',
+    foto: require('../../assets/avatar_placeholder.png'),
+    fecha: moment().add(1, 'day').format('YYYY-MM-DD'),
+    hora: '10:00 AM',
+  },
+  {
+    id: '2',
+    nombre: 'Dra. María Gonzalez',
+    tipo: 'Consulta',
+    foto: require('../../assets/avatar_placeholder.png'),
+    fecha: moment().add(3, 'day').format('YYYY-MM-DD'),
+    hora: '01:00 PM',
+  },
+  {
+    id: '3',
+    nombre: 'Dr. Ernesto Guluarte',
+    tipo: 'Consulta',
+    foto: require('../../assets/avatar_placeholder.png'),
+    fecha: moment().add(5, 'day').format('YYYY-MM-DD'),
+    hora: '09:00 AM',
+  },
+];
+
+  const citasFiltradas = citas.filter((cita) => cita.fecha === fechaSeleccionada);
+
+  const renderCita = ({ item }) => (
+  <TouchableOpacity
+    style={styles.cardCita}
+    onPress={() => navigation.navigate('PantallaConfirmarCita', { cita: item })}
+  >
+    <View style={styles.leftBar} />
+    <Image source={item.foto} style={styles.cardAvatar} />
+    <View style={styles.cardInfo}>
+      <Text style={styles.cardNombre}>{item.nombre}</Text>
+      <Text style={styles.cardTipo}>{item.tipo}</Text>
+    </View>
+    <View style={styles.cardLinea} />
+    <View style={styles.cardFechaHora}>
+      <Ionicons name="calendar" size={20} color="#0A3B74" />
+      <Text style={styles.cardFecha}>{moment(item.fecha).format('DD MMM. YYYY')}</Text>
+      <Text style={styles.cardHora}>{item.hora}</Text>
+    </View>
+  </TouchableOpacity>
+);
+
   const manejarCerrarSesion = async () => {
-    Alert.alert(
-      'Cerrar Sesión',
-      '¿Estás seguro de que deseas cerrar sesión?',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        {
-          text: 'Cerrar Sesión',
-          onPress: async () => {
-            await signOut(auth);
-            navigation.replace('InicioSesion');
-          },
+    Alert.alert('Cerrar Sesión', '¿Estás seguro de que deseas cerrar sesión?', [
+      { text: 'Cancelar', style: 'cancel' },
+      {
+        text: 'Cerrar Sesión',
+        onPress: async () => {
+          await signOut(auth);
+          navigation.replace('InicioSesion');
         },
-      ]
-    );
+      },
+    ]);
   };
 
   return (
@@ -103,7 +126,6 @@ export default function PantallaCitasHome({ navigation }) {
               Citas
             </Text>
           </TouchableOpacity>
-
           <TouchableOpacity onPress={() => setVistaActiva('historial')} style={styles.tabItem}>
             <Ionicons name="archive" size={24} color="#0A3B74" />
             <Text
@@ -114,16 +136,36 @@ export default function PantallaCitasHome({ navigation }) {
           </TouchableOpacity>
         </View>
 
-        <Ionicons name="settings-outline" size={24} color="black" />
+        <TouchableOpacity onPress={() => navigation.navigate('PantallaAjustes')}>
+             <Ionicons name="settings-outline" size={24} color="black" />
+        </TouchableOpacity>
+        
       </View>
 
-      {/* CONTENIDO */}
+      {/* CALENDARIO Y CITAS */}
       {vistaActiva === 'citas' ? (
-        <FlatList
-          data={citas}
-          renderItem={renderCita}
-          keyExtractor={(item) => item.id}
-        />
+        <>
+          <Calendar
+            onDayPress={(day) => setFechaSeleccionada(day.dateString)}
+            
+            markedDates={getMarkedDates()}
+            theme={{
+              todayTextColor: '#007AFF',
+              arrowColor: '#007AFF',
+            }}
+          />
+
+          <Text style={styles.fechaTitulo}>
+            {moment(fechaSeleccionada).format('DD MMM YYYY')}
+          </Text>
+
+            <FlatList
+            data={citasFiltradas}
+            renderItem={renderCita}
+            keyExtractor={(item) => item.id}
+            />
+
+        </>
       ) : (
         <View style={styles.sinContenido}>
           <Text style={styles.labelInfo}>Sin historial</Text>
@@ -133,21 +175,22 @@ export default function PantallaCitasHome({ navigation }) {
       {/* BARRA INFERIOR */}
       <View style={[styles.barraInferior, { paddingBottom: insets.bottom || 10 }]}>
         <TouchableOpacity onPress={() => navigation.navigate('MenuPaciente')}>
-            <Ionicons name="home" size={24} color="#0A3B74" />
+          <Ionicons name="home" size={24} color="#0A3B74" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('PantallaCitas')}>
-            <Ionicons name="calendar" size={24} color="#007AFF4" />
+          <Ionicons name="calendar" size={24} color="#007AFF" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('PantallaNotificaciones')}>
-            <Ionicons name="notifications" size={24} color="#0A3B74" />
+          <Ionicons name="notifications" size={24} color="#0A3B74" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('PantallaPerfilUsuario')}>
-            <Ionicons name="person" size={24} color="#0A3B74" />
+          <Ionicons name="person" size={24} color="#0A3B74" />
         </TouchableOpacity>
       </View>
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -255,4 +298,62 @@ const styles = StyleSheet.create({
   icono: {
     marginBottom: 4,
   },
+    cardCita: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    marginHorizontal: 20,
+    marginBottom: 15,
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 4,
+    padding: 10,
+  },
+  leftBar: {
+    width: 6,
+    height: 70,
+    backgroundColor: '#007AFF',
+    borderRadius: 3,
+    marginRight: 10,
+  },
+  cardAvatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 12,
+  },
+  cardInfo: {
+    flex: 1,
+  },
+  cardNombre: {
+    fontWeight: 'bold',
+    fontSize: 14,
+    color: '#0A3B74',
+  },
+  cardTipo: {
+    fontSize: 13,
+    color: '#777',
+  },
+  cardLinea: {
+    width: 1,
+    height: 60,
+    backgroundColor: '#ccc',
+    marginHorizontal: 10,
+  },
+  cardFechaHora: {
+    alignItems: 'flex-end',
+  },
+  cardFecha: {
+    fontWeight: 'bold',
+    fontSize: 13,
+    color: '#0A3B74',
+  },
+  cardHora: {
+    fontSize: 13,
+    color: '#333',
+  },
+
 });

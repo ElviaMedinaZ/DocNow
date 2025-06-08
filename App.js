@@ -28,6 +28,7 @@ import PantallaInicioSesion from './componentes/PantallaInicioSesion';
 import PantallaHomeUsuario from './componentes/Usuario/PantallaHomeUsuario';
 import PantallaNotificaciones from './componentes/Usuario/PantallaNotificaciones';
 import PantallaCitas from './componentes/Usuario/PantallaCitasUsuario';
+import PantallaConfirmarCita from './componentes/Usuario/PantallaConfirmarCita';
 import PantallaRegistro from './componentes/PantallaRegistro';
 import PantallaOlvideContrasena from './componentes/PantallaOlvideContrasena';
 import PantallaVerificarCodigo from './componentes/PantallaVerificarCodigo';
@@ -192,6 +193,13 @@ export default function App() {
           component={PantallaCitas}
           options={{ headerShown: false }}
         />
+
+        <Stack.Screen 
+          name="PantallaConfirmarCita"
+          component={PantallaConfirmarCita} 
+          options={{ headerShown: false }}
+        />
+
 
         <Stack.Screen
           name="PantallaNotificaciones"
