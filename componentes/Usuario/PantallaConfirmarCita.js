@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#0A3B74',
+    marginTop: 20,
   },
   cardCita: {
     flexDirection: 'row',
@@ -80,6 +81,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     elevation: 4,
     padding: 10,
+    marginTop: 20,
   },
   leftBar: {
     width: 6,
@@ -113,7 +115,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   cardFechaHora: {
-    alignItems: 'flex-end',
+    alignItems: 'center',
   },
   cardFecha: {
     fontWeight: 'bold',
@@ -127,25 +129,38 @@ const styles = StyleSheet.create({
   botonConfirmar: {
     backgroundColor: '#0A3B74',
     paddingVertical: 15,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginBottom: 20,
+    paddingHorizontal: 18,
+    borderRadius: 18,
+    marginTop: '80%',
+    width: 300,
+    height: 68,
+    marginLeft: 30,
   },
   textoConfirmar: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 28,
     fontWeight: 'bold',
+    alignSelf: 'center',
   },
   botonCancelar: {
     borderWidth: 1,
     borderColor: '#0A3B74',
-    paddingVertical: 15,
-    borderRadius: 8,
+    // paddingVertical: 15,
+    // borderRadius: 8,
+    marginLeft: 30,
     alignItems: 'center',
+    paddingVertical: 15,
+    paddingHorizontal: 18,
+    borderRadius: 18,
+    marginTop: '10%',
+    width: 300,
+    height: 68,
+
   },
   textoCancelar: {
     color: '#0A3B74',
-    fontSize: 16,
+    fontSize: 28,
     fontWeight: 'bold',
+    alignSelf: 'center',
   },
 });

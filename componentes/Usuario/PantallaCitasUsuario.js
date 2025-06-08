@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
   },
   tabs: {
     flexDirection: 'row',
-    gap: 20,
+    gap: 30,
   },
   tabItem: {
     alignItems: 'center',
@@ -345,7 +345,7 @@ const styles = StyleSheet.create({
   icono: {
     marginBottom: 4,
   },
-    cardCita: {
+  cardCita: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
