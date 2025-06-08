@@ -110,9 +110,6 @@ export default function PantallaPerfilDoctor({ navigation }) {
 
   const todosLosServicios = Object.keys(precios);
 
-  {/* Mejoras de la pantalla del perfil doctor
-    Programadora: Irais Reyes
-    Fecha: 06 de junio del 2025 */}
   return (
       <View style={styles.container}>
         <ScrollView contentContainerStyle={{ paddingBottom: 80, flexGrow: 1  }}>

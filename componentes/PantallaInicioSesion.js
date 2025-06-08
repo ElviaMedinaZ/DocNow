@@ -63,7 +63,7 @@ const manejarInicioSesion = async () => {
         break;
 
       case 'Doctor': // Doctor
-        navigation.replace('pantallaHomeDoctor', {
+        navigation.replace('PantallaHomeDoctor', {
           userId,
           nombreUsuario,
           emailUsuario: correo.trim()

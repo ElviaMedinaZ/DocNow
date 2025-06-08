@@ -65,7 +65,7 @@ export default function PantallaPrincipal({ route, navigation }) {
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Image source={require('../../assets/logo.png')} style={styles.logo} />
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('PantallaAjustes')}>
           <Ionicons name="settings-outline" size={24} color="black" />
         </TouchableOpacity>
       </View>
@@ -95,35 +95,61 @@ export default function PantallaPrincipal({ route, navigation }) {
         contentContainerStyle={styles.listaServicios}
       />
 
-            {/* seccion de citas */}Add commentMore actions
-        <View style={styles.contenedorCitas}>
-          <TouchableOpacity style={styles.citasItem}>
-            <Image
-              source={require('../../assets/Iconos_Citas/rectangulo.png')}
-              style={styles.imagenRectangulo}
-            />
-            {/* <Image
-              source={require('../assets//doctor juan.png')}
-              style={styles.imagenDoctoresCitas}
-              resizeMode="cover"
-            /> */}
-            <Text style={styles.labelCitas}>Dr. Juan Hernández</Text>
-            <Image
-              source={require('../../assets/Iconos_Citas/linea.png')}
-              style={styles.imagenLinea}
-            />
-            <View  Styles={styles.contenedorFechas}>
-              <Ionicons name="calendar" size={20} color="#0A3B74" style={styles.icono} />
-              <Text style={styles.labelFecha}>13 Sept. 2022</Text>
-              <Text style={styles.labelHora}>10:00 AM</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
+      <TouchableOpacity
+        style={styles.tituloMedico}
+        onPress={() => navigation.navigate('PantallaServicios')}
+        >
+        <Text style={styles.seccionTitulo}>Médicos destacados</Text>
+        <Ionicons name="chevron-forward" size={18} color="gray" />
+      </TouchableOpacity>
+
+      <FlatList
+        horizontal
+        data={servicios}
+        renderItem={renderServicio}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.listaMedicos}
+      />
+
+      {/* seccion de citas */}
+      <View style={styles.contenedorCitas}>
+        <TouchableOpacity style={styles.citasItem}>
+          <Image
+            source={require('../../assets/Iconos_Citas/rectangulo.png')}
+            style={styles.imagenRectangulo}
+          />
+          <Image
+            source={
+              // usuario.fotoUrl
+              //   ? { uri: usuario.fotoUrl }
+              //   : 
+              require('../../assets/avatar_placeholder.png')
+            }
+            style={styles.avatar}
+          />
+          <Text style={styles.labelCitas}>Dr. Juan Hernández</Text>
+          <Image
+            source={require('../../assets/Iconos_Citas/linea.png')}
+            style={styles.imagenLinea}
+          />
+          <View  Styles={styles.contenedorFechas}>
+            <Ionicons name="calendar" size={20} color="#0A3B74" style={styles.icono} />
+            <Text style={styles.labelFecha}>13 Sept. 2022</Text>
+            <Text style={styles.labelHora}>10:00 AM</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
 
       <View style={[styles.barraInferior,{ paddingBottom: insets.bottom || 10 }]}>
-        <Ionicons name="home" size={24} color="#0A3B74" />Add commentMore actions
-        <Ionicons name="calendar" size={24} color="#0A3B74" />
-        <Ionicons name="notifications" size={24} color="#0A3B74" />
+        <TouchableOpacity onPress={() => navigation.navigate('PantallaHomeUsuario')}>
+            <Ionicons name="home" size={24} color="#0A3B74" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('')}>
+            <Ionicons name="calendar" size={24} color="#0A3B74" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('')}>
+            <Ionicons name="notifications" size={24} color="#0A3B74" />
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('PantallaPerfilUsuario')}>
             <Ionicons name="person" size={24} color="#0A3B74" />
         </TouchableOpacity>
@@ -193,6 +219,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: 'center',
   },
+  tituloMedico:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
   listaMedicos: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -229,10 +260,17 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     marginLeft: 10,
   },
+  avatar: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    marginLeft: 10,
+  },
   labelCitas: {
     color: "#757575",
     fontSize: 16,
     fontWeight: "100",
+    marginLeft: 8
   },
   imagenRectangulo: {
     width: 10,
@@ -254,6 +292,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     alignSelf: 'center',
     alignItems: 'center',
+    marginLeft: 10
   },
   labelHora: {
     color: "#000000",
@@ -261,6 +300,7 @@ const styles = StyleSheet.create({
     fontWeight: "100",
     alignSelf: 'center',
     alignItems: 'center',
+    marginLeft: 10
   },
   icono: {
     alignSelf: 'center',

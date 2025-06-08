@@ -24,9 +24,6 @@ export default function PantallaNotaConsulta({ navigation, route }) {
   const [sintomas, setSintomas] = useState('');
   const [tratamiento, setTratamiento] = useState('');
 
-  {/* Rediseño de la pantalla de notas
-  Programadora: Irais Reyes
-  Fecha: 06 de junio del 2025 */}
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <ScrollView
