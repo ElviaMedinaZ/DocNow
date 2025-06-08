@@ -1,42 +1,30 @@
 import React from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
-  Image,
   FlatList,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 
-export default function PantallaPacientesDoctor({ navigation }) {
-  const insets = useSafeAreaInsets(); // ← obtiene espacios seguros
-  const pacientes = [
-    {
-      id: '1',
-      nombre: 'Maria Jose Perez Luna',
-      tipo: 'Consulta general',
-      foto: require('../../assets/avatar_placeholder.png'),
-    },
-    {
-      id: '2',
-      nombre: 'Daniel Flores Zazueta',
-      tipo: 'Rayos X',
-      foto: require('../../assets/avatar_placeholder.png'),
-    },
-  ];
+const notasMock = [
+  { id: '1', fecha: '09 de mayo 2022', tipo: 'Consulta' },
+  { id: '2', fecha: '12 de abril 2022', tipo: 'Rayos X' },
+  { id: '3', fecha: '5 de marzo 2022', tipo: 'Inyección' },
+  { id: '4', fecha: '10 de febrero 2022', tipo: 'Consulta' },
+];
 
-  const renderPaciente = ({ item }) => (
-    <View style={styles.card}>
-      <Image source={item.foto} style={styles.avatar} />
+export default function PantallaNotasPaciente({ navigation }) {
+  const renderNota = ({ item }) => (
+    <View style={styles.notaItem}>
+      <FontAwesome5 name="file-alt" size={30} color="#0A3B74" style={{ marginRight: 10 }} />
       <View style={{ flex: 1 }}>
-        <Text style={styles.nombre}>{item.nombre}</Text>
+        <Text style={styles.fecha}>{item.fecha}</Text>
         <Text style={styles.tipo}>{item.tipo}</Text>
       </View>
-      <TouchableOpacity style={styles.btnNotas}
-      onPress={() => navigation.navigate('PantallaNotas')}>
-        <Text style={styles.btnTexto}>Ver nota</Text>
+      <TouchableOpacity style={styles.btnVer}>
+        <Text style={styles.btnTexto}>Ver</Text>
       </TouchableOpacity>
     </View>
   );
@@ -46,31 +34,39 @@ export default function PantallaPacientesDoctor({ navigation }) {
       {/* ENCABEZADO */}
       <View style={styles.encabezado}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="black" />
+            <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
-
+        <Text style={styles.nombrePaciente}>Aquí va el nombre</Text>
         <TouchableOpacity onPress={() => navigation.navigate('PantallaAjustes')}>
           <Ionicons name="settings-outline" size={24} color="black" />
         </TouchableOpacity>
       </View>
 
-      {/* LISTA DE PACIENTES */}
+      {/* LISTA DE NOTAS */}
       <FlatList
-        data={pacientes}
-        renderItem={renderPaciente}
+        data={notasMock}
+        renderItem={renderNota}
         keyExtractor={(item) => item.id}
+        contentContainerStyle={{ paddingBottom: 20 }}
       />
 
+      {/* BOTÓN RESPALDAR */}
+      <View style={styles.contenedorBtn}>
+        <TouchableOpacity style={styles.btnRespaldar}>
+          <Text style={styles.btnTexto}>Respaldar</Text>
+        </TouchableOpacity>
+      </View>
+
       {/* BARRA INFERIOR */}
-      <View style={[styles.barraInferior,{ paddingBottom: insets.bottom || 10 }]}>
-         {/*Boton perfil */}
+      <View style={styles.barraInferior}>
+        {/*Boton perfil */}
         <TouchableOpacity onPress={() => navigation.navigate('PacienteDoctor')}>
-            <Ionicons name="people" size={24} color="#007AFF" />
+            <Ionicons name="people" size={24} color="#0A3B74" />
         </TouchableOpacity>
     
         {/*Boton citas */}
         <TouchableOpacity onPress={() => navigation.navigate('PantallaHomeDoctor')}>
-            <Ionicons name="calendar" size={24} color="#0A3B74" />
+            <Ionicons name="calendar" size={24} color="#007AFF" />
         </TouchableOpacity>
     
         {/*Boton notificacion */}
@@ -95,14 +91,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     marginBottom: 20,
-    marginTop: 20
   },
-  titulo: {
-    fontSize: 16,
+  nombrePaciente: {
+    fontSize: 20,
     fontWeight: 'bold',
-    color: '#0B2E59',
+    color: '#0A3B74',
   },
-  card: {
+  notaItem: {
     flexDirection: 'row',
     alignItems: 'center',
     marginHorizontal: 20,
@@ -111,32 +106,34 @@ const styles = StyleSheet.create({
     backgroundColor: '#F2F2F2',
     borderRadius: 10,
   },
-  avatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 12,
-  },
-  nombre: {
+  fecha: {
     fontWeight: 'bold',
     fontSize: 14,
   },
   tipo: {
     fontSize: 12,
-    color: 'gray',
+    color: '#0A3B74',
   },
-  btnNotas: {
-    backgroundColor: '#7993B1',
-    paddingHorizontal: 12,
+  btnVer: {
+    backgroundColor: '#0A3B74',
+    paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 8,
     marginLeft: 10,
-    borderBlockColor: '#0A3B74',
-    borderWidth: 1,
   },
   btnTexto: {
     color: '#fff',
     fontSize: 12,
+  },
+  contenedorBtn: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  btnRespaldar: {
+    backgroundColor: '#0A3B74',
+    paddingVertical: 12,
+    paddingHorizontal: 40,
+    borderRadius: 10,
   },
   barraInferior: {
     flexDirection: 'row',

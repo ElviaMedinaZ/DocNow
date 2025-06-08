@@ -19,7 +19,8 @@ import PantallaNotaConsulta from './componentes/Doctores/PantallaNotaConsulta';/
 import PantallaRegistroDoctor from './componentes/Doctores/PantallaRegistroDoctores';//pantalla para registrar
 import PantallaPerfilDoctor from './componentes/Doctores/PantallaPerfilDoctor';//pantalla para perfil
 import PantallaNotificacionesDoctor from './componentes/Doctores/PantallaNotificacionesDoctor';//pantalla para notificaciones
-import PantallaPacieteDoctores from './componentes/Doctores/PantallaPacienteDoctor';//pantalla para pacientes 
+import PantallaPacieteDoctores from './componentes/Doctores/PantallaPacienteDoctor';//pantalla para pacientes
+import PantallaNotas from './componentes/Doctores/PantallaNotas';//pantalla para ver notas 
 
 //usuarios
 import PantallaPerfilUsiario from './componentes/Usuario/PantallaPerfilUsuario';
@@ -114,6 +115,12 @@ export default function App() {
           name="NotaConsulta"
           component={PantallaNotaConsulta}
           options={{ headerShown: false }}
+        />
+
+         <Stack.Screen
+            name="PantallaNotas"
+            component={PantallaNotas}
+            options={{ headerShown: false }}
         />
 
         <Stack.Screen
