@@ -25,7 +25,9 @@ import PantallaNotas from './componentes/Doctores/PantallaNotas';//pantalla para
 //usuarios
 import PantallaPerfilUsiario from './componentes/Usuario/PantallaPerfilUsuario';
 import PantallaInicioSesion from './componentes/PantallaInicioSesion';
-import PantallaHomeUsuario from './componentes/Usuario/PantallaHomeUsuario'
+import PantallaHomeUsuario from './componentes/Usuario/PantallaHomeUsuario';
+import PantallaNotificaciones from './componentes/Usuario/PantallaNotificaciones';
+import PantallaCitas from './componentes/Usuario/PantallaCitasUsuario';
 import PantallaRegistro from './componentes/PantallaRegistro';
 import PantallaOlvideContrasena from './componentes/PantallaOlvideContrasena';
 import PantallaVerificarCodigo from './componentes/PantallaVerificarCodigo';
@@ -184,6 +186,19 @@ export default function App() {
           component={PantallaOlvideContrasena}
           options={{ headerShown: false }}
         />
+
+        <Stack.Screen
+          name="PantallaCitas"
+          component={PantallaCitas}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="PantallaNotificaciones"
+          component={PantallaNotificaciones}
+          options={{ headerShown: false }}
+        />
+        
         <Stack.Screen
           name="VerificarCodigo"
           component={PantallaVerificarCodigo}

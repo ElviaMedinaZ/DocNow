@@ -107,14 +107,18 @@ export default function PantallaPerfil({ navigation }) {
         </TouchableOpacity>
 
         <View style={styles.barraInferior}>
-            <TouchableOpacity onPress={() => navigation.navigate('MenuPaciente', {
-                nombreUsuario: usuario.nombre,
-                userId: auth.currentUser.uid,})} >
+            <TouchableOpacity onPress={() => navigation.navigate('MenuPaciente')}>
                 <Ionicons name="home" size={24} color="#0A3B74" />
             </TouchableOpacity>
-            <Ionicons name="calendar" size={24} color="#0A3B74" />
-            <Ionicons name="notifications" size={24} color="#0A3B74" />
-            <Ionicons name="person" size={24} color="#007AFF" />
+            <TouchableOpacity onPress={() => navigation.navigate('PantallaCitas')}>
+                <Ionicons name="calendar" size={24} color="#0A3B74" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('PantallaNotificaciones')}>
+                <Ionicons name="notifications" size={24} color="#0A3B74" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('PantallaPerfilUsuario')}>
+                <Ionicons name="person" size={24} color="#007AFF4" />
+            </TouchableOpacity>
         </View>
     </View>
   );

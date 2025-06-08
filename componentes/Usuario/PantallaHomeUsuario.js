@@ -21,7 +21,6 @@ import { Ionicons } from '@expo/vector-icons';
 
 export default function PantallaPrincipal({ route, navigation }) {
   const insets = useSafeAreaInsets(); // ← obtiene espacios seguros
-  const { nombreUsuario, userId } = route.params;
   const [servicios, setServicios] = useState([]);
 
   useEffect(() => {
@@ -141,13 +140,13 @@ export default function PantallaPrincipal({ route, navigation }) {
       </View>
 
       <View style={[styles.barraInferior,{ paddingBottom: insets.bottom || 10 }]}>
-        <TouchableOpacity onPress={() => navigation.navigate('PantallaHomeUsuario')}>
-            <Ionicons name="home" size={24} color="#0A3B74" />
+        <TouchableOpacity onPress={() => navigation.navigate('MenuPaciente')}>
+            <Ionicons name="home" size={24} color="#007AFF4" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('')}>
+        <TouchableOpacity onPress={() => navigation.navigate('PantallaCitas')}>
             <Ionicons name="calendar" size={24} color="#0A3B74" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('')}>
+        <TouchableOpacity onPress={() => navigation.navigate('PantallaNotificaciones')}>
             <Ionicons name="notifications" size={24} color="#0A3B74" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('PantallaPerfilUsuario')}>

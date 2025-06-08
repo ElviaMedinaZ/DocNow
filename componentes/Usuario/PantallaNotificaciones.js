@@ -1,250 +1,231 @@
-{/* Creacion de la pantalla notificaciones
-  Programador: Kristofer Hernandez
-  Fecha: 05 de junio del 2025 */}
-
-// Pantalla para editar el perfil de usuario obteniendo datos de Firestore
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
-  ScrollView,
   View,
   Text,
-  Image,
-  TextInput,
-  TouchableOpacity,
   StyleSheet,
-  Alert,
-} from "react-native";
-import { Picker } from "@react-native-picker/picker";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+  TouchableOpacity,
+  Image
+} from 'react-native';
+import { Alert } from 'react-native'; 
 import { Ionicons } from '@expo/vector-icons';
-import * as ImagePicker from 'expo-image-picker';
-import { db } from "../utileria/firebase";
+import { doc, getDoc } from 'firebase/firestore';
+import { auth, db } from '../../utileria/firebase';
 
-export default function PantallaEditarRegistro({ navigation, route }) {
-  const { uid } = route.params; // UID del usuario a editar
-  const [nombres, setNombres] = useState("");
-  const [apellidoP, setApellidoP] = useState("");
-  const [apellidoM, setApellidoM] = useState("");
-  const [curp, setCurp] = useState("");
-  const [sexo, setSexo] = useState("");
-  const [fecha, setFecha] = useState(new Date());
-  const [showDate, setShowDate] = useState(false);
-  const [estadoCivil, setEstadoCivil] = useState("Soltero");
-  const [telefono, setTelefono] = useState("");
-  const [imagenUri, setImagenUri] = useState(null);
-  const [errores, setErrores] = useState({});
+
+
+export default function PantallaCitasHome({ navigation }) {
+  const insets = useSafeAreaInsets();
+  const [usuario, setUsuario] = useState(null);
 
   useEffect(() => {
-    const cargarDatos = async () => {
-      const ref = doc(db, "usuarios", uid);
-      const snap = await getDoc(ref);
-      if (snap.exists()) {
-        const data = snap.data();
-        setNombres(data.nombres || "");
-        setApellidoP(data.apellidoP || "");
-        setApellidoM(data.apellidoM || "");
-        setCurp(data.curp || "");
-        setSexo(data.sexo || "");
-        setFecha(data.fechaNacimiento ? new Date(data.fechaNacimiento) : new Date());
-        setEstadoCivil(data.estadoCivil || "Soltero");
-        setTelefono(data.telefono || "");
-        setImagenUri(data.fotoURL || null);
+    const obtenerDatosUsuario = async () => {
+      const userId = auth.currentUser?.uid;
+      if (!userId) return;
+
+      const docRef = doc(db, 'usuarios', userId); // Asegúrate de que tu colección sea 'Usuarios'
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        setUsuario(docSnap.data());
+      } else {
+        Alert.alert('Error', 'No se encontraron los datos del usuario');
       }
     };
-    cargarDatos();
+
+    obtenerDatosUsuario();
   }, []);
 
-  const seleccionarImagen = async () => {
-    const resultado = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 0.5,
-    });
+  if (!usuario) {
+    return (
+      <View style={styles.container}>
+        <Text>Cargando perfil...</Text>
+      </View>
+    );
+  }
 
-    if (!resultado.canceled) {
-      setImagenUri(resultado.assets[0].uri);
-    }
-  };
-
-  const abrirDatePicker = () => setShowDate(true);
-
-  const onChangeFecha = (e, selected) => {
-    setShowDate(false);
-    if (selected) setFecha(selected);
-  };
-
-  const guardarCambios = async () => {
-    try {
-      const ref = doc(db, "usuarios", uid);
-      await updateDoc(ref, {
-        nombres,
-        apellidoP,
-        apellidoM,
-        curp,
-        sexo,
-        fechaNacimiento: fecha.toISOString().split("T")[0],
-        estadoCivil,
-        telefono,
-      });
-      Alert.alert("Actualizado", "Tu perfil ha sido actualizado correctamente.");
-    } catch (error) {
-      console.error("Error al actualizar: ", error);
-      Alert.alert("Error", "No se pudo actualizar la información.");
-    }
-  };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <View style={styles.container}>
+      {/* ENCABEZADO */}
       <View style={styles.encabezado}>
-        <TouchableOpacity style={styles.botonVolver} onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={28} color="#0A3B74" />
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
-        <Image source={require('../assets/logo.png')} style={styles.logoEncabezado} resizeMode="contain" />
-      </View>
-
-      <TouchableOpacity onPress={seleccionarImagen} style={{ alignSelf: 'center', marginBottom: 20 }}>
-        <Image
-          source={imagenUri ? { uri: imagenUri } : require('../assets/avatar_placeholder.png')}
-          style={{ width: 100, height: 100, borderRadius: 50 }}
-        />
-        <Text style={{ textAlign: 'center', marginTop: 8, color: '#0A3B74' }}>
-          {imagenUri ? 'Cambiar foto' : 'Agregar foto'}
-        </Text>
-      </TouchableOpacity>
-
-      <Text style={styles.label}>Nombre(s)</Text>
-      <TextInput style={styles.input} value={nombres} onChangeText={setNombres} />
-
-      <Text style={styles.label}>Apellido paterno</Text>
-      <TextInput style={styles.input} value={apellidoP} onChangeText={setApellidoP} />
-
-      <Text style={styles.label}>Apellido materno</Text>
-      <TextInput style={styles.input} value={apellidoM} onChangeText={setApellidoM} />
-
-      <Text style={styles.label}>CURP</Text>
-      <TextInput style={styles.input} value={curp} onChangeText={setCurp} />
-
-      <Text style={styles.label}>Sexo</Text>
-      <View style={{ flexDirection: 'row', marginBottom: 12 }}>
-        <TouchableOpacity
-          style={[styles.botonSexo, sexo === "M" && styles.botonSexoSeleccionado]}
-          onPress={() => setSexo("M")}
-        >
-          <Image source={require('../assets/Iconos_Registro/iconoMasculino.png')} style={styles.iconoSexo} />
-          <Text style={styles.textoSexo}>Masculino</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.botonSexo, sexo === "F" && styles.botonSexoSeleccionado]}
-          onPress={() => setSexo("F")}
-        >
-          <Image source={require('../assets/Iconos_Registro/iconoFemenino.png')} style={styles.iconoSexo} />
-          <Text style={styles.textoSexo}>Femenino</Text>
+        <Text style={styles.titulo}>Notificaciones</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('PantallaAjustes')}>
+          <Ionicons name="settings-outline" size={24} color="black" />
         </TouchableOpacity>
       </View>
 
-      <Text style={styles.label}>Fecha de nacimiento</Text>
-      <TouchableOpacity onPress={abrirDatePicker} style={styles.input}>
-        <Text>{fecha.toLocaleDateString("es-MX")}</Text>
-      </TouchableOpacity>
-      {showDate && (
-        <DateTimePicker value={fecha} mode="date" display="spinner" onChange={onChangeFecha} />
-      )}
-
-      <Text style={styles.label}>Estado Civil</Text>
-      <View style={styles.input}>
-        <Picker selectedValue={estadoCivil} onValueChange={setEstadoCivil}>
-          <Picker.Item label="Soltero/a" value="Soltero" />
-          <Picker.Item label="Casado/a" value="Casado" />
-          <Picker.Item label="Divorciado/a" value="Divorciado" />
-          <Picker.Item label="Viudo/a" value="Viudo" />
-        </Picker>
+      <View style={styles.contenedorFechas}>
+        <TouchableOpacity style={styles.citasItem}>
+          <Image
+            source={require('../../assets/Iconos_Citas/rectangulo.png')}
+            style={styles.imagenRectangulo}
+          />
+          <Image
+            source={
+              usuario.fotoUrl
+                ? { uri: usuario.fotoUrl }
+                : require('../../assets/avatar_placeholder.png')
+            }
+            style={styles.avatar}
+          />
+            <Text style={styles.nombre}>{usuario.nombre}</Text>
+          <View style={styles.contenedorNombreEstado}>
+            <Text style={styles.labelCitas}>Juan Hernández</Text>
+            <Text style={styles.estado}>Cancelada</Text>
+          </View>
+          <Image
+            source={require('../../assets/Iconos_Citas/linea.png')}
+            style={styles.imagenLinea}
+          />
+          <View  Styles={styles.contenedorFechas}>
+            <Ionicons name="calendar" size={20} color="#0A3B74" style={styles.icono} />
+            <Text style={styles.labelFecha}>13 Sept. 2022</Text>
+            <Text style={styles.labelHora}>10:00 AM</Text>
+          </View>
+        </TouchableOpacity>
       </View>
 
-      <Text style={styles.label}>Número telefónico</Text>
-      <TextInput style={styles.input} keyboardType="phone-pad" value={telefono} onChangeText={setTelefono} />
+      {/* TEXTO CENTRAL */}
+      <View style={styles.sinContenido}>
+        <Text style={styles.labelInfo}>Sin citas previas</Text>
+      </View>
 
-      <TouchableOpacity style={styles.boton} onPress={guardarCambios}>
-        <Text style={styles.textoBoton}>Guardar Cambios</Text>
-      </TouchableOpacity>
-    </ScrollView>
+      {/* BARRA INFERIOR */}
+      <View style={[styles.barraInferior, { paddingBottom: insets.bottom || 10 }]}>
+        <TouchableOpacity onPress={() => navigation.navigate('MenuPaciente')}>
+            <Ionicons name="home" size={24} color="#0A3B74" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('PantallaCitas')}>
+            <Ionicons name="calendar" size={24} color="#0A3B74" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('PantallaNotificaciones')}>
+            <Ionicons name="notifications" size={24} color="#007AFF" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('PantallaPerfilUsuario')}>
+            <Ionicons name="person" size={24} color="#0A3B74" />
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 24,
-    backgroundColor: "#fff",
+    flex: 1,
+    backgroundColor: '#fff',
   },
   encabezado: {
-    position: 'relative',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 50,
+    paddingBottom: 20,
+    marginTop: 20,
+  },
+  titulo: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#0A3B74',
+    marginTop: 20
+  },
+  sinContenido: {
+    flex: 1,
     justifyContent: 'center',
-    height: 60,
-    marginBottom: 16,
+    alignItems: 'center',
   },
-  botonVolver: {
-    position: 'absolute',
-    left: 0,
-    top: '50%',
-    transform: [{ translateY: -14 }],
+  labelInfo: {
+    fontSize: 18,
+    color: 'gray',
+    fontWeight: '500',
+  },
+  contenedorCitas: {
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    backgroundColor: '#fff',
     padding: 10,
-  },
-  logoEncabezado: {
-    width: 70,
-    height: 30,
-  },
-  input: {
-    backgroundColor: "#F5F5F5",
     borderRadius: 8,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    marginBottom: 12,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
   },
-  label: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 4,
-  },
-  botonSexo: {
-    backgroundColor: "#F1F1F1",
-    paddingVertical: 15,
-    paddingHorizontal: 16,
-    borderRadius: 18,
-    marginHorizontal: 5,
+  citasItem: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  botonSexoSeleccionado: {
-    borderWidth: 2,
-    borderColor: '#0A3B74',
-    backgroundColor: '#E0ECF8',
+  imagenDoctoresCitas: {
+    width: 70,
+    height: 70,
+    borderRadius: 40,
+    marginLeft: 10,
   },
-  textoSexo: {
-    color: "#0A3B74",
+  labelCitas: {
+    color: "#757575",
     fontSize: 16,
-    fontWeight: "800",
-    paddingHorizontal: 5,
+    fontWeight: "100",
   },
-  iconoSexo: {
-    width: 40,
-    height: 40,
-    marginRight: 6,
-    resizeMode: "contain",
+  imagenRectangulo: {
+    width: 10,
+    height: 100,
+    marginLeft: 8,
   },
-  boton: {
-    backgroundColor: "#0A3B74",
-    paddingVertical: 14,
-    borderRadius: 25,
-    alignItems: "center",
-    marginTop: 24,
-    marginBottom: 40,
+  avatar: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    marginLeft: 10,
   },
-  textoBoton: {
-    color: "#fff",
+  imagenLinea: {
+    width: 1,
+    height: 100,
+    marginLeft: 8,
+  },
+  contenedorFechas: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  labelFecha: {
+    color: "#000000",
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: "500",
+    alignSelf: 'center',
+    alignItems: 'center',
+    marginLeft: 10
+  },
+  labelHora: {
+    color: "#000000",
+    fontSize: 16,
+    fontWeight: "100",
+    alignSelf: 'center',
+    alignItems: 'center',
+    marginLeft: 10
+  },
+  icono: {
+    alignSelf: 'center',
+    alignItems: 'center',
+  },
+  contenedorNombreEstado: {
+    flexDirection: 'column',
+    marginLeft: 10,
+  },
+  estado: {
+    fontSize: 16,
+    color: '#0A3B74',
+  },
+  barraInferior: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 15,
+    borderTopWidth: 1,
+    borderTopColor: '#ccc',
+    backgroundColor: '#fff',
   },
 });
