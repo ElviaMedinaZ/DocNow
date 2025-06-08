@@ -100,7 +100,6 @@ export default function PantallaPrincipal({ route, navigation }) {
         onPress={() => navigation.navigate('PantallaServicios')}
         >
         <Text style={styles.seccionTitulo}>Médicos destacados</Text>
-        <Ionicons name="chevron-forward" size={18} color="gray" />
       </TouchableOpacity>
 
       <FlatList
@@ -144,7 +143,7 @@ export default function PantallaPrincipal({ route, navigation }) {
 
       <View style={[styles.barraInferior,{ paddingBottom: insets.bottom || 10 }]}>
         <TouchableOpacity onPress={() => navigation.navigate('MenuPaciente')}>
-            <Ionicons name="home" size={24} color="#007AFF4" />
+            <Ionicons name="home" size={24} color="#007AFF" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('PantallaCitas')}>
             <Ionicons name="calendar" size={24} color="#0A3B74" />
@@ -319,7 +318,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     backgroundColor: '#fff',
-    marginBottom: 35,
+    marginBottom: 20,
   },
 });
 

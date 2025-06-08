@@ -19,7 +19,7 @@ export default function PantallaEvaluacion({ route, navigation }) {
       <TouchableOpacity key={index} onPress={() => setCalificacion(index + 1)}>
         <Ionicons
           name={index < calificacion ? 'star' : 'star-outline'}
-          size={24}
+          size={30}
           color="#007AFF"
         />
       </TouchableOpacity>
@@ -64,8 +64,8 @@ export default function PantallaEvaluacion({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff', padding: 20 },
-  flecha: { marginBottom: 20 },
+  container: { flex: 1, backgroundColor: '#fff', padding: 20},
+  flecha: { marginBottom: 20, marginTop: 30  },
   titulo: {
     fontSize: 20,
     fontWeight: 'bold',
@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     marginBottom: 20,
+    gap: 15,
   },
   textarea: {
     height: 100,
@@ -104,31 +105,50 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     padding: 10,
+    height:150,
     textAlignVertical: 'top',
     marginBottom: 20,
+    marginTop: '10%',
+    backgroundColor: '#F1F1F1',
   },
   botonEnviar: {
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    width: '40%',
     backgroundColor: '#0A3B74',
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginBottom: 15,
+    paddingVertical: 15,
+    paddingHorizontal: 18,
+    borderRadius: 18,
+    marginTop: '40%',
+    width: '80%',
+    height: 68,
   },
   textoBoton: {
-    color: '#fff',
     fontWeight: 'bold',
-    fontSize: 16,
+    textAlign: 'center', 
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '600'
   },
   botonOmitir: {
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
     borderWidth: 1,
     borderColor: '#0A3B74',
-    padding: 15,
-    borderRadius: 10,
+    padding: 12,
+    borderRadius: 18,
     alignItems: 'center',
+    marginTop: '5%',
+    width: '80%',
+    height: 68,
   },
   textoOmitir: {
     color: '#0A3B74',
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 18,
+    fontWeight: '600'
+    
   },
 });
