@@ -35,7 +35,7 @@ export default function PantallaPacientesDoctor({ navigation }) {
         <Text style={styles.tipo}>{item.tipo}</Text>
       </View>
       <TouchableOpacity style={styles.btnNotas}>
-        <Text style={styles.btnTexto}>Ver</Text>
+        <Text style={styles.btnTexto}>Ver nota</Text>
       </TouchableOpacity>
     </View>
   );
@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     marginBottom: 20,
+    marginTop: 20
   },
   titulo: {
     fontSize: 16,
@@ -124,11 +125,13 @@ const styles = StyleSheet.create({
     color: 'gray',
   },
   btnNotas: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#7993B1',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 8,
     marginLeft: 10,
+    borderBlockColor: '#0A3B74',
+    borderWidth: 1,
   },
   btnTexto: {
     color: '#fff',

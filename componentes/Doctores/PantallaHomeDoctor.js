@@ -33,27 +33,34 @@ export default function PantallaCitasHome({ navigation }) {
   ];
 
   const renderCita = ({ item }) => (
-    <View style={styles.card}>
-      <Image source={item.foto} style={styles.avatar} />
-      <View style={{ flex: 1 }}>
-        <Text style={styles.nombre}>{item.nombre}</Text>
-        <Text style={styles.tipo}>{item.tipo}</Text>
-      </View>
-      <TouchableOpacity style={styles.btnFinalizar}>
-        <Text style={styles.btnTexto}>Finalizar</Text>
-      </TouchableOpacity>
-        <TouchableOpacity
+      <View style={styles.card}>
+        <Image source={item.foto} style={styles.avatar} />
+        
+        <View style={{ flex: 1 }}>
+          <Text style={styles.nombre}>{item.nombre}</Text>
+          <Text style={styles.tipo}>{item.tipo}</Text>
+        </View>
+
+        {/* Contenedor vertical para los botones */}
+        <View style={styles.botonesContainer}>
+          <TouchableOpacity style={styles.btnFinalizar}>
+            <Text style={styles.btnTexto}>Finalizar</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
             style={styles.btnNotas}
             onPress={() => navigation.navigate('NotaConsulta', {
-                nombrePaciente: item.nombre,
-                edad: 21, // Reemplaza con datos reales si los tienes
-                consultorio: '5'
+              nombrePaciente: item.nombre,
+              edad: 21,
+              consultorio: '5',
             })}
-            >
-            <Text style={styles.btnTexto}>Notas</Text>
-        </TouchableOpacity>
-    </View>
-  );
+          >
+            <Text style={styles.btnTextoNotas}>+ Notas</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+
 
   
     const manejarCerrarSesion = async () => {
@@ -77,8 +84,10 @@ export default function PantallaCitasHome({ navigation }) {
         <TouchableOpacity onPress={manejarCerrarSesion}>
             <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
+
         <View style={styles.tabs}>
-          <TouchableOpacity onPress={() => setVistaActiva('citas')}>
+          <TouchableOpacity onPress={() => setVistaActiva('citas')} style={styles.tabItem}>
+            <Ionicons name="calendar-outline" size={24} color="#0A3B74" />
             <Text
               style={[
                 styles.tabText,
@@ -88,7 +97,9 @@ export default function PantallaCitasHome({ navigation }) {
               Citas
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setVistaActiva('historial')}>
+
+          <TouchableOpacity onPress={() => setVistaActiva('historial')} style={styles.tabItem}>
+            <Ionicons name="archive" size={24} color="#0A3B74"  alignItems='center'/>
             <Text
               style={[
                 styles.tabText,
@@ -98,6 +109,7 @@ export default function PantallaCitasHome({ navigation }) {
               Historial
             </Text>
           </TouchableOpacity>
+
         </View>
         <Ionicons name="settings-outline" size={24} color="black" />
       </View>
@@ -149,6 +161,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     marginBottom: 20,
+    marginTop: 20,
+  },
+  botonesContainer: {
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    gap: 6,
   },
   tabs: {
     flexDirection: 'row',
@@ -158,6 +177,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'gray',
     marginHorizontal: 10,
+  },
+  tabItem:{
+    alignItems: 'center',
   },
   tabActivo: {
     color: '#007AFF',
@@ -189,11 +211,13 @@ const styles = StyleSheet.create({
     color: '#0A3B74',
   },
   btnFinalizar: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#ffffff',
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 8,
     marginLeft: 10,
+    borderBlockColor: '#0A3B74',
+    borderWidth: 1,
   },
   btnNotas: {
     backgroundColor: '#7993B1',
@@ -202,9 +226,15 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: 8,
     marginLeft: 6,
+    borderBlockColor: '#0A3B74',
+    borderWidth: 1,
   },
   btnTexto: {
-    color: '#fff',
+    color: '#0A3B74',
+    fontSize: 12,
+  },
+  btnTextoNotas: {
+    color: '#ffffff',
     fontSize: 12,
   },
   sinContenido: {

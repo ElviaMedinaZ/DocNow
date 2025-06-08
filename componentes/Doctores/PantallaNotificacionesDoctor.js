@@ -129,6 +129,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 50,
     paddingBottom: 20,
+    marginTop: 20,
   },
   titulo: {
     fontSize: 20,

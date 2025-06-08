@@ -101,9 +101,6 @@ export default function PantallaEditarDoctor({ navigation, route }) {
         <Image source={require('../../assets/logo.png')} style={styles.logoEncabezado} resizeMode="contain" />
       </View>
 
-      {/* Agregamos efecto de filtro en el icono
-      Programadora: Irais Reyes
-      Fecha: 07 de junio del 2025 */}
       <TouchableOpacity onPress={seleccionarImagen} style={styles.contenedorImagen}>
         <Image
           source={imagenUri ? { uri: imagenUri } : require('../../assets/avatar_placeholder.png')}
