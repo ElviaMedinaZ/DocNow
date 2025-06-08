@@ -122,8 +122,8 @@ export default function PantallaPerfilDoctor({ navigation }) {
               <TouchableOpacity onPress={() => navigation.goBack()}>
                 <Ionicons name="arrow-back" size={24} color="#1E1E1E" />
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => Alert.alert('Ajustes')}>
-                <Ionicons name="settings-outline" size={24} color="#1E1E1E" />
+              <TouchableOpacity onPress={() => navigation.navigate('PantallaAjustes')}>
+                <Ionicons name="settings-outline" size={24} color="black" />
               </TouchableOpacity>
             </View>
 
@@ -223,10 +223,25 @@ export default function PantallaPerfilDoctor({ navigation }) {
       </ScrollView>
 
       <View style={[styles.barraInferior, { paddingBottom: insets.bottom || 10 }]}>
-        <Ionicons name="people" size={24} color="#0A3B74" />
-        <Ionicons name="calendar" size={24} color="#0A3B74" />
-        <Ionicons name="notifications" size={24} color="#0A3B74" />
-        <Ionicons name="person" size={24} color="#007AFF" />
+        {/*Boton perfil */}
+        <TouchableOpacity onPress={() => navigation.navigate('PacienteDoctor')}>
+            <Ionicons name="people" size={24} color="#0A3B74" />
+        </TouchableOpacity>
+    
+        {/*Boton citas */}
+        <TouchableOpacity onPress={() => navigation.navigate('PantallaHomeDoctor')}>
+            <Ionicons name="calendar" size={24} color="#0A3B74" />
+        </TouchableOpacity>
+    
+        {/*Boton notificacion */}
+        <TouchableOpacity onPress={() => navigation.navigate('NotificacionesDoctores')}>
+            <Ionicons name="notifications" size={24} color="#0A3B74" />
+        </TouchableOpacity>
+
+          {/*Boton perfils */}   
+        <TouchableOpacity onPress={() => navigation.navigate('PerfilDoctor')}>
+            <Ionicons name="person" size={24} color="#007AFF" />
+        </TouchableOpacity>
       </View>
     </View>
   );

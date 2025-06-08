@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   View,
   Text,
@@ -10,6 +11,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 
 export default function PantallaPacientesDoctor({ navigation }) {
+  const insets = useSafeAreaInsets(); // ← obtiene espacios seguros
   const pacientes = [
     {
       id: '1',
@@ -45,8 +47,10 @@ export default function PantallaPacientesDoctor({ navigation }) {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={styles.titulo}>Aquí van mis pacientes</Text>
-        <Ionicons name="settings-outline" size={24} color="black" />
+
+        <TouchableOpacity onPress={() => navigation.navigate('PantallaAjustes')}>
+          <Ionicons name="settings-outline" size={24} color="black" />
+        </TouchableOpacity>
       </View>
 
       {/* LISTA DE PACIENTES */}
@@ -57,11 +61,26 @@ export default function PantallaPacientesDoctor({ navigation }) {
       />
 
       {/* BARRA INFERIOR */}
-      <View style={styles.barraInferior}>
-        <Ionicons name="people" size={24} color="#007AFF" />
-        <Ionicons name="calendar" size={24} color="gray" />
-        <Ionicons name="notifications" size={24} color="gray" />
-        <Ionicons name="person" size={24} color="gray" />
+      <View style={[styles.barraInferior,{ paddingBottom: insets.bottom || 10 }]}>
+         {/*Boton perfil */}
+        <TouchableOpacity onPress={() => navigation.navigate('PacienteDoctor')}>
+            <Ionicons name="people" size={24} color="#007AFF" />
+        </TouchableOpacity>
+    
+        {/*Boton citas */}
+        <TouchableOpacity onPress={() => navigation.navigate('PantallaHomeDoctor')}>
+            <Ionicons name="calendar" size={24} color="#0A3B74" />
+        </TouchableOpacity>
+    
+        {/*Boton notificacion */}
+        <TouchableOpacity onPress={() => navigation.navigate('NotificacionesDoctores')}>
+            <Ionicons name="notifications" size={24} color="#0A3B74" />
+        </TouchableOpacity>
+
+          {/*Boton perfils */}   
+        <TouchableOpacity onPress={() => navigation.navigate('PerfilDoctor')}>
+            <Ionicons name="person" size={24} color="#0A3B74" />
+        </TouchableOpacity>
       </View>
     </View>
   );

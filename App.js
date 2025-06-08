@@ -13,11 +13,13 @@ import PantallaReportes from './componentes/Admin/PantallaReportes';
 import PantallaRespaldos from './componentes/Admin/PantallaRespaldos';
 
 //Doctor
-import PantallaHomeDoctor from './componentes/Doctores/PantallaHomeDoctor';
-import PantallaEditarDoctor from './componentes/Doctores/PantallaEditarDoctor';
-import PantallaNotaConsulta from './componentes/Doctores/PantallaNotaConsulta';
-import PantallaRegistroDoctor from './componentes/Doctores/PantallaRegistroDoctores';
-import PantallaPerfilDoctor from './componentes/Doctores/PantallaPerfilDoctor';
+import PantallaHomeDoctor from './componentes/Doctores/PantallaHomeDoctor';//pantalla principal
+import PantallaEditarDoctor from './componentes/Doctores/PantallaEditarDoctor';//pantalla para edicion
+import PantallaNotaConsulta from './componentes/Doctores/PantallaNotaConsulta';//pantalla para notas
+import PantallaRegistroDoctor from './componentes/Doctores/PantallaRegistroDoctores';//pantalla para registrar
+import PantallaPerfilDoctor from './componentes/Doctores/PantallaPerfilDoctor';//pantalla para perfil
+import PantallaNotificacionesDoctor from './componentes/Doctores/PantallaNotificacionesDoctor';//pantalla para notificaciones
+import PantallaPacieteDoctores from './componentes/Doctores/PantallaPacienteDoctor';//pantalla para pacientes 
 
 //usuarios
 import PantallaPerfilUsiario from './componentes/Usuario/PantallaPerfilUsuario';
@@ -32,6 +34,8 @@ import PantallaEditarRegistro from './componentes/Usuario/PantallaEditarRegistro
 
 //Multi
 import PantallaRegistroExitoso from './componentes/PantallaRegistroExistoso';
+import PantallaAjustes from './componentes/PantallaAjustes';
+
 
 
 const Stack = createNativeStackNavigator();
@@ -55,6 +59,12 @@ export default function App() {
         <Stack.Screen
           name='PantallaExitoso'
           component={PantallaRegistroExitoso}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name='PantallaAjustes'
+          component={PantallaAjustes}
           options={{headerShown: false}}
         />
 
@@ -89,7 +99,7 @@ export default function App() {
         {/*Doctor*/}
 
         <Stack.Screen
-          name="pantallaHomeDoctor"
+          name="PantallaHomeDoctor"
           component={PantallaHomeDoctor}
           options={{ headerShown: false }}
         />
@@ -119,6 +129,17 @@ export default function App() {
           options={{headerShown: false}}        
         />
 
+        <Stack.Screen 
+          name='PacienteDoctor'
+          component={PantallaPacieteDoctores}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          name='NotificacionesDoctores'
+          component={PantallaNotificacionesDoctor}
+          options={{headerShown: false}}
+        />
 
 
         {/*Usuario*/}

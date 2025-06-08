@@ -8,7 +8,10 @@ import {
   Image,
   FlatList,
 } from 'react-native';
+import { Alert } from 'react-native'; 
 import { Ionicons } from '@expo/vector-icons';
+
+
 
 export default function PantallaCitasHome({ navigation }) {
   const insets = useSafeAreaInsets(); // ← obtiene espacios seguros
@@ -52,28 +55,28 @@ export default function PantallaCitasHome({ navigation }) {
     </View>
   );
 
+  
+    const manejarCerrarSesion = async () => {
+      Alert.alert(
+        'Cerrar Sesión',
+        '¿Estás seguro de que deseas cerrar sesión?',
+        [
+          { text: 'Cancelar', style: 'cancel' },
+          { text: 'Cerrar Sesión', onPress: async () => {
+              await signOut(auth);
+              navigation.replace('InicioSesion');
+            } },
+        ]
+      );
+    };
+
   return (
     <View style={styles.container}>
       {/* ENCABEZADO */}
       <View style={styles.encabezado}>
-        <TouchableOpacity
-            onPress={() =>
-              Alert.alert(
-                'Cerrar sesión',
-                '¿Deseas cerrar sesión y salir?',
-                [
-                  { text: 'Cancelar', style: 'cancel' },
-                  {
-                    text: 'Cerrar sesión',
-                    style: 'destructive',
-                    onPress: () => navigation.navigate('PantallaInicio'), // Cambia si tu pantalla de login es diferente
-                  },
-                ]
-              )
-            }
-          >
+        <TouchableOpacity onPress={manejarCerrarSesion}>
             <Ionicons name="arrow-back" size={24} color="black" />
-          </TouchableOpacity>
+        </TouchableOpacity>
         <View style={styles.tabs}>
           <TouchableOpacity onPress={() => setVistaActiva('citas')}>
             <Text
@@ -114,13 +117,25 @@ export default function PantallaCitasHome({ navigation }) {
 
       {/* BARRA INFERIOR */}
       <View style={[styles.barraInferior,{ paddingBottom: insets.bottom || 10 }]}>
-        <Ionicons name="people" size={24} color="#0A3B74" />
-        <Ionicons name="calendar" size={24} color="#007AFF" />
-        <Ionicons name="notifications" size={24} color="#0A3B74" />
-        <TouchableOpacity onPress={() => navigation.navigate('PerfilDoctor')}>
-          <Ionicons name="person" size={24} color="#0A3B74" />
+        {/*Boton perfil */}
+        <TouchableOpacity onPress={() => navigation.navigate('PacienteDoctor')}>
+            <Ionicons name="people" size={24} color="#0A3B74" />
+        </TouchableOpacity>
+    
+        {/*Boton citas */}
+        <TouchableOpacity onPress={() => navigation.navigate('pantallaHomeDoctor')}>
+            <Ionicons name="calendar" size={24} color="#007AFF" />
+        </TouchableOpacity>
+    
+        {/*Boton notificacion */}
+        <TouchableOpacity onPress={() => navigation.navigate('NotificacionesDoctores')}>
+            <Ionicons name="notifications" size={24} color="#0A3B74" />
         </TouchableOpacity>
 
+          {/*Boton perfils */}   
+        <TouchableOpacity onPress={() => navigation.navigate('PerfilDoctor')}>
+            <Ionicons name="person" size={24} color="#0A3B74" />
+        </TouchableOpacity>
       </View>
     </View>
   );
