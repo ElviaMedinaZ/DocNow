@@ -309,7 +309,7 @@ const generarHoras = () => {
               ))}
             </View>
             <Text style={[styles.sectionLabel, { marginTop: 10 }]}>Total: ${total}</Text>
-            <TouchableOpacity style={styles.btnCita} onPress={crearCita}><Text style={styles.btnCitaText}>Confirmar cita</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.btnCita} onPress={() => navigation.navigate('PantallaMetodoPago')}><Text style={styles.btnCitaText}>Pagar</Text></TouchableOpacity>
           </View>
         )}
       </ScrollView>
