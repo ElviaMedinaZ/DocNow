@@ -29,6 +29,7 @@ import PantallaServicios from './Componentes/Usuario/PantallaServicios';
 import PanrallaVerDoctor from './Componentes/Usuario/PantallaVerDoctor';
 import PantallaEditarCita from './Componentes/Usuario/PantallaEditarCita';
 import PantallaHomeUsuario from './Componentes/Usuario/PantallaHomeUsuario';
+import PantallaMetodoPago from './Componentes/Usuario/PantallaMetodoPago';
 import PantallaNotificaciones from './Componentes/Usuario/PantallaNotificaciones';
 import PantallaCitas from './Componentes/Usuario/PantallaCitasUsuario';
 import PantallaConfirmarCita from './Componentes/Usuario/PantallaConfirmarCita';
@@ -167,6 +168,12 @@ export default function App() {
           component={PantallaPerfilUsiario}
           options={{headerShown: false}}
         />
+
+        <Stack.Screen
+           name="PantallaMetodoPago"
+           component={PantallaMetodoPago}
+           options={{headerShown: false}} 
+           />
 
         <Stack.Screen
           name="Registro"

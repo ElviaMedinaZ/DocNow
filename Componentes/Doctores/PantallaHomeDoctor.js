@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { Alert } from 'react-native'; 
 import { Ionicons } from '@expo/vector-icons';
+import { signOut } from 'firebase/auth';
 import { auth, db } from '../../utileria/firebase';
 
 
@@ -109,7 +110,10 @@ export default function PantallaCitasHome({ navigation }) {
           </TouchableOpacity>
 
         </View>
-        <Ionicons name="settings-outline" size={24} color="black" />
+          <TouchableOpacity onPress={() => navigation.navigate('PantallaAjustes')}>
+              <Ionicons name="settings-outline" size={24} color="black" />
+        </TouchableOpacity>
+        
       </View>
 
       {/* CONTENIDO */}

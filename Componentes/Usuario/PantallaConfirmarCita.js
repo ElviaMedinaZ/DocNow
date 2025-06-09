@@ -1,10 +1,74 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { db } from '../../utileria/firebase';
 import moment from 'moment';
 
 export default function PantallaConfirmarCita({ route, navigation }) {
   const { cita } = route.params;
+  const [doctor, setDoctor] = useState(null);
+
+  useEffect(() => {
+    const cargarDoctor = async () => {
+      if (cita?.doctorId) {
+        const ref = doc(db, 'usuarios', cita.doctorId);
+        const snap = await getDoc(ref);
+        if (snap.exists()) setDoctor(snap.data());
+      }
+    };
+    cargarDoctor();
+  }, []);
+
+  const confirmarCita = () => {
+    Alert.alert(
+      'Confirmar cita',
+      '¿Estás seguro de que deseas confirmar esta cita?',
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Sí, confirmar',
+          onPress: async () => {
+            try {
+              await updateDoc(doc(db, 'citas', cita.id), {
+                estatus: 'Confirmada',
+              });
+              Alert.alert('Éxito', 'La cita ha sido confirmada.');
+              navigation.goBack();
+            } catch (error) {
+              console.error('Error confirmando cita:', error);
+              Alert.alert('Error', 'No se pudo confirmar la cita.');
+            }
+          },
+        },
+      ]
+    );
+  };
+
+  const cancelarCita = () => {
+    Alert.alert(
+      'Cancelar cita',
+      '¿Estás seguro de que deseas cancelar esta cita?',
+      [
+        { text: 'No', style: 'cancel' },
+        {
+          text: 'Sí, cancelar',
+          onPress: async () => {
+            try {
+              await updateDoc(doc(db, 'citas', cita.id), {
+                estatus: 'Cancelada',
+              });
+              Alert.alert('Cancelada', 'La cita ha sido cancelada.');
+              navigation.goBack();
+            } catch (error) {
+              console.error('Error cancelando cita:', error);
+              Alert.alert('Error', 'No se pudo cancelar la cita.');
+            }
+          },
+        },
+      ]
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -14,16 +78,25 @@ export default function PantallaConfirmarCita({ route, navigation }) {
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.titulo}>Confirmar cita</Text>
-        <View style={{ width: 24 }} /> {/* Espacio para equilibrar el ícono */}
+        <View style={{ width: 24 }} />
       </View>
 
       {/* Tarjeta de cita */}
       <View style={styles.cardCita}>
         <View style={styles.leftBar} />
-        <Image source={cita.foto} style={styles.cardAvatar} />
+        <Image
+          source={
+            doctor?.fotoURL
+              ? { uri: doctor.fotoURL }
+              : require('../../assets/avatar_placeholder.png')
+          }
+          style={styles.cardAvatar}
+        />
         <View style={styles.cardInfo}>
-          <Text style={styles.cardNombre}>{cita.nombre}</Text>
-          <Text style={styles.cardTipo}>{cita.tipo}</Text>
+          <Text style={styles.cardNombre}>
+            {doctor ? `Dr. ${doctor.nombres} ${doctor.apellidoP}` : 'Cargando...'}
+          </Text>
+          <Text style={styles.cardTipo}>{cita.servicio}</Text>
         </View>
         <View style={styles.cardLinea} />
         <View style={styles.cardFechaHora}>
@@ -36,19 +109,17 @@ export default function PantallaConfirmarCita({ route, navigation }) {
       </View>
 
       {/* Botones */}
-      <TouchableOpacity style={styles.botonConfirmar}>
+      <TouchableOpacity style={styles.botonConfirmar} onPress={confirmarCita}>
         <Text style={styles.textoConfirmar}>Confirmar</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.botonCancelar}
-        onPress={() => navigation.goBack()}
-      >
+      <TouchableOpacity style={styles.botonCancelar} onPress={cancelarCita}>
         <Text style={styles.textoCancelar}>Cancelar</Text>
       </TouchableOpacity>
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {

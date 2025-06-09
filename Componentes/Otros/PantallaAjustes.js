@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Switch, TouchableOpacity, Image } from 'react-native';
 import { Ionicons, MaterialIcons, Entypo, FontAwesome } from '@expo/vector-icons';
 import { Alert } from 'react-native'; 
+import { signOut } from 'firebase/auth';
+import { auth } from '../../utileria/firebase';
+
+
 
 export default function SettingsScreen({ navigation }) {
   const [notificaciones, setNotificaciones] = useState(true);
@@ -25,19 +29,19 @@ export default function SettingsScreen({ navigation }) {
     </View>
   );
 
-  const manejarCerrarSesion = async () => {
-    Alert.alert(
-      'Cerrar Sesión',
-      '¿Estás seguro de que deseas cerrar sesión?',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        { text: 'Cerrar Sesión', onPress: async () => {
-            await signOut(auth);
-            navigation.navigation('InicioSesion');
-          } },
-      ]
-    );
-  };
+     const manejarCerrarSesion = async () => {
+      Alert.alert(
+        'Cerrar Sesión',
+        '¿Estás seguro de que deseas cerrar sesión?',
+        [
+          { text: 'Cancelar', style: 'cancel' },
+          { text: 'Cerrar Sesión', onPress: async () => {
+              await signOut(auth);
+              navigation.replace('InicioSesion');
+            } },
+        ]
+      );
+    };
 
   return (
     <View style={styles.container}>
@@ -73,7 +77,7 @@ export default function SettingsScreen({ navigation }) {
       />
       <Opcion
         icon={<FontAwesome name="volume-up" size={50} color="#0A3B74" />}
-        texto="Vibración y sonido"
+        texto="Sonido"
         valor={vibraSonido}
         setValor={setVibraSonido}
       />

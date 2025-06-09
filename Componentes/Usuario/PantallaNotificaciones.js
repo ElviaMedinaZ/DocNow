@@ -5,112 +5,136 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Image
+  Image,
+  Alert
 } from 'react-native';
-import { Alert } from 'react-native'; 
 import { Ionicons } from '@expo/vector-icons';
-import { doc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../../utileria/firebase';
-
-
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
+import moment from 'moment';
 
 export default function PantallaCitasHome({ navigation }) {
   const insets = useSafeAreaInsets();
   const [usuario, setUsuario] = useState(null);
+  const [proximaCita, setProximaCita] = useState(null);
 
   useEffect(() => {
-    const obtenerDatosUsuario = async () => {
+    const cargarDatos = async () => {
       const userId = auth.currentUser?.uid;
       if (!userId) return;
 
-      const docRef = doc(db, 'usuarios', userId); // Asegúrate de que tu colección sea 'Usuarios'
+      const docRef = doc(db, 'usuarios', userId);
       const docSnap = await getDoc(docRef);
-
       if (docSnap.exists()) {
         setUsuario(docSnap.data());
-      } else {
-        Alert.alert('Error', 'No se encontraron los datos del usuario');
       }
+
+      const fechaHoy = moment().format('YYYY-MM-DD');
+      const fechaMax = moment().add(2, 'days').format('YYYY-MM-DD');
+
+      const q = query(collection(db, 'citas'),
+        where('pacienteId', '==', userId),
+        where('estatus', '==', 'Pendiente')
+      );
+      
+        const snapshot = await getDocs(q);
+        let citasProximas = [];
+
+        for (let docSnap of snapshot.docs) {
+          const data = docSnap.data();
+          if (data.fecha >= fechaHoy && data.fecha <= fechaMax) {
+            const doctorRef = doc(db, 'usuarios', data.doctorId);
+            const doctorSnap = await getDoc(doctorRef);
+            const doctorData = doctorSnap.exists() ? doctorSnap.data() : {};
+            
+            citasProximas.push({
+              id: docSnap.id, // 👈 NECESARIO para updateDoc
+              ...data,
+              doctorNombre: `Dr. ${doctorData.nombres || ''} ${doctorData.apellidoP || ''}`,
+              foto: doctorData.fotoURL || null
+            });
+          }
+        }
+
+        setProximaCita(citasProximas);
     };
 
-    obtenerDatosUsuario();
+    cargarDatos();
   }, []);
 
   if (!usuario) {
     return (
       <View style={styles.container}>
-        <Text>Cargando perfil...</Text>
+        <Text>Cargando...</Text>
       </View>
     );
   }
 
-
-  return (
-    <View style={styles.container}>
-      {/* ENCABEZADO */}
-      <View style={styles.encabezado}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.titulo}>Notificaciones</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('PantallaAjustes')}>
-          <Ionicons name="settings-outline" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.contenedorFechas}>
-        <TouchableOpacity style={styles.citasItem}>
-          <Image
-            source={require('../../assets/Iconos_Citas/rectangulo.png')}
-            style={styles.imagenRectangulo}
-          />
-          <Image
-            source={
-              usuario.fotoUrl
-                ? { uri: usuario.fotoUrl }
-                : require('../../assets/avatar_placeholder.png')
-            }
-            style={styles.avatar}
-          />
-            <Text style={styles.nombre}>{usuario.nombre}</Text>
-          <View style={styles.contenedorNombreEstado}>
-            <Text style={styles.labelCitas}>Juan Hernández</Text>
-            <Text style={styles.estado}>Cancelada</Text>
-          </View>
-          <Image
-            source={require('../../assets/Iconos_Citas/linea.png')}
-            style={styles.imagenLinea}
-          />
-          <View  Styles={styles.contenedorFechas}>
-            <Ionicons name="calendar" size={20} color="#0A3B74" style={styles.icono} />
-            <Text style={styles.labelFecha}>13 Sept. 2022</Text>
-            <Text style={styles.labelHora}>10:00 AM</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-
-      {/* TEXTO CENTRAL */}
-      <View style={styles.sinContenido}>
-        <Text style={styles.labelInfo}>Sin citas previas</Text>
-      </View>
-
-      {/* BARRA INFERIOR */}
-      <View style={[styles.barraInferior, { paddingBottom: insets.bottom || 10 }]}>
-        <TouchableOpacity onPress={() => navigation.navigate('MenuPaciente')}>
-            <Ionicons name="home" size={24} color="#0A3B74" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('PantallaCitas')}>
-            <Ionicons name="calendar" size={24} color="#0A3B74" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('PantallaNotificaciones')}>
-            <Ionicons name="notifications" size={24} color="#007AFF" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('PantallaPerfilUsuario')}>
-            <Ionicons name="person" size={24} color="#0A3B74" />
-        </TouchableOpacity>
-      </View>
+return (
+  <View style={styles.container}>
+    {/* ENCABEZADO */}
+    <View style={styles.encabezado}>
+      <TouchableOpacity onPress={() => navigation.goBack()}>
+        <Ionicons name="arrow-back" size={24} color="black" />
+      </TouchableOpacity>
+      <Text style={styles.titulo}>Notificaciones</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('PantallaAjustes')}>
+        <Ionicons name="settings-outline" size={24} color="black" />
+      </TouchableOpacity>
     </View>
-  );
+
+    {/* CONTENIDO PRINCIPAL */}
+    <View style={styles.contenido}>
+     {proximaCita && proximaCita.length > 0 ? (
+  proximaCita.map((cita, index) => (
+    <View key={index} style={styles.contenedorFechas}>
+      <TouchableOpacity style={styles.citasItem}    
+      onPress={() => navigation.navigate('PantallaConfirmarCita', { cita })} 
+      >
+        <Image source={require('../../assets/Iconos_Citas/rectangulo.png')} style={styles.imagenRectangulo} />
+        <Image
+          source={cita.foto ? { uri: cita.foto } : require('../../assets/avatar_placeholder.png')}
+          style={styles.avatar}
+        />
+        <View style={styles.contenedorNombreEstado}>
+          <Text style={styles.labelCitas}>{cita.doctorNombre}</Text>
+          <Text style={styles.estado}>{cita.estatus}</Text>
+        </View>
+        <Image source={require('../../assets/Iconos_Citas/linea.png')} style={styles.imagenLinea} />
+        <View style={styles.contenedorFechas}>
+          <Ionicons name="calendar" size={20} color="#0A3B74" />
+          <Text style={styles.labelFecha}>{moment(cita.fecha).format('DD MMM. YYYY')}</Text>
+          <Text style={styles.labelHora}>{cita.hora}</Text>
+        </View>
+      </TouchableOpacity>
+    </View>
+  ))
+) : (
+  <View style={styles.sinContenido}>
+    <Text style={styles.labelInfo}>Sin citas próximas</Text>
+  </View>
+)}
+
+    </View>
+
+    {/* BARRA INFERIOR */}
+    <View style={[styles.barraInferior, { paddingBottom: insets.bottom || 10 }]}>
+      <TouchableOpacity onPress={() => navigation.navigate('MenuPaciente')}>
+        <Ionicons name="home" size={24} color="#0A3B74" />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('PantallaCitas')}>
+        <Ionicons name="calendar" size={24} color="#0A3B74" />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('PantallaNotificaciones')}>
+        <Ionicons name="notifications" size={24} color="#007AFF" />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('PantallaPerfilUsuario')}>
+        <Ionicons name="person" size={24} color="#0A3B74" />
+      </TouchableOpacity>
+    </View>
+  </View>
+);
 }
 
 const styles = StyleSheet.create({
@@ -228,4 +252,8 @@ const styles = StyleSheet.create({
     borderTopColor: '#ccc',
     backgroundColor: '#fff',
   },
+  contenido: {
+  flex: 1,
+  paddingHorizontal: 20,
+},
 });

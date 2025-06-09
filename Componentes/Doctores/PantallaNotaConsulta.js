@@ -49,7 +49,7 @@ export default function PantallaNotaConsulta({ navigation, route }) {
         <View style={styles.row}>
           {/* Peso */}
           <View style={{ flex: 1, marginRight: 8 }}>
-            <Text style={styles.label}>Peso:</Text>
+            <Text style={styles.label}>Peso</Text>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <TextInput
                 style={[
@@ -70,7 +70,7 @@ export default function PantallaNotaConsulta({ navigation, route }) {
 
           {/* Altura */}
           <View style={{ flex: 1 }}>
-            <Text style={styles.label}>Altura:</Text>
+            <Text style={styles.label}>Altura</Text>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <TextInput
                 style={[
@@ -110,7 +110,7 @@ export default function PantallaNotaConsulta({ navigation, route }) {
         <TextInput
           style={[
             styles.input,
-            { height: 70 },
+            { height: 100 },
             focusedField === 'sintomas' && styles.inputFocused,
           ]}
           placeholder="Síntomas"
@@ -126,7 +126,7 @@ export default function PantallaNotaConsulta({ navigation, route }) {
         <TextInput
           style={[
             styles.input,
-            { height: 70 },
+            { height: 100 },
             focusedField === 'tratamiento' && styles.inputFocused,
           ]}
           placeholder="Añadir indicaciones..."
@@ -203,10 +203,12 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     borderWidth: 1,
     borderColor: 'transparent',
+    borderWidth: 1,
+    borderColor: '#9D9D9D',
   },
   inputFocused: {
     borderColor: '#0A3B74',
-    borderWidth: 1,
+    borderWidth: 2,
   },
   botonGuardar: {
     textAlign: 'center',

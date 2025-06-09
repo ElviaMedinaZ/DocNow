@@ -218,74 +218,307 @@ const generarHoras = () => {
               <Text style={styles.sectionTitle}>Datos de contacto</Text>
               <View style={styles.contactRow}><Ionicons name="call-sharp" size={24} color="#0A3B74" /><Text style={styles.contactText}>{datos.telefono}</Text></View>
               <View style={styles.contactRow}><Ionicons name="mail-outline" size={24} color="#0A3B74" /><Text style={styles.emailText}>{datos.email}</Text></View>
+              <View style={styles.contactRow}><Ionicons name="medkit-outline" size={24} color="#0A3B74" /><Text style={styles.contactText}>Consultorio {datos.consultorio}</Text></View>
             </View>
-            <View style={styles.section}>
+            {/* <View style={styles.section}>
               <Text style={styles.sectionTitle}>Servicios ofertados</Text>
               {servicios.map(serv => (<View key={serv} style={styles.serviceRow}><Text style={styles.serviceText}>{serv.trim()}</Text><Text style={styles.price}>${precios[serv.trim()] || '-'}</Text></View>))}
+            </View> */}
+            <View style={styles.section}>
+              <View style={styles.serviciosContainer}>
+                <View style={styles.headerRow}>
+                  <Text style={styles.headerText}>Servicios ofertados</Text>
+                  <Text style={styles.headerText}>Costo</Text>
+                </View>
+
+                {servicios.map((serv) => (
+                  <View key={serv} style={styles.serviceRow}>
+                    <View style={styles.serviceName}>
+                      <Ionicons name="ellipse-sharp" size={10} color="#0A3B74" style={{ marginRight: 8 }} />
+                      <Text style={styles.serviceText}>{serv}</Text>
+                    </View>
+                    <Text style={styles.price}>${precios[serv] || '-'}</Text>
+                  </View>
+                ))}
+              </View>
             </View>
+            
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Disponibilidad</Text>
+              
+              <View style={styles.availabilityRow}>
+                <Text style={styles.availabilityText}>{datos.turnoDia}</Text>
+              </View>
+
+              <View style={styles.availabilityRow}>
+                <Text style={styles.availabilityText}>{datos.turnoHora}</Text>
+              </View>
+            </View>
+
             <TouchableOpacity style={styles.btnCita} onPress={() => setModoCita(true)}><Text style={styles.btnCitaText}>Solicitar cita</Text></TouchableOpacity>
           </>
         ) : (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Selecciona servicios</Text>
+            <Text style={styles.sectionLabel}>Solicita tus servicios</Text>
             {servicios.map(serv => (
               <TouchableOpacity key={serv} style={[styles.serviceRow, serviciosSeleccionados.includes(serv) && { backgroundColor: '#e0f0ff' }]} onPress={() => toggleServicio(serv)}>
                 <Text style={styles.serviceText}>{serv}</Text>
                 <Text style={styles.price}>${precios[serv] || '-'}</Text>
               </TouchableOpacity>
             ))}
-            <Text style={styles.sectionTitle}>Selecciona fecha</Text>
+            <View style={styles.sectionLabel}>
+              <Text style={styles.sectionLabel}>Disponibilidad</Text>
+              
+              <View style={styles.availabilityRow}>
+                <Text style={styles.availabilityText}>{datos.turnoDia}</Text>
+              </View>
+
+              <View style={styles.availabilityRow}>
+                <Text style={styles.availabilityText}>{datos.turnoHora}</Text>
+              </View>
+            </View>
+            <Text style={styles.sectionLabel}>Proximas fecha</Text>
            <Calendar
                 onDayPress={day => {
                     setFechaSeleccionada(day.dateString);
                     cargarHorasOcupadas(day.dateString);
-                }}
+                }}  
                 markedDates={{
-                    [fechaSeleccionada]: { selected: true, marked: true, selectedColor: '#0A3B74' },
+                    [fechaSeleccionada]: { selected: true, marked: true, selectedColor: '#498FC0' },
                     ...disabledDates
                 }}
                 minDate={dayjs().format('YYYY-MM-DD')}
                 disableAllTouchEventsForDisabledDays={true}
                 />
-            <Text style={styles.sectionTitle}>Selecciona hora</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+                  <Ionicons name="square-sharp" size={24} color="#e0f0ff" />
+                  <Text style={styles.sectionLabel}>  Sin disponibilidad</Text>
+                </View>
+
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Ionicons name="square-sharp" size={24} color="#498FC0" />
+                  <Text style={styles.sectionLabel}>  Seleccionado</Text>
+                </View>
+
+            <Text style={styles.sectionLabel}>Horarios disponibles</Text>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
               {generarHoras().filter(hora => !horasOcupadas.includes(hora)).map(hora => (
-                <TouchableOpacity key={hora} style={{ margin: 5, padding: 10, backgroundColor: horaSeleccionada === hora ? '#0A3B74' : '#e0e0e0', borderRadius: 6 }} onPress={() => setHoraSeleccionada(hora)}>
+                <TouchableOpacity key={hora} style={{ margin: 5, padding: 10, backgroundColor: horaSeleccionada === hora ? '#AAAAAA' : '#e0e0e0', borderRadius: 6 }} onPress={() => setHoraSeleccionada(hora)}>
                   <Text style={{ color: horaSeleccionada === hora ? '#fff' : '#000' }}>{hora}</Text>
                 </TouchableOpacity>
               ))}
             </View>
-            <Text style={[styles.price, { marginTop: 10 }]}>Total: ${total}</Text>
+            <Text style={[styles.sectionLabel, { marginTop: 10 }]}>Total: ${total}</Text>
             <TouchableOpacity style={styles.btnCita} onPress={crearCita}><Text style={styles.btnCitaText}>Confirmar cita</Text></TouchableOpacity>
           </View>
         )}
       </ScrollView>
+      {/* BARRA INFERIOR */}
+            <View style={[styles.barraInferior,{ paddingBottom: insets.bottom || 10 }]}>
+              {/*Boton perfil */}
+              <TouchableOpacity onPress={() => navigation.navigate('PacienteDoctor')}>
+                  <Ionicons name="people" size={24} color="#0A3B74" />
+              </TouchableOpacity>
+          
+              {/*Boton citas */}
+              <TouchableOpacity onPress={() => navigation.navigate('pantallaHomeDoctor')}>
+                  <Ionicons name="calendar" size={24} color="#007AFF" />
+              </TouchableOpacity>
+          
+              {/*Boton notificacion */}
+              <TouchableOpacity onPress={() => navigation.navigate('NotificacionesDoctores')}>
+                  <Ionicons name="notifications" size={24} color="#0A3B74" />
+              </TouchableOpacity>
+      
+                {/*Boton perfils */}   
+              <TouchableOpacity onPress={() => navigation.navigate('PerfilDoctor')}>
+                  <Ionicons name="person" size={24} color="#0A3B74" />
+              </TouchableOpacity>
+            </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
-  header: { position: 'absolute', top: 40, left: 20, right: 20, flexDirection: 'row', justifyContent: 'space-between', zIndex: 10 },
-  imageContainer: { position: 'relative' },
-  fullImage: { width: '100%', height: 300 },
-  overlayInfo: { position: 'absolute', bottom: -40, alignSelf: 'center', backgroundColor: '#0A3B74', paddingVertical: 15, paddingHorizontal: 50, borderRadius: 12, elevation: 5, alignItems: 'center' },
-  name: { color: '#fff', fontSize: 24, fontWeight: 'bold' },
-  specialty: { color: '#fff', fontSize: 14, marginTop: 2 },
-  section: { paddingHorizontal: 20, marginTop: 70 },
-  sectionTitle: { fontSize: 16, fontWeight: '600', color: '#0A3B74', marginBottom: 10 },
-  contactRow: { flexDirection: 'row', alignItems: 'center', marginVertical: 5 },
-  contactText: { marginLeft: 10, fontSize: 16, color: '#333' },
-  emailText: { marginLeft: 10, fontSize: 16, color: '#333', textDecorationLine: 'underline' },
-  serviceRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6, padding: 10, borderRadius: 6 },
-  serviceText: { fontSize: 15, color: '#000' },
-  price: { fontSize: 14, fontWeight: '500', color: '#0A3B74' },
-  btnCita: { margin: 20, backgroundColor: '#0A3B74', paddingVertical: 15, borderRadius: 12, alignItems: 'center', marginBottom: 30 },
-  btnCitaText: { color: '#fff', fontSize: 16, fontWeight: 'bold' },
-  reviewRow: { flexDirection: 'row', marginBottom: 12 },
-  reviewAvatar: { width: 40, height: 40, borderRadius: 20 },
-  reviewInfo: { marginLeft: 10, flex: 1 },
-  reviewName: { fontWeight: 'bold' },
-  reviewText: { color: '#444' },
-  reviewDate: { fontSize: 12, color: '#888' }
+  container: {
+    flex: 1, 
+    backgroundColor: '#fff' 
+  },
+  header: { 
+    position: 'absolute', 
+    top: 40, 
+    left: 20, 
+    right: 20, 
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    zIndex: 10 
+  },
+  imageContainer: { 
+    position: 'relative' 
+  },
+  sectionDisponible: {
+    marginTop: 15,
+  },
+  fullImage: { 
+    width: '100%', 
+    height: 300 
+  },
+  availabilityRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  iconTextRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  availabilityText: {
+    marginLeft: 10,
+    fontSize: 16,
+    color: '#333',
+  },
+  overlayInfo: { 
+    position: 'absolute',
+    bottom: -40, 
+    alignSelf: 'center', 
+    backgroundColor: '#0A3B74', 
+    paddingVertical: 15, 
+    paddingHorizontal: 50, 
+    borderRadius: 12, 
+    elevation: 5, 
+    alignItems: 'center' 
+  },
+  name: { 
+    color: '#fff', 
+    fontSize: 24, 
+    fontWeight: 'bold' 
+  },
+  specialty: { 
+    color: '#fff', 
+    fontSize: 14,
+     marginTop: 2 
+  },
+  section: { 
+    paddingHorizontal: 20,
+    marginTop: 50,
+  },
+  sectionTitle: { 
+    fontSize: 16, 
+    fontWeight: '600', 
+    color: '#0A3B74', 
+    marginBottom: 5,
+    marginTop: 15,
+  },
+  sectionLabel: {
+    fontSize: 16, 
+    fontWeight: '600', 
+    color: '#00000', 
+    marginBottom: 5,
+    marginTop: 15,
+  },
+  contactRow: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    marginVertical: 5 
+  },
+  contactText: { 
+    marginLeft: 10, 
+    fontSize: 16, 
+    color: '#333' 
+  },
+  emailText: { 
+    marginLeft: 10, 
+    fontSize: 16, 
+    color: '#333', 
+    textDecorationLine: 'underline' 
+  },
+  serviceRow: { 
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    alignItems: 'center', 
+    marginBottom: 6, 
+    padding: 7, 
+    borderRadius: 6 
+  },
+  sectionDisponible: {
+     fontSize: 14, 
+    fontWeight: '500', 
+    color: '#0A3B74', 
+  },
+  serviceText: { 
+    fontSize: 15, 
+    color: '#000' 
+  },
+  price: { 
+    fontSize: 14, 
+    fontWeight: '500', 
+    color: '#0A3B74' 
+  },
+  btnCita: { 
+    margin: 20, 
+    backgroundColor: '#0A3B74',
+    paddingVertical: 15, 
+    borderRadius: 12, 
+    alignItems: 'center', 
+    marginBottom: 30 
+  },
+  btnCitaText: { 
+    color: '#fff', 
+    fontSize: 16, 
+    fontWeight: 'bold' 
+  },
+  reviewRow: { 
+    flexDirection: 'row', 
+    marginBottom: 12 
+  },
+  reviewAvatar: { 
+    width: 40, 
+    height: 40, 
+    borderRadius: 20 
+  },
+  reviewInfo: { 
+    marginLeft: 10, 
+    flex: 1 
+  },
+  reviewName: { 
+    fontWeight: 'bold' 
+  },
+  reviewText: { 
+    color: '#444' 
+  },
+  reviewDate: { 
+    fontSize: 12, 
+    color: '#888' 
+  },
+  serviciosContainer: {
+    marginTop: 10,
+  },
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingBottom: 6,
+    marginBottom: 6,
+  },
+  headerText: {
+    fontWeight: 'bold',
+    color: '#0A3B74',
+    fontSize: 15,
+  },
+  serviceName: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  serviceText: {
+    fontSize: 15,
+    color: '#000',
+  },
+  barraInferior: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 15,
+    borderTopWidth: 1,
+    borderTopColor: '#ccc',
+  },
 });
