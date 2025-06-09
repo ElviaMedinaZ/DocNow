@@ -18,7 +18,7 @@ import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { collection, query, where, getDocs, doc, setDoc } from "firebase/firestore";
-import { auth, db } from "../utileria/firebase";
+import { auth, db } from "../../utileria/firebase";
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 

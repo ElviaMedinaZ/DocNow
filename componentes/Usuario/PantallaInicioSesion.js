@@ -15,7 +15,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { collection, query, where, getDocs } from 'firebase/firestore';
-import { auth, db } from '../utileria/firebase';
+import { auth, db } from '../../utileria/firebase';
 
 export default function PantallaInicioSesion({ navigation }) {
   const [correo, setCorreo] = useState('');

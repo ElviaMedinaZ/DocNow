@@ -13,7 +13,7 @@ import {
   StyleSheet
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { db } from '../utileria/firebase';
+import { db } from '../../utileria/firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 
 export default function PantallaOlvideContrasena({ navigation }) {
