@@ -216,10 +216,10 @@ export default function PantallaPerfil({ navigation }) {
               <Ionicons name="calendar" size={24} color="#0A3B74" />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('PantallaNotificaciones')}>
-              <Ionicons name="notifications" size={24} color="#007AFF" />
+              <Ionicons name="notifications" size={24} color="#0A3B74" />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('PantallaPerfilUsuario')}>
-              <Ionicons name="person" size={24} color="#0A3B74" />
+              <Ionicons name="person" size={24} color="#007AFF" />
             </TouchableOpacity>
           </View>
     </View>
@@ -272,6 +272,9 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#ccc',
     backgroundColor: '#fff',
+    position: 'absolute',    
+    bottom: 0,               
+    width: '100%', 
   },
   textoCancelar: { color: '#0A3B74', fontSize: 18, fontWeight: 'bold' },
   
