@@ -25,22 +25,22 @@ import PantallaNotas from './componentes/Doctores/PantallaNotas';//pantalla para
 //usuarios
 import PantallaEvaluacion from './componentes/Usuario/PantallaEvaluacion';
 import PantallaPerfilUsiario from './componentes/Usuario/PantallaPerfilUsuario';
-import PantallaInicioSesion from './componentes/PantallaInicioSesion';
+
 import PantallaHomeUsuario from './componentes/Usuario/PantallaHomeUsuario';
 import PantallaNotificaciones from './componentes/Usuario/PantallaNotificaciones';
 import PantallaCitas from './componentes/Usuario/PantallaCitasUsuario';
 import PantallaConfirmarCita from './componentes/Usuario/PantallaConfirmarCita';
-import PantallaRegistro from './componentes/PantallaRegistro';
-import PantallaOlvideContrasena from './componentes/PantallaOlvideContrasena';
-import PantallaVerificarCodigo from './componentes/PantallaVerificarCodigo';
-import VerificacionCompletada from './componentes/VerificacionCompletada';
-import PantallaRestablecerContrasena from './componentes/PantallaRestablecerContrasena';
+import PantallaRegistro from './componentes/Usuario/PantallaRegistro';
+import PantallaOlvideContrasena from './componentes/Usuario/PantallaOlvideContrasena';
+import PantallaVerificarCodigo from './componentes/Usuario/PantallaVerificarCodigo';
+import PantallaRestablecerContrasena from './componentes/Usuario/PantallaRestablecerContrasena';
 import PantallaEditarRegistro from './componentes/Usuario/PantallaEditarRegistro';
 
 //Multi
-import PantallaRegistroExitoso from './componentes/PantallaRegistroExistoso';
-import PantallaAjustes from './componentes/PantallaAjustes';
-
+import PantallaInicioSesion from './componentes/Otros/PantallaInicioSesion';
+import PantallaRegistroExitoso from './componentes/Otros/PantallaRegistroExistoso';
+import PantallaAjustes from './componentes/Otros/PantallaAjustes';
+import VerificacionCompletada from './componentes/Otros/VerificacionCompletada';
 
 
 const Stack = createNativeStackNavigator();

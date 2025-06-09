@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Switch, TouchableOpacity, Image } from 'react-native';
 import { Ionicons, MaterialIcons, Entypo, FontAwesome } from '@expo/vector-icons';
 import { Alert } from 'react-native'; 
-// import { signOut } from 'firebase/auth';
-// import { auth } from '../../utileria/firebase';
 
 export default function SettingsScreen({ navigation }) {
   const [notificaciones, setNotificaciones] = useState(true);
@@ -83,7 +81,7 @@ export default function SettingsScreen({ navigation }) {
         <TouchableOpacity onPress={manejarCerrarSesion}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Image
-              source={require('../assets/Iconos_Ajustes/Cerrar_Sesion.png')}
+              source={require('../../assets/Iconos_Ajustes/Cerrar_Sesion.png')}
               style={styles.cerrar}
             />
             <Text style={styles.textoCerrar}>Cerrar sesión</Text>

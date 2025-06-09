@@ -202,7 +202,7 @@ export default function PantallaRegistro({ navigation }) {
           <Ionicons name="arrow-back" size={28} color="#0A3B74" />
         </TouchableOpacity>
 
-        <Image source={require('../assets/logo.png')} style={styles.logoEncabezado} resizeMode="contain" />
+        <Image source={require('../../assets/logo.png')} style={styles.logoEncabezado} resizeMode="contain" />
       </View>
 
       <Text style={styles.titulo}>Registro</Text>
@@ -212,7 +212,7 @@ export default function PantallaRegistro({ navigation }) {
       
       <TouchableOpacity onPress={seleccionarImagen} style={{ alignSelf: 'center', marginBottom: 20 }}>
         <Image
-          source={imagenUri ? { uri: imagenUri } : require('../assets/avatar_placeholder.png')}
+          source={imagenUri ? { uri: imagenUri } : require('../../assets/avatar_placeholder.png')}
           style={{ width: 100, height: 100, borderRadius: 50 }}
         />
         <Text style={{ textAlign: 'center', marginTop: 8, color: '#0A3B74' }}>
@@ -244,7 +244,7 @@ export default function PantallaRegistro({ navigation }) {
           ]}
           onPress={() => setSexo("M")}
         >
-          <Image source={require('../assets/Iconos_Registro/iconoMasculino.png')} style={styles.iconoSexo} />
+          <Image source={require('../../assets/Iconos_Registro/iconoMasculino.png')} style={styles.iconoSexo} />
           <Text style={styles.textoSexo}>Masculino</Text>
         </TouchableOpacity>
 
@@ -256,7 +256,7 @@ export default function PantallaRegistro({ navigation }) {
           ]}
           onPress={() => setSexo("F")}
         >
-          <Image source={require('../assets/Iconos_Registro/iconoFemenino.png')} style={styles.iconoSexo} />
+          <Image source={require('../../assets/Iconos_Registro/iconoFemenino.png')} style={styles.iconoSexo} />
           <Text style={styles.textoSexo}>Femenino</Text>
         </TouchableOpacity>
 

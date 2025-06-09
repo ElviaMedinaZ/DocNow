@@ -16,14 +16,14 @@ export default function PantallaRegistroExitoso({ navigation }) {
           </TouchableOpacity>
     
           <View style={styles.logoContainer}>
-            <Image source={require('../assets/logo.png')} style={styles.logo} resizeMode="contain" />
+            <Image source={require('../../assets/logo.png')} style={styles.logo} resizeMode="contain" />
           </View>
         </View>
 
         <Text style={styles.titulo}>Registro exitoso</Text>
 
         <View style={styles.iconoExito}>
-          <Image source={require('../assets/Exito.png')} style={styles.icono} resizeMode="contain" />
+          <Image source={require('../../assets/Exito.png')} style={styles.icono} resizeMode="contain" />
         </View>
 
         <Text style={styles.subtitulo}>Ahora puedes iniciar sesión</Text>

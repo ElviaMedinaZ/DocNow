@@ -63,7 +63,7 @@ export default function PantallaOlvideContrasena({ navigation }) {
         <Ionicons name="chevron-back-outline" size={24} color="#0A3B74" />
       </TouchableOpacity>
 
-      <Image source={require('../assets/logo.png')} style={styles.logo} resizeMode="contain" />
+      <Image source={require('../../assets/logo.png')} style={styles.logo} resizeMode="contain" />
 
       <Text style={styles.titulo}>Olvidé mi contraseña</Text>
 
