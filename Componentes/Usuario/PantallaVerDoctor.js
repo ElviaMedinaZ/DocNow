@@ -207,7 +207,7 @@ const generarHoras = () => {
           <Image source={datos.fotoURL ? { uri: datos.fotoURL } : require('../../assets/avatar_placeholder.png')} style={styles.fullImage} />
           <View style={styles.overlayInfo}>
             <Text style={styles.name}>Dr. {datos.nombres} {datos.apellidoP}</Text>
-            <Text style={styles.specialty}>Internista</Text>
+            
           </View>
         </View>
 
@@ -309,9 +309,24 @@ const generarHoras = () => {
               ))}
             </View>
             <Text style={[styles.sectionLabel, { marginTop: 10 }]}>Total: ${total}</Text>
-            <TouchableOpacity style={styles.btnCita} onPress={() => navigation.navigate('PantallaMetodoPago')}><Text style={styles.btnCitaText}>Pagar</Text></TouchableOpacity>
+            <TouchableOpacity
+              style={styles.btnCita}
+              onPress={() =>
+                navigation.navigate('PantallaMetodoPago', {
+                  doctorId,
+                  fecha: fechaSeleccionada,
+                  hora: horaSeleccionada,
+                  servicios: serviciosSeleccionados,
+                  total
+                })
+              }
+            >
+              <Text style={styles.btnCitaText}>Pagar</Text>
+            </TouchableOpacity>
+
           </View>
         )}
+        
       </ScrollView>
       {/* BARRA INFERIOR */}
             <View style={[styles.barraInferior,{ paddingBottom: insets.bottom || 10 }]}>

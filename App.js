@@ -27,6 +27,7 @@ import PantallaNotas from './Componentes/Doctores/PantallaNotas';//pantalla para
 import PantallaEvaluacion from './Componentes/Usuario/PantallaEvaluacion';
 import PantallaPerfilUsiario from './Componentes/Usuario/PantallaPerfilUsuario';
 import PantallaServicios from './Componentes/Usuario/PantallaServicios';
+import PagoConfirmado from './Componentes/Usuario/PagoConfirmado';
 import PanrallaVerDoctor from './Componentes/Usuario/PantallaVerDoctor';
 import PantallaEditarCita from './Componentes/Usuario/PantallaEditarCita';
 import PantallaHomeUsuario from './Componentes/Usuario/PantallaHomeUsuario';
@@ -36,6 +37,7 @@ import PantallaCitas from './Componentes/Usuario/PantallaCitasUsuario';
 import PantallaConfirmarCita from './Componentes/Usuario/PantallaConfirmarCita';
 import PantallaRegistro from './Componentes/Usuario/PantallaRegistro';
 import PantallaOlvideContrasena from './Componentes/Usuario/PantallaOlvideContrasena';
+import PantallaFormularioPago from './Componentes/Usuario/PantallaTarjeta';
 import PantallaVerificarCodigo from './Componentes/Usuario/PantallaVerificarCodigo';
 import PantallaRestablecerContrasena from './Componentes/Usuario/PantallaRestablecerContrasena';
 import PantallaEditarRegistro from './Componentes/Usuario/PantallaEditarRegistro';
@@ -179,6 +181,20 @@ export default function App() {
         <Stack.Screen
            name="PantallaMetodoPago"
            component={PantallaMetodoPago}
+           options={{headerShown: false}} 
+           />
+
+           
+
+        <Stack.Screen
+           name="PantallaFormularioPago"
+           component={PantallaFormularioPago}
+           options={{headerShown: false}} 
+           />
+           
+        <Stack.Screen
+           name="PagoConfirmado"
+           component={PagoConfirmado}
            options={{headerShown: false}} 
            />
 

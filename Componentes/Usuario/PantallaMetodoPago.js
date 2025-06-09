@@ -2,7 +2,10 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function PantallaMetodoPago({ navigation }) {
+export default function PantallaMetodoPago({ navigation , route }) {
+
+  const { doctorId, fecha, hora, servicios, total } = route.params;
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
@@ -12,14 +15,36 @@ export default function PantallaMetodoPago({ navigation }) {
       <Text style={styles.titulo}>Métodos de Pago</Text>
 
      <View style={styles.botonesContainer}>
-        <TouchableOpacity style={styles.tarjetaBoton}>
+        <TouchableOpacity
+          style={styles.tarjetaBoton}
+          onPress={() =>
+            navigation.navigate('PantallaFormularioPago', {
+              doctorId,
+              fechaSeleccionada: fecha,
+              horaSeleccionada: hora,
+              serviciosSeleccionados: servicios,
+              total,
+            })
+          }
+        >
           <Ionicons name="card-outline" size={20} color="#000" />
           <Text style={styles.textoBoton}> Agregar tarjeta crédito</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.tarjetaBoton}>
+        <TouchableOpacity
+          style={styles.tarjetaBoton}
+          onPress={() =>
+            navigation.navigate('PantallaFormularioPago', {
+              doctorId,
+              fechaSeleccionada: fecha,
+              horaSeleccionada: hora,
+              serviciosSeleccionados: servicios,
+              total,
+            })
+          }
+        >
           <Ionicons name="card-outline" size={20} color="#000" />
-          <Text style={styles.textoBoton}> Agregar tarjeta Débito</Text>
+          <Text style={styles.textoBoton}> Agregar tarjeta débito</Text>
         </TouchableOpacity>
       </View>
 

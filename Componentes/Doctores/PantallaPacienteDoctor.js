@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   View,
@@ -9,33 +9,72 @@ import {
   FlatList,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { db } from '../../utileria/firebase';
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  getDoc,
+} from 'firebase/firestore';
 
 export default function PantallaPacientesDoctor({ navigation }) {
-  const insets = useSafeAreaInsets(); // ← obtiene espacios seguros
-  const pacientes = [
-    {
-      id: '1',
-      nombre: 'Maria Jose Perez Luna',
-      tipo: 'Consulta general',
-      foto: require('../../assets/avatar_placeholder.png'),
-    },
-    {
-      id: '2',
-      nombre: 'Daniel Flores Zazueta',
-      tipo: 'Rayos X',
-      foto: require('../../assets/avatar_placeholder.png'),
-    },
-  ];
+  const insets = useSafeAreaInsets();
+  const [pacientes, setPacientes] = useState([]);
+
+  useEffect(() => {
+    const cargarPacientes = async () => {
+      try {
+        const citasQuery = query(
+          collection(db, 'citas'),
+          where('estado', '==', 'Finalizada')
+        );
+        const snapshot = await getDocs(citasQuery);
+
+        const pacientesMap = new Map();
+
+        for (const docSnap of snapshot.docs) {
+          const data = docSnap.data();
+          const pacienteId = data.pacienteId;
+
+          if (pacienteId && !pacientesMap.has(pacienteId)) {
+            const pacienteDoc = await getDoc(doc(db, 'usuarios', pacienteId));
+            if (pacienteDoc.exists()) {
+              const pacienteData = pacienteDoc.data();
+              pacientesMap.set(pacienteId, {
+                id: pacienteId,
+                nombre: `${pacienteData.nombres || ''} ${pacienteData.apellidoP || ''}`.trim(),
+                tipo: data.tipo || 'Consulta',
+                foto: pacienteData.fotoUrl || null,
+              });
+            }
+          }
+        }
+
+        setPacientes(Array.from(pacientesMap.values()));
+      } catch (error) {
+        console.error('Error cargando pacientes:', error);
+      }
+    };
+
+    cargarPacientes();
+  }, []);
 
   const renderPaciente = ({ item }) => (
     <View style={styles.card}>
-      <Image source={item.foto} style={styles.avatar} />
+      <Image
+        source={item.foto ? { uri: item.foto } : require('../../assets/avatar_placeholder.png')}
+        style={styles.avatar}
+      />
       <View style={{ flex: 1 }}>
         <Text style={styles.nombre}>{item.nombre}</Text>
         <Text style={styles.tipo}>{item.tipo}</Text>
       </View>
-      <TouchableOpacity style={styles.btnNotas}
-      onPress={() => navigation.navigate('PantallaNotas')}>
+      <TouchableOpacity
+        style={styles.btnNotas}
+        onPress={() => navigation.navigate('PantallaNotas')}
+      >
         <Text style={styles.btnTexto}>Ver nota</Text>
       </TouchableOpacity>
     </View>
@@ -43,7 +82,6 @@ export default function PantallaPacientesDoctor({ navigation }) {
 
   return (
     <View style={styles.container}>
-      {/* ENCABEZADO */}
       <View style={styles.encabezado}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="black" />
@@ -54,33 +92,27 @@ export default function PantallaPacientesDoctor({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      {/* LISTA DE PACIENTES */}
       <FlatList
         data={pacientes}
         renderItem={renderPaciente}
         keyExtractor={(item) => item.id}
       />
 
-      {/* BARRA INFERIOR */}
-      <View style={[styles.barraInferior,{ paddingBottom: insets.bottom || 10 }]}>
-         {/*Boton perfil */}
+      <View style={[styles.barraInferior, { paddingBottom: insets.bottom || 10 }]}>
         <TouchableOpacity onPress={() => navigation.navigate('PacienteDoctor')}>
-            <Ionicons name="people" size={24} color="#007AFF" />
-        </TouchableOpacity>
-    
-        {/*Boton citas */}
-        <TouchableOpacity onPress={() => navigation.navigate('PantallaHomeDoctor')}>
-            <Ionicons name="calendar" size={24} color="#0A3B74" />
-        </TouchableOpacity>
-    
-        {/*Boton notificacion */}
-        <TouchableOpacity onPress={() => navigation.navigate('NotificacionesDoctores')}>
-            <Ionicons name="notifications" size={24} color="#0A3B74" />
+          <Ionicons name="people" size={24} color="#007AFF" />
         </TouchableOpacity>
 
-          {/*Boton perfils */}   
+        <TouchableOpacity onPress={() => navigation.navigate('PantallaHomeDoctor')}>
+          <Ionicons name="calendar" size={24} color="#0A3B74" />
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigation.navigate('NotificacionesDoctores')}>
+          <Ionicons name="notifications" size={24} color="#0A3B74" />
+        </TouchableOpacity>
+
         <TouchableOpacity onPress={() => navigation.navigate('PerfilDoctor')}>
-            <Ionicons name="person" size={24} color="#0A3B74" />
+          <Ionicons name="person" size={24} color="#0A3B74" />
         </TouchableOpacity>
       </View>
     </View>
@@ -95,7 +127,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     marginBottom: 20,
-    marginTop: 20
+    marginTop: 20,
   },
   titulo: {
     fontSize: 16,
