@@ -14,6 +14,7 @@ import { signOut } from 'firebase/auth';
 import { auth, db } from '../../utileria/firebase';
 
 
+
 export default function PantallaCitasHome({ navigation }) {
   const insets = useSafeAreaInsets(); // ← obtiene espacios seguros
   const [vistaActiva, setVistaActiva] = useState('citas'); // 'citas' o 'historial'

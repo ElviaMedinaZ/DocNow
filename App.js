@@ -6,10 +6,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // Importación de Componentes
 
 //Admin
-import PantallaAdminPrincipal from './Componentes/Otros/PantallaInicioSesion';
+import PantallaAdminPrincipal from './Componentes/Admin/PantallaAdminPrincipal';
 import PantallaAdminRegistro from './Componentes/Admin/PantallaAdminRegistro';
 import PantallaMultiLista from './Componentes/Admin/PantallaMultiLista';
 import PantallaReportes from './Componentes/Admin/PantallaReportes';
+import PantallaDashboard from './Componentes/Admin/PantallaDashboard';
 import PantallaRespaldos from './Componentes/Admin/PantallaRespaldos';
 
 //Doctor
@@ -87,6 +88,12 @@ export default function App() {
         <Stack.Screen 
           name='RegistroAdmin'
           component={PantallaAdminRegistro}
+          options={{headerShown: false}}
+        />
+
+         <Stack.Screen 
+          name="PantallaDashboard"
+          component={PantallaDashboard}
           options={{headerShown: false}}
         />
 

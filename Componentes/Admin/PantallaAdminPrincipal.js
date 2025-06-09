@@ -4,25 +4,35 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  Alert
 } from 'react-native';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Ionicons } from '@expo/vector-icons';
+import { signOut } from 'firebase/auth';
+import { auth, db } from '../../utileria/firebase';
 
 const Stack = createNativeStackNavigator();
+ 
 
-{/* <Stack.Navigator>
-  <Stack.Screen
-    name="PantallaDetalles"
-    component={PantallaDetalles}
-    options={{ title: 'Detalles' }} // Esto pone el header con flecha atrás automáticamente
-  />
-</Stack.Navigator> */}
 
 
 export default function HomeScreem ({ navigation, route }) {
   const { userId, nombreUsuario } = route.params
-
+  const manejarCerrarSesion = async () => {
+      Alert.alert(
+        'Cerrar Sesión',
+        '¿Estás seguro de que deseas cerrar sesión?',
+        [
+          { text: 'Cancelar', style: 'cancel' },
+          { text: 'Cerrar Sesión', onPress: async () => {
+              await signOut(auth);
+              navigation.replace('InicioSesion');
+            } },
+        ]
+      );
+    };
   const botones = [
     {
       key: 'registrar',
@@ -60,6 +70,10 @@ export default function HomeScreem ({ navigation, route }) {
 
   return (
     <SafeAreaView style={styles.container}>
+      <TouchableOpacity onPress={manejarCerrarSesion}>
+          <Ionicons name="arrow-back" size={24} color="black" />
+      </TouchableOpacity>
+
       <Text style={styles.titulo}>¡Bienvenido, {nombreUsuario}!</Text>
       <View style={styles.grid}>
         {botones.map(b => (

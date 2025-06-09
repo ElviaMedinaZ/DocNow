@@ -1,9 +1,9 @@
 {/* Creacion de la pantalla reportes
-  Programador: Kristofer Hernandez
+  Programador: Kristofer Hernandez e Irais Reyes
   Fecha: 03 de junio del 2025 */}
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+
 import { Ionicons } from '@expo/vector-icons';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function PantallaReportes({ navigation }) {
   return (
@@ -18,9 +18,7 @@ export default function PantallaReportes({ navigation }) {
 
       {/* Contenido aquí */}
       {/* <Text style={styles.textoContenido}>Aquí irán tus reportes...</Text> */}
-      {/*Diseño de la seccion de reporte
-      Programadora: Irais Reyes
-      Fecha: 07 de junio del 2025 */}
+
       <View style={styles.contenedorRespaldo}>
         <View style={styles.respaldoItem}>
         <Image
@@ -30,18 +28,18 @@ export default function PantallaReportes({ navigation }) {
         <View style={styles.infoContainer}>
           <View style={styles.infoFila}>
             <Text style={styles.labelFecha}>09 de mayo de 2020</Text>
-            <TouchableOpacity style={styles.btnVer} onPress={() => alert('Generando reporte...')}>
-              <Text style={styles.verText}>Ver</Text>
-            </TouchableOpacity>
+             <TouchableOpacity style={styles.btnVer} onPress={() => navigation.navigate('PantallaDashboard')}>
+        <Text style={styles.verText}>Ver</Text>
+      </TouchableOpacity>
           </View>
           <Text style={styles.labelHora}>02:30 am</Text>
         </View>
       </View>
 
       </View>
-      <TouchableOpacity style={styles.boton}>
-        <Text style={styles.textoBoton}>Reporte</Text>
-      </TouchableOpacity>
+    
+
+
     </View>
   );
 }
@@ -150,3 +148,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+
+
