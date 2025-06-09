@@ -3,44 +3,44 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-// Importación de Componentes
+// Importación de Componetes
 
 //Admin
-import PantallaAdminPrincipal from './componentes/Admin/PantallaAdminPrincipal';
-import PantallaAdminRegistro from './componentes/Admin/PantallaAdminRegistro';
-import PantallaMultiLista from './componentes/Admin/PantallaMultiLista';
-import PantallaReportes from './componentes/Admin/PantallaReportes';
-import PantallaRespaldos from './componentes/Admin/PantallaRespaldos';
+import PantallaAdminPrincipal from './Componetes/Admin/PantallaAdminPrincipal';
+import PantallaAdminRegistro from './Componetes/Admin/PantallaAdminRegistro';
+import PantallaMultiLista from './Componetes/Admin/PantallaMultiLista';
+import PantallaReportes from './Componetes/Admin/PantallaReportes';
+import PantallaRespaldos from './Componetes/Admin/PantallaRespaldos';
 
 //Doctor
-import PantallaHomeDoctor from './componentes/Doctores/PantallaHomeDoctor';//pantalla principal
-import PantallaEditarDoctor from './componentes/Doctores/PantallaEditarDoctor';//pantalla para edicion
-import PantallaNotaConsulta from './componentes/Doctores/PantallaNotaConsulta';//pantalla para notas
-import PantallaRegistroDoctor from './componentes/Doctores/PantallaRegistroDoctores';//pantalla para registrar
-import PantallaPerfilDoctor from './componentes/Doctores/PantallaPerfilDoctor';//pantalla para perfil
-import PantallaNotificacionesDoctor from './componentes/Doctores/PantallaNotificacionesDoctor';//pantalla para notificaciones
-import PantallaPacieteDoctores from './componentes/Doctores/PantallaPacienteDoctor';//pantalla para pacientes
-import PantallaNotas from './componentes/Doctores/PantallaNotas';//pantalla para ver notas 
+import PantallaHomeDoctor from './Componetes/Doctores/PantallaHomeDoctor';//pantalla principal
+import PantallaEditarDoctor from './Componetes/Doctores/PantallaEditarDoctor';//pantalla para edicion
+import PantallaNotaConsulta from './Componetes/Doctores/PantallaNotaConsulta';//pantalla para notas
+import PantallaRegistroDoctor from './Componetes/Doctores/PantallaRegistroDoctores';//pantalla para registrar
+import PantallaPerfilDoctor from './Componetes/Doctores/PantallaPerfilDoctor';//pantalla para perfil
+import PantallaNotificacionesDoctor from './Componetes/Doctores/PantallaNotificacionesDoctor';//pantalla para notificaciones
+import PantallaPacieteDoctores from './Componetes/Doctores/PantallaPacienteDoctor';//pantalla para pacientes
+import PantallaNotas from './Componetes/Doctores/PantallaNotas';//pantalla para ver notas 
 
 //usuarios
-import PantallaEvaluacion from './componentes/Usuario/PantallaEvaluacion';
-import PantallaPerfilUsiario from './componentes/Usuario/PantallaPerfilUsuario';
+import PantallaEvaluacion from './Componetes/Usuario/PantallaEvaluacion';
+import PantallaPerfilUsiario from './Componetes/Usuario/PantallaPerfilUsuario';
 
-import PantallaHomeUsuario from './componentes/Usuario/PantallaHomeUsuario';
-import PantallaNotificaciones from './componentes/Usuario/PantallaNotificaciones';
-import PantallaCitas from './componentes/Usuario/PantallaCitasUsuario';
-import PantallaConfirmarCita from './componentes/Usuario/PantallaConfirmarCita';
-import PantallaRegistro from './componentes/Usuario/PantallaRegistro';
-import PantallaOlvideContrasena from './componentes/Usuario/PantallaOlvideContrasena';
-import PantallaVerificarCodigo from './componentes/Usuario/PantallaVerificarCodigo';
-import PantallaRestablecerContrasena from './componentes/Usuario/PantallaRestablecerContrasena';
-import PantallaEditarRegistro from './componentes/Usuario/PantallaEditarRegistro';
+import PantallaHomeUsuario from './Componetes/Usuario/PantallaHomeUsuario';
+import PantallaNotificaciones from './Componetes/Usuario/PantallaNotificaciones';
+import PantallaCitas from './Componetes/Usuario/PantallaCitasUsuario';
+import PantallaConfirmarCita from './Componetes/Usuario/PantallaConfirmarCita';
+import PantallaRegistro from './Componetes/Usuario/PantallaRegistro';
+import PantallaOlvideContrasena from './Componetes/Usuario/PantallaOlvideContrasena';
+import PantallaVerificarCodigo from './Componetes/Usuario/PantallaVerificarCodigo';
+import PantallaRestablecerContrasena from './Componetes/Usuario/PantallaRestablecerContrasena';
+import PantallaEditarRegistro from './Componetes/Usuario/PantallaEditarRegistro';
 
 //Multi
-import PantallaInicioSesion from './componentes/Otros/PantallaInicioSesion';
-import PantallaRegistroExitoso from './componentes/Otros/PantallaRegistroExistoso';
-import PantallaAjustes from './componentes/Otros/PantallaAjustes';
-import VerificacionCompletada from './componentes/Otros/VerificacionCompletada';
+import PantallaInicioSesion from './Componetes/Otros/PantallaInicioSesion';
+import PantallaRegistroExitoso from './Componetes/Otros/PantallaRegistroExistoso';
+import PantallaAjustes from './Componetes/Otros/PantallaAjustes';
+import VerificacionCompletada from './Componetes/Otros/VerificacionCompletada';
 
 
 const Stack = createNativeStackNavigator();
