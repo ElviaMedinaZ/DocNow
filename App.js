@@ -25,7 +25,9 @@ import PantallaNotas from './Componentes/Doctores/PantallaNotas';//pantalla para
 //usuarios
 import PantallaEvaluacion from './Componentes/Usuario/PantallaEvaluacion';
 import PantallaPerfilUsiario from './Componentes/Usuario/PantallaPerfilUsuario';
-
+import PantallaServicios from './Componentes/Usuario/PantallaServicios';
+import PanrallaVerDoctor from './Componentes/Usuario/PantallaVerDoctor';
+import PantallaEditarCita from './Componentes/Usuario/PantallaEditarCita';
 import PantallaHomeUsuario from './Componentes/Usuario/PantallaHomeUsuario';
 import PantallaNotificaciones from './Componentes/Usuario/PantallaNotificaciones';
 import PantallaCitas from './Componentes/Usuario/PantallaCitasUsuario';
@@ -212,6 +214,25 @@ export default function App() {
           component={PantallaNotificaciones}
           options={{ headerShown: false }}
         />
+        
+        <Stack.Screen
+          name="PantallaServicios"
+          component={PantallaServicios}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name='PantallaVerDoctor'
+          component={PanrallaVerDoctor}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen 
+          name='PantallaEditarCita'
+          component={PantallaEditarCita}
+          options={{headerShown: false}}
+        />
+
         
         <Stack.Screen
           name="VerificarCodigo"

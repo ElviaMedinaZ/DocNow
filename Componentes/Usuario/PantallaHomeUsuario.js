@@ -14,15 +14,20 @@ import {
   Alert,
   TextInput
 } from 'react-native';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs,getDoc,doc } from 'firebase/firestore';
 import { auth, db } from '../../utileria/firebase';
 import { signOut } from 'firebase/auth';
 import { Ionicons } from '@expo/vector-icons';
+import dayjs from 'dayjs';
+import 'dayjs/locale/es'; // español
+
 
 export default function PantallaPrincipal({ route, navigation }) {
   const insets = useSafeAreaInsets(); // ← obtiene espacios seguros
  
   const [servicios, setServicios] = useState([]);
+  const [proximaCita, setProximaCita] = useState(null);
+
 
   useEffect(() => {
     const obtenerServicios = async () => {
@@ -34,6 +39,41 @@ export default function PantallaPrincipal({ route, navigation }) {
 
     obtenerServicios();
   }, []);
+
+
+useEffect(() => {
+  const cargarProximaCita = async () => {
+    try {
+      const snapshot = await getDocs(collection(db, 'citas'));
+      const pacienteId = auth.currentUser?.uid;
+
+      const citasPendientes = snapshot.docs
+        .map(doc => ({ id: doc.id, ...doc.data() }))
+        .filter(cita =>
+          cita.pacienteId === pacienteId &&
+          cita.estatus === 'Pendiente' &&
+          dayjs(cita.fecha).isAfter(dayjs().subtract(1, 'day'))
+        )
+        .sort((a, b) => dayjs(a.fecha).valueOf() - dayjs(b.fecha).valueOf());
+
+      if (citasPendientes.length > 0) {
+        const cita = citasPendientes[0];
+        const doctorSnap = await getDoc(doc(db, 'usuarios', cita.doctorId));
+        const doctor = doctorSnap.exists() ? doctorSnap.data() : null;
+
+        setProximaCita({
+          ...cita,
+          doctorNombre: doctor ? `Dr. ${doctor.nombres} ${doctor.apellidoP}` : 'Doctor no encontrado'
+        });
+      }
+    } catch (err) {
+      console.error('Error cargando próxima cita:', err);
+    }
+  };
+
+  cargarProximaCita();
+}, []);
+
 
   const manejarCerrarSesion = async () => {
     Alert.alert(
@@ -50,12 +90,15 @@ export default function PantallaPrincipal({ route, navigation }) {
   };
 
   const renderServicio = ({ item }) => (
-    <TouchableOpacity style={styles.servicioItem}>
-      <Image source={{ uri: item.FotoUrl }} style={styles.servicioImagen} />
-      <View style={styles.servicioTextoContenedor}>
-        <Text style={styles.servicioTexto}>{item.Servicio}</Text>
-      </View>
-    </TouchableOpacity>
+     <TouchableOpacity
+    style={styles.servicioItem}
+    onPress={() => navigation.navigate('PantallaServicios', { servicioSeleccionado: item.Servicio })}
+  >
+    <Image source={{ uri: item.FotoUrl }} style={styles.servicioImagen} />
+    <View style={styles.servicioTextoContenedor}>
+      <Text style={styles.servicioTexto}>{item.Servicio}</Text>
+    </View>
+  </TouchableOpacity>
   );
 
   return (
@@ -97,7 +140,7 @@ export default function PantallaPrincipal({ route, navigation }) {
 
       <TouchableOpacity
         style={styles.tituloMedico}
-        onPress={() => navigation.navigate('PantallaServicios')}
+        onPress={() => navigation.navigate('')}
         >
         <Text style={styles.seccionTitulo}>Médicos destacados</Text>
       </TouchableOpacity>
@@ -110,35 +153,31 @@ export default function PantallaPrincipal({ route, navigation }) {
         contentContainerStyle={styles.listaMedicos}
       />
 
-      <Text style={styles.seccionTitulo}>Proxima Cita</Text>
+      
+
       {/* seccion de citas */}
+      <Text style={styles.seccionTitulo}>Proxima Cita</Text>
+      
       <View style={styles.contenedorCitas}>
 
-        <TouchableOpacity style={styles.citasItem}>
-          <Image
-            source={require('../../assets/Iconos_Citas/rectangulo.png')}
-            style={styles.imagenRectangulo}
-          />
-          <Image
-            source={
-              // usuario.fotoUrl
-              //   ? { uri: usuario.fotoUrl }
-              //   : 
-              require('../../assets/avatar_placeholder.png')
-            }
-            style={styles.avatar}
-          />
-          <Text style={styles.labelCitas}>Dr. Juan Hernández</Text>
-          <Image
-            source={require('../../assets/Iconos_Citas/linea.png')}
-            style={styles.imagenLinea}
-          />
-          <View  Styles={styles.contenedorFechas}>
-            <Ionicons name="calendar" size={20} color="#0A3B74" style={styles.icono} />
-            <Text style={styles.labelFecha}>13 Sept. 2022</Text>
-            <Text style={styles.labelHora}>10:00 AM</Text>
-          </View>
-        </TouchableOpacity>
+      {proximaCita ? (
+          <TouchableOpacity style={styles.citasItem}
+          >
+            <Image source={require('../../assets/Iconos_Citas/rectangulo.png')} style={styles.imagenRectangulo} />
+            <Image source={require('../../assets/avatar_placeholder.png')} style={styles.avatar} />
+            <Text style={styles.labelCitas}>{proximaCita?.doctorNombre || 'Sin doctor'}</Text>
+            <Image source={require('../../assets/Iconos_Citas/linea.png')} style={styles.imagenLinea} />
+            <View style={styles.contenedorFechas}>
+              <Ionicons name="calendar" size={20} color="#0A3B74" style={styles.icono} />
+              <Text style={styles.labelFecha}>
+                {dayjs(proximaCita.fecha).locale('es').format('D MMM. YYYY')}
+              </Text>
+              <Text style={styles.labelHora}>{proximaCita.hora}</Text>
+            </View>
+          </TouchableOpacity>
+        ) : (
+          <Text style={{ textAlign: 'center', color: '#888' }}>No tienes próximas citas</Text>
+        )}
       </View>
 
       <View style={[styles.barraInferior,{ paddingBottom: insets.bottom || 10 }]}>

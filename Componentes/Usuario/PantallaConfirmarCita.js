@@ -144,7 +144,8 @@ const styles = StyleSheet.create({
   },
   botonCancelar: {
     borderWidth: 1,
-    borderColor: '#0A3B74',
+    borderColor: '#B71A1A',
+    backgroundColor: '#DE0000',
     // paddingVertical: 15,
     // borderRadius: 8,
     marginLeft: 30,
@@ -158,7 +159,7 @@ const styles = StyleSheet.create({
 
   },
   textoCancelar: {
-    color: '#0A3B74',
+    color: '#FFFFFF',
     fontSize: 28,
     fontWeight: 'bold',
     alignSelf: 'center',
